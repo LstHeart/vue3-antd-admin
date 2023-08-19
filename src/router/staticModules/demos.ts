@@ -16,6 +16,17 @@ const routes: Array<RouteRecordRaw> = [
     },
     children: [
       {
+        path: 'init-import',
+        name: `${moduleName}-init-import`,
+        meta: {
+          title: '期初管理',
+          icon: 'icon-zhuomian',
+          keepAlive: true,
+        },
+        component: () =>
+          import(/* webpackChunkName: "demos-init-import" */ '@/views/demos/init/import/index.vue'),
+      },
+      {
         path: 'custom-modal',
         name: `${moduleName}-custom-modal`,
         meta: {

@@ -34,13 +34,14 @@ module.exports = {
   rules: {
     // js/ts
     // 'no-console': ['warn', { allow: ['error'] }],
+    'no-debugger': 'off',
     'no-restricted-syntax': ['error', 'LabeledStatement', 'WithStatement'],
     camelcase: ['error', { properties: 'never' }],
 
     'no-var': 'error',
     'no-empty': ['error', { allowEmptyCatch: true }],
     'no-void': 'error',
-    'prefer-const': ['warn', { destructuring: 'all', ignoreReadBeforeAssign: true }],
+    'prefer-const': ['off', { destructuring: 'all', ignoreReadBeforeAssign: true }],
     'prefer-template': 'error',
     'object-shorthand': ['error', 'always', { ignoreConstructors: false, avoidQuotes: true }],
     'block-scoped-var': 'error',
@@ -77,15 +78,24 @@ module.exports = {
     'vue/require-default-prop': 'off',
     'vue/require-explicit-emits': 'off',
     'vue/multi-word-component-names': 'off',
-
+    'vue/attributes-order': 'off',
+    'vue/v-on-event-hyphenation': 'off',
+    'vue/attribute-hyphenation': 'off',
+    'vue/first-attribute-linebreak': [
+      'error',
+      {
+        singleline: 'ignore',
+        multiline: 'below',
+      },
+    ],
     // prettier
     'prettier/prettier': 'error',
 
     // import
-    'import/first': 'error',
-    'import/no-duplicates': 'error',
+    'import/first': 'off',
+    'import/no-duplicates': 'off',
     'import/order': [
-      'error',
+      'off',
       {
         groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'],
 

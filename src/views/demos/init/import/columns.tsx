@@ -1,0 +1,83 @@
+import type { TableColumn } from '@/components/core/dynamic-table';
+
+export const columns: TableColumn[] = [
+  {
+    title: '期初单号',
+    dataIndex: 'orderNo',
+    ellipsis: true,
+    resizable: true,
+    width: 100,
+  },
+  {
+    title: '库房',
+    dataIndex: 'stockName',
+    ellipsis: true,
+    resizable: true,
+    width: 120,
+  },
+  {
+    title: '库区',
+    dataIndex: 'shelfName',
+    ellipsis: true,
+    resizable: true,
+    width: 120,
+  },
+  {
+    title: '耗材类型',
+    dataIndex: 'purMode',
+    ellipsis: true,
+    resizable: true,
+    width: 60,
+  },
+  {
+    title: '品规数',
+    dataIndex: 'characterQty',
+    ellipsis: true,
+    resizable: true,
+    width: 80,
+    align: 'right',
+  },
+  {
+    title: '库存总数',
+    dataIndex: 'stockQty',
+    ellipsis: true,
+    resizable: true,
+    width: 80,
+    align: 'right',
+  },
+  {
+    title: '制单人',
+    dataIndex: 'createUserName',
+    ellipsis: true,
+    resizable: true,
+    width: 120,
+  },
+  {
+    title: '制单时间',
+    dataIndex: 'createTime',
+    ellipsis: true,
+    resizable: true,
+    width: 120,
+  },
+  {
+    title: '生成时间',
+    dataIndex: 'generateTime',
+    ellipsis: true,
+    resizable: true,
+    width: 120,
+  },
+  {
+    title: '状态',
+    dataIndex: 'tbStatus',
+    ellipsis: true,
+    resizable: true,
+    width: 80,
+  },
+  {
+    title: '操作',
+    dataIndex: 'action',
+    width: 80,
+    resizable: true,
+    fixed: 'right',
+  },
+];
