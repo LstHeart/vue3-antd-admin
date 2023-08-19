@@ -1,5 +1,7 @@
 <template>
-  <Col v-if="getShow.isIfShow" v-show="getShow.isShow" v-bind="schema.colProps">
+  <Col v-bind="schema.colProps || props.baseCol.baseCol">
+    <!-- v-if="getShow.isIfShow"
+    v-show="getShow.isShow" -->
     <Divider v-if="schema.component === 'Divider'" v-bind="getComponentProps">
       <component :is="renderLabelHelpMessage"></component>
     </Divider>
@@ -51,14 +53,13 @@
   import { componentMap } from './componentMap';
   import { createPlaceholderMessage } from './helper';
   import { useFormContext } from './hooks/useFormContext';
+  import { isBoolean, isNull, isObject, isString } from './../../../../utils/is';
+  import BasicHelp from './../../../../components/basic/basic-help/index.vue';
   import type { PropType } from 'vue';
   import type { ComponentMapType } from './componentMap';
   import type { CustomRenderFn, FormSchema, RenderCallbackParams } from './types/form';
   import type { RuleObject } from 'ant-design-vue/es/form/';
-  import type { TableActionType } from '@/components/core/dynamic-table';
-  import { isBoolean, isNull, isObject, isString } from '@/utils/is';
-  import BasicHelp from '@/components/basic/basic-help/index.vue';
-  import { useI18n } from '@/hooks/useI18n';
+  import type { TableActionType } from './../../../../components/core/dynamic-table';
 
   defineOptions({
     name: 'SchemaFormItem',
@@ -67,6 +68,10 @@
   const props = defineProps({
     formModel: {
       type: Object as PropType<Record<string, any>>,
+      default: () => ({}),
+    },
+    baseCol: {
+      type: Object as PropType<any>,
       default: () => ({}),
     },
     schema: {
@@ -95,7 +100,6 @@
   const { formPropsRef } = formContext;
 
   const modelValue = useVModel(props, 'formModel', emit);
-  const { t } = useI18n();
 
   const { schema } = toRefs(props);
 
@@ -128,30 +132,30 @@
     };
   });
 
-  const getShow = computed<{ isShow: boolean; isIfShow: boolean }>(() => {
-    const { vShow, vIf, isAdvanced = false } = unref(schema);
-    const { showAdvancedButton } = unref(formPropsRef);
-    const itemIsAdvanced = showAdvancedButton ? (isBoolean(isAdvanced) ? isAdvanced : true) : true;
+  // const getShow = computed<{ isShow: boolean; isIfShow: boolean }>(() => {
+  //   const { vShow, vIf, isAdvanced = false } = unref(schema);
+  //   const { showAdvancedButton } = unref(formPropsRef);
+  //   const itemIsAdvanced = showAdvancedButton ? (isBoolean(isAdvanced) ? isAdvanced : true) : true;
 
-    let isShow = true;
-    let isIfShow = true;
+  //   let isShow = true;
+  //   let isIfShow = true;
 
-    if (isBoolean(vShow)) {
-      isShow = vShow;
-    }
-    if (isBoolean(vIf)) {
-      isIfShow = vIf;
-    }
-    if (isFunction(vShow)) {
-      isShow = vShow(unref(getValues));
-    }
-    if (isFunction(vIf)) {
-      isIfShow = vIf(unref(getValues));
-    }
-    isShow = isShow && itemIsAdvanced;
+  //   if (isBoolean(vShow)) {
+  //     isShow = vShow;
+  //   }
+  //   if (isBoolean(vIf)) {
+  //     isIfShow = vIf;
+  //   }
+  //   if (isFunction(vShow)) {
+  //     isShow = vShow(unref(getValues));
+  //   }
+  //   if (isFunction(vIf)) {
+  //     isIfShow = vIf(unref(getValues));
+  //   }
+  //   isShow = isShow && itemIsAdvanced;
 
-    return { isShow, isIfShow };
-  });
+  //   return { isShow, isIfShow };
+  // });
 
   const getDisable = computed(() => {
     const { disabled: globDisabled } = unref(formPropsRef);
@@ -233,8 +237,7 @@
         plain: true,
       });
     }
-    schema.field === 'field35' && console.log('componentProps', componentProps);
-
+    schema.field === 'field35';
     return componentProps as Recordable;
   });
 
@@ -371,8 +374,7 @@
     const characterInx = rules.findIndex((val) => val.max);
     if (characterInx !== -1 && !rules[characterInx].validator) {
       rules[characterInx].message =
-        rules[characterInx].message ||
-        t('component.form.maxTip', [rules[characterInx].max] as Recordable);
+        rules[characterInx].message || `字符数应小于${[rules[characterInx].max] as Recordable}位`;
     }
 
     return rules;
@@ -384,7 +386,6 @@
       const { componentProps, component } = schema.value;
 
       schema.value.loading = true;
-      schema.value.field === 'field35' && console.log('compProps', compProps, formPropsRef.value);
 
       try {
         const result = await getComponentProps.value?.request(unref(getValues));

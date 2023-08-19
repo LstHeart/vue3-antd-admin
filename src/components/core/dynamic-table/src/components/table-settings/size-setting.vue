@@ -1,7 +1,7 @@
 <template>
   <Tooltip placement="top">
     <template #title>
-      <span>{{ $t('component.table.settingDens') }}</span>
+      <span>密度</span>
     </template>
 
     <Dropdown placement="bottom" :trigger="['click']">
@@ -9,13 +9,13 @@
       <template #overlay>
         <Menu v-model:selectedKeys="selectedKeysRef" selectable @click="handleMenuClick">
           <Menu.Item key="large">
-            <span>{{ $t('component.table.settingDensDefault') }}</span>
+            <span>分散</span>
           </Menu.Item>
           <Menu.Item key="middle">
-            <span>{{ $t('component.table.settingDensMiddle') }}</span>
+            <span>中等</span>
           </Menu.Item>
           <Menu.Item key="small">
-            <span>{{ $t('component.table.settingDensSmall') }}</span>
+            <span>紧凑</span>
           </Menu.Item>
         </Menu>
       </template>
@@ -27,14 +27,16 @@
   import { ColumnHeightOutlined } from '@ant-design/icons-vue';
   import { Tooltip, Dropdown, Menu } from 'ant-design-vue';
   import { useTableContext } from '../../hooks/useTableContext';
+  import { useThemeStore } from './../../../../../../store/modules/projectConfig';
   import type { TableProps } from 'ant-design-vue/es/table/Table';
   import type { MenuInfo } from 'ant-design-vue/es/menu/src/interface';
+  const themeStore = useThemeStore();
 
   type SizeType = NonNullable<TableProps['size']>;
 
   const table = useTableContext();
 
-  const selectedKeysRef = ref<SizeType[]>([unref(table.getProps)?.size || 'large']);
+  const selectedKeysRef = ref([unref(table.getProps)?.size || themeStore.size || 'small']);
 
   function handleMenuClick({ key }: MenuInfo & { key: SizeType }) {
     selectedKeysRef.value = [key];

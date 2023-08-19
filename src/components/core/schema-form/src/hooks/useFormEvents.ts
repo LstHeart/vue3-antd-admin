@@ -2,12 +2,12 @@ import { unref, toRaw } from 'vue';
 import { cloneDeep, uniqBy } from 'lodash-es';
 import dayjs from 'dayjs';
 import { dateItemType, handleInputNumberValue } from '../helper';
+import { isArray, isFunction, isObject, isString } from './../../../../../utils/is';
+import { deepMerge } from './../../../../../utils';
 import type { FormSchema } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
 import type { FormState, FormMethods } from './index';
 import type { SchemaFormEmitFn } from '../schema-form';
-import { isArray, isFunction, isObject, isString } from '@/utils/is';
-import { deepMerge } from '@/utils';
 
 type UseFormActionContext = FormState & {
   emit: SchemaFormEmitFn;
@@ -234,6 +234,10 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     }
   }
 
+  function toggleDrawer() {
+    emit('toggle-Drawer');
+  }
+
   return {
     submit: handleSubmit,
     clearValidate,
@@ -247,5 +251,6 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     resetFields,
     setFieldsValue,
     scrollToField,
+    toggleDrawer,
   };
 }

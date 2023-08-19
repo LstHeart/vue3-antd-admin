@@ -24,14 +24,20 @@
           {{ getSubmitBtnOptions.text }}
         </Button>
 
-        <slot name="advanceBefore"></slot>
-        <Button
-          v-if="showAdvancedButton && !hideAdvanceBtn"
-          type="link"
-          size="small"
-          @click="toggleAdvanced"
+        <div
+          v-if="isDawerButton"
+          :style="{ color: selColor }"
+          class="advance-filter"
+          @click="toggleDrawer"
         >
-          {{ isAdvanced ? t('component.form.putAway') : t('component.form.unfold') }}
+          <i class="fa fa-filter fa-fw"></i>
+          <span>高级筛选</span>
+        </div>
+
+        <slot name="advanceBefore"></slot>
+        <!-- v-if="showAdvancedButton && !hideAdvanceBtn" -->
+        <Button v-if="false" type="link" size="small" @click="toggleAdvanced">
+          <!-- {{ isAdvanced ? t('component.form.putAway') : t('component.form.unfold') }} -->
           <BasicArrow class="ml-1" :expand="!isAdvanced" />
         </Button>
         <slot name="advanceAfter"></slot>
@@ -43,10 +49,10 @@
   import { computed, type PropType } from 'vue';
   import { Form, Col } from 'ant-design-vue';
   import { useFormContext } from '../hooks/useFormContext';
+  import { Button, ButtonProps } from './../../../../../components/basic/button';
+  import { BasicArrow } from './../../../../../components/basic/basic-arrow';
   import type { ColEx } from '../types/component';
-  import { Button, ButtonProps } from '@/components/basic/button';
-  import { BasicArrow } from '@/components/basic/basic-arrow';
-  import { useI18n } from '@/hooks/useI18n';
+  import { selColor } from '@/utils/getColor';
 
   type ButtonOptions = Partial<ButtonProps> & { text: string };
 
@@ -92,10 +98,10 @@
     },
     isAdvanced: Boolean,
     hideAdvanceBtn: Boolean,
+    isDawerButton: Boolean,
   });
 
-  const { t } = useI18n();
-  const { resetFields, submit } = useFormContext();
+  const { resetFields, submit, toggleDrawer } = useFormContext();
   const actionColOpt = computed(() => {
     const { showAdvancedButton, actionSpan: span, actionColOptions } = props;
     const actionSpan = 24 - span;
@@ -112,7 +118,7 @@
   const getResetBtnOptions = computed((): ButtonOptions => {
     return Object.assign(
       {
-        text: t('common.resetText'),
+        text: '重置',
       },
       props.resetButtonOptions,
     );
@@ -121,7 +127,7 @@
   const getSubmitBtnOptions = computed(() => {
     return Object.assign(
       {
-        text: t('common.queryText'),
+        text: '查询',
       },
       props.submitButtonOptions,
     );

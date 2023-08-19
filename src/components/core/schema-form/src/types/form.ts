@@ -2,12 +2,12 @@ import type { RowProps } from 'ant-design-vue';
 import type { NamePath, RuleObject } from 'ant-design-vue/es/form/interface';
 import type { FormItemProps } from 'ant-design-vue/es/form/FormItem';
 import type { Component, VNode } from 'vue';
-import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
+import type { ButtonProps as AntdButtonProps } from './../../../../../components/basic/button';
 import type { ColEx, ComponentMapType, ComponentProps } from './component';
-// import type { TableActionType } from '/@/components/Table/src/types/table'
+// import type { TableActionType } from '/./../../../../../components/Table/src/types/table'
 import type { SchemaFormInstance } from '../schema-form';
 import type { SchemaFormType } from '../hooks';
-import type { TableActionType } from '@/components/core/dynamic-table';
+import type { TableActionType } from './../../../../../components/core/dynamic-table';
 
 export type { RowProps };
 
@@ -68,9 +68,9 @@ export type RegisterFn = (formInstance: SchemaFormInstance) => void;
 export interface FormSchema<T = string> {
   /** 字段名 */
   field: T extends string ? string : GetFieldKeys<T>;
-  // Event name triggered by internal value change, default change
+  // 内部值更改触发的事件名称, default change
   changeEvent?: string;
-  // Variable name bound to v-model Default value
+  // 绑定到v-model的变量名 Default value
   valueField?: string;
   // Label name
   label?: string;
@@ -85,7 +85,7 @@ export interface FormSchema<T = string> {
   helpComponentProps?: Partial<HelpComponentProps>;
   // Label width, if it is passed, the labelCol and WrapperCol configured by itemProps will be invalid
   labelWidth?: string | number;
-  // Disable the adjustment of labelWidth with global settings of formModel, and manually set labelCol and wrapperCol by yourself
+  // 禁用掉LabelWidth, and manually set labelCol and wrapperCol by yourself
   disabledLabelWidth?: boolean;
   /** 表单项对应的组件，eg: Input */
   component?: ComponentMapType | CustomRenderFn<T> | ((opt: RenderCallbackParams<T>) => Component);

@@ -20,7 +20,6 @@ export function useTable(props?: Partial<DynamicTableProps>) {
     () => {
       props &&
         onMounted(async () => {
-          // console.log('table onMounted');
           (await getTableInstance())?.setProps(props);
         });
     },

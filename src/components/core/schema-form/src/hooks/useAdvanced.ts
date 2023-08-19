@@ -1,9 +1,9 @@
 import { computed, unref, watch } from 'vue';
+import { isBoolean, isFunction, isNumber, isObject } from './../../../../../utils/is';
+import { useBreakpoint } from './../../../../../hooks/event/useBreakpoint';
 import type { SchemaFormEmitFn } from '../schema-form';
 import type { ColEx } from '../types/component';
 import type { SchemaFormType } from './';
-import { isBoolean, isFunction, isNumber, isObject } from '@/utils/is';
-import { useBreakpoint } from '@/hooks/event/useBreakpoint';
 
 const BASIC_COL_LEN = 24;
 

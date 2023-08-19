@@ -20,7 +20,6 @@ export function useForm(props?: Partial<SchemaFormProps>) {
     () => {
       props &&
         onMounted(async () => {
-          // console.log('form onMounted');
           (await getFormInstance())?.setSchemaFormProps(props);
         });
     },

@@ -1,17 +1,17 @@
 import { tableProps } from 'ant-design-vue/es/table';
 import DynamicTable from './dynamic-table.vue';
+import { isBoolean } from './../../../../utils/is';
 import type { PropType, ExtractPropTypes } from 'vue';
 import type { BookType } from 'xlsx';
 import type { LoadDataParams, TableColumn, OnChangeCallbackParams } from './types/';
-import type { SchemaFormProps } from '@/components/core/schema-form';
-import { isBoolean } from '@/utils/is';
+import type { SchemaFormProps } from './../../../../components/core/schema-form';
 
 export const dynamicTableProps = {
   ...tableProps(),
   /** 是否显示搜索表单 */
   search: {
     type: Boolean as PropType<boolean>,
-    default: true,
+    default: false,
   },
   /** 表单属性配置 */
   formProps: {
@@ -20,8 +20,14 @@ export const dynamicTableProps = {
   },
   /** 表格列配置 */
   columns: {
-    type: Array as PropType<TableColumn<any>[]>,
+    type: Array,
     required: true,
+    default: () => [],
+  },
+  //表格列显示隐藏
+  showHidecolumns: {
+    type: Array,
+    required: false,
     default: () => [],
   },
   /** 表格数据请求函数 */
@@ -34,8 +40,13 @@ export const dynamicTableProps = {
       ) => Promise<API.TableListResult>
     >,
   },
-  /** 是否显示索引号 */
+  /** 是否立即加载表格 */
   showIndex: {
+    type: Boolean as PropType<boolean>,
+    default: false,
+  },
+  /** 是否显示索引号 */
+  immediateLoadTable: {
     type: Boolean as PropType<boolean>,
     default: false,
   },
@@ -49,6 +60,10 @@ export const dynamicTableProps = {
     type: Boolean as PropType<boolean>,
     default: true,
   },
+  size: {
+    type: String,
+    default: 'small',
+  },
   /** 是否显示表格设置 */
   showTableSetting: {
     type: Boolean as PropType<boolean>,
@@ -56,6 +71,8 @@ export const dynamicTableProps = {
   },
   /** 表格标题 */
   headerTitle: String as PropType<string>,
+  /** 表格名称 */
+  tableName: String as PropType<string>,
   /** 表格标题提示信息 */
   titleTooltip: String as PropType<string>,
   // excel导出配置

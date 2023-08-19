@@ -2,7 +2,7 @@ import { unref, computed, watchEffect } from 'vue';
 import type { TableMethods } from './useTableMethods';
 import type { TableState } from './useTableState';
 import type { ComputedRef, Slots } from 'vue';
-import type { FormSchema, SchemaFormProps } from '@/components/core/schema-form';
+import type { FormSchema, SchemaFormProps } from './../../../../../components/core/schema-form';
 
 export type UseTableFormContext = {
   tableState: TableState;
@@ -30,11 +30,11 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
 
   const formSchemas = computed<FormSchema[]>(() => {
     return unref(getProps)
-      .columns.filter((n) => {
+      .columns.filter((n: any) => {
         const field = getColumnKey(n);
         return !n.hideInSearch && !!field && field !== '$action';
       })
-      .map((n) => {
+      .map((n: any) => {
         return {
           field: n.formItemProps?.field ?? n.searchField ?? (getColumnKey(n) as string),
           component: 'Input',

@@ -14,7 +14,7 @@
     <template v-if="loading" #notFoundContent>
       <span>
         <LoadingOutlined spin class="mr-1" />
-        {{ t('component.form.apiSelectNotFound') }}
+        '请等待数据加载完成...'
       </span>
     </template>
   </Select>
@@ -25,9 +25,8 @@
   import { LoadingOutlined } from '@ant-design/icons-vue';
   import { selectProps } from 'ant-design-vue/es/select';
   import { Select } from 'ant-design-vue';
-  import { isFunction } from '@/utils/is';
-  import { useI18n } from '@/hooks/useI18n';
-  import { propTypes } from '@/utils/propTypes';
+  import { isFunction } from './../../../../../utils/is';
+  import { propTypes } from './../../../../../utils/propTypes';
 
   type OptionsItem = { label: string; value: string; disabled?: boolean };
 
@@ -63,7 +62,6 @@
   const loading = ref(false);
   const isFirstLoad = ref(true);
   const emitData = ref<any[]>([]);
-  const { t } = useI18n();
 
   const getProps = computed(() => props as Recordable);
 

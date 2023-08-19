@@ -1,10 +1,9 @@
 import { computed, ref, unref, watchEffect } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { isBoolean, omit } from 'lodash-es';
 import { Table } from 'ant-design-vue';
 import type { Slots } from 'vue';
 import type { DynamicTableProps } from '../dynamic-table';
-import type { SchemaFormInstance } from '@/components/core/schema-form';
+import type { SchemaFormInstance } from './../../../../../components/core/schema-form';
 import type { TableProps } from 'ant-design-vue';
 import type { TableColumn } from '../types/column';
 
@@ -17,8 +16,6 @@ export type UseTableStateParams = {
 };
 
 export const useTableState = ({ props, slots }: UseTableStateParams) => {
-  const { t } = useI18n();
-
   const tableRef = ref<InstanceType<typeof Table>>();
   // 表格加载
   const loadingRef = ref<boolean>(!!props.loading);
@@ -30,27 +27,20 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   // 分页配置参数
   const paginationRef = ref<Pagination>(false);
 
-  if (!Object.is(props.pagination, false)) {
-    paginationRef.value = {
-      current: 1,
-      pageSize: 10,
-      total: 0,
-      pageSizeOptions: ['10', '20', '50', '100'],
-      showQuickJumper: true,
-      showSizeChanger: true, // 显示可改变每页数量
-      showTotal: (total) => t('component.table.total', { total }), // 显示总数
-      // onChange: (current, pageSize) => pageOption?.pageChange?.(current, pageSize),
-      // onShowSizeChange: (current, pageSize) => pageOption?.pageChange?.(current, pageSize),
-      ...props.pagination,
-    };
-  }
-
   const getProps = computed(() => {
     return { ...props, ...unref(innerPropsRef) };
   });
 
   const getBindValues = computed(() => {
     const props = unref(getProps);
+    if (props.showHidecolumns?.length) {
+      props.columns.map((item: any) => {
+        const obj: any = props.showHidecolumns.find((sub: any) => {
+          return sub.dataIndex === item.dataIndex;
+        });
+        obj ? (item.hideInTable = obj.hideInTable) : null;
+      });
+    }
     const columns = (props.columns as TableColumn[]).filter((n) => !n.hideInTable);
     // 是否添加序号列
     if (props.showIndex) {
@@ -91,6 +81,20 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   watchEffect(() => {
     if (props.dataSource) {
       tableData.value = props.dataSource;
+    }
+    if (props.pagination) {
+      paginationRef.value = {
+        current: 1,
+        pageSize: 50,
+        total: 0,
+        pageSizeOptions: ['10', '20', '50', '100'],
+        showQuickJumper: true,
+        showSizeChanger: true, // 显示可改变每页数量
+        showTotal: (total) => `共 ${total} 条数据`, // 显示总数
+        // onChange: (current, pageSize) => pageOption?.pageChange?.(current, pageSize),
+        // onShowSizeChange: (current, pageSize) => pageOption?.pageChange?.(current, pageSize),
+        ...props.pagination,
+      };
     }
   });
 

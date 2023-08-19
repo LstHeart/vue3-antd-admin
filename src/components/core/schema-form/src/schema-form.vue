@@ -1,10 +1,16 @@
 <template>
-  <Form ref="schemaFormRef" v-bind="pick(getFormProps, aFormPropKeys)" :model="formModel">
-    <Row v-bind="getRowConfig">
+  <Form
+    ref="schemaFormRef"
+    autocomplete="off"
+    v-bind="pick(getFormProps, aFormPropKeys)"
+    :model="formModel"
+  >
+    <Row v-bind="getRowConfig" style="width: 100%">
       <slot name="formHeader"></slot>
       <template v-for="schemaItem in formSchemasRef" :key="schemaItem.field">
         <SchemaFormItem
           :schema="schemaItem"
+          :baseCol="pick(getFormProps, 'baseCol')"
           :set-form-model="setFormModel"
           :form-model="formModel"
           :table-instance="tableInstance"

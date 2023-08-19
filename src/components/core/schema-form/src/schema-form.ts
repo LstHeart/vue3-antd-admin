@@ -1,11 +1,11 @@
 import { formProps, type FormProps } from 'ant-design-vue/es/form';
 import SchemaForm from './schema-form.vue';
 import { ColEx } from './types/component';
+import { isObject } from './../../../../utils/is';
 import type { ExtractPropTypes, ComponentInternalInstance, CSSProperties } from 'vue';
 import type { FieldMapToTime, FormSchema, RowProps } from './types/form';
-import type { ButtonProps } from '@/components/basic/button';
-import type { TableActionType } from '@/components/core/dynamic-table';
-import { isObject } from '@/utils/is';
+import type { ButtonProps } from './../../../../components/basic/button';
+import type { TableActionType } from './../../../../components/core/dynamic-table';
 
 export const aFormPropKeys = Object.keys(formProps);
 
@@ -43,6 +43,9 @@ export const schemaFormProps = {
     type: Object as PropType<CSSProperties>,
   },
   baseColProps: {
+    type: Object as PropType<Partial<ColEx>>,
+  },
+  baseCol: {
     type: Object as PropType<Partial<ColEx>>,
   },
   autoSetPlaceHolder: { type: Boolean as PropType<boolean>, default: true },
@@ -102,6 +105,8 @@ export const schemaFormProps = {
   },
 
   rowProps: Object as PropType<RowProps>,
+  // 是否显示高级筛选
+  isDawerButton: { type: Boolean as PropType<boolean> },
 };
 
 export const schemaFormEmits = {
@@ -109,6 +114,7 @@ export const schemaFormEmits = {
   reset: (formModel: Recordable<any>) => isObject(formModel),
   submit: (formModel: Recordable<any>) => isObject(formModel),
   'advanced-change': () => true,
+  'toggle-Drawer': () => true,
 };
 
 export type SchemaFormEmits = typeof schemaFormEmits;

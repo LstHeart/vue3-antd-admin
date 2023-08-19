@@ -13,10 +13,10 @@
 <script lang="ts" setup>
   import { computed } from 'vue';
   import { Popconfirm } from 'ant-design-vue';
+  import { verifyAuth } from './../../../../../core/permission/';
+  import { isString, isObject } from './../../../../../utils/is';
   import type { PropType } from 'vue';
   import type { ActionItem } from '../types/tableAction';
-  import { verifyAuth } from '@/core/permission/';
-  import { isString, isObject } from '@/utils/is';
 
   const props = defineProps({
     actions: {

@@ -71,8 +71,12 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
             return reload();
           }
         }
-
-        Object.assign(unref(paginationRef), {
+        //  Object.assign(paginationRef, {
+        //   current: ~~page,
+        //   pageSize: ~~size,
+        //   total: ~~total,
+        // });
+        Object.assign(unref(paginationRef) || {}, {
           current: ~~page,
           pageSize: ~~size,
           total: ~~total,
@@ -111,7 +115,8 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
       const values = await queryFormRef.value.validate();
       params = queryFormRef.value.handleFormValues(values);
     }
-    Object.assign(unref(paginationRef), pagination || {});
+    Object.assign(unref(paginationRef) || {}, pagination || {});
+    // Object.assign(paginationRef, pagination || {});
     fetchData(params, rest);
     emit('change', ...rest);
   };

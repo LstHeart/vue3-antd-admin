@@ -1,5 +1,6 @@
 <template>
-  <div class="flex justify-between p-y-16px">
+  <div class="flex justify-between" style="padding: 0 16px 8px 16px">
+    <slot></slot>
     <slot name="headerTitle">
       <div class="title">
         {{ title }}
@@ -7,9 +8,8 @@
       </div>
     </slot>
 
-    <div>
+    <div style="display: flex; align-items: flex-end">
       <slot name="toolbar"></slot>
-      <slot></slot>
       <Divider v-if="$slots.toolbar && showTableSetting" type="vertical" />
       <TableSetting v-if="showTableSetting" />
     </div>
@@ -19,7 +19,7 @@
 <script lang="ts" setup>
   import { Divider } from 'ant-design-vue';
   import TableSetting from '../table-settings/index.vue';
-  import BasicHelp from '@/components/basic/basic-help/index.vue';
+  import BasicHelp from './../../../../../../components/basic/basic-help/index.vue';
 
   defineProps({
     title: {
