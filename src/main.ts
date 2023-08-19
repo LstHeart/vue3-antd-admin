@@ -9,6 +9,8 @@ import { setupRouter } from './router';
 import { setupStore } from '@/store';
 import { setupI18n } from '@/locales';
 import { setupAntd, setupAssets, setupGlobalMethods, setupCustomComponents } from '@/plugins';
+import '@/styles/common.less';
+import 'font-awesome/css/font-awesome.min.css';
 
 if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('./mock');

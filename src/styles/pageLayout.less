@@ -1,0 +1,319 @@
+//上下布局
+.xc-layout-tb {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .xc-header {
+    background-color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    &-search {
+      width: 100%;
+    }
+    .ant-descriptions-item-label {
+      color: #333;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .ant-descriptions-item-content {
+      color: #666;
+    }
+    .ant-descriptions-title {
+      color: #333;
+      font-size: 16px;
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+    }
+  }
+  .xc-dept-out {
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+  .xc-content {
+    background-color: #fff;
+    // padding: 16px;
+    border-radius: 4px;
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+    &-title {
+      color: #333;
+      font-size: 16px;
+      padding: 12px 0;
+      margin: 0 16px;
+      border-bottom: 1px solid #e6e6e6;
+    }
+    &-box {
+      // padding: 16px;
+      // background: pink;
+      flex: 1;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      .xc-content-table {
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: 0%;
+        overflow-y: hidden;
+        .ant-spin-nested-loading {
+          height: 100%;
+        }
+        .ant-spin-container {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          flex-wrap: nowrap;
+        }
+        .ant-table {
+          height: 100%;
+          flex-grow: 1;
+          overflow-y: hidden;
+          .ant-table-thead > tr > th {
+            background: #f0f2f5;
+          }
+        }
+        .ant-table-container {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+        .ant-table-body {
+          flex: 1;
+        }
+      }
+    }
+
+    .xc-bottom-btn {
+      width: 100%;
+      // position: absolute;
+      // bottom: 0;
+      height: 60px;
+      box-shadow: 0px -2px 4px 1px rgba(0, 0, 0, 0.1);
+      text-align: right;
+      line-height: 60px;
+      padding-right: 16px;
+    }
+  }
+  .xc-foot {
+    margin-top: 8px;
+    background: #ffffff;
+    padding: 16px 16px 8px;
+    text-align: right;
+    box-shadow: 0px -2px 4px 0px rgba(0,0,0,0.1);
+  }
+}
+//左右布局
+.xc-layout-lr {
+  height: 100%;
+  background-color: inherit;
+  padding: 0;
+  &-box {
+    width: 100%;
+    height: 100%;
+  }
+  .fixed-left {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+  .ant-col {
+    height: 100%;
+    // margin-bottom: 10px
+  }
+  .xc-content {
+    flex: 1;
+    // overflow-y: auto;
+  }
+  .xc-layout-lr-left {
+    margin-right: 16px;
+    padding: 8px 16px;
+    .ant-tree {
+      overflow: auto;
+      flex: 1;
+    }
+  }
+  &-left,
+  &-right {
+    border-radius: 4px;
+    background: #fff;
+    padding: 8px 0;
+    height: 100%;
+    box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .handle {
+      margin-bottom: 20px;
+      .handle-l {
+      }
+      .handle-r {
+        text-align: right;
+      }
+    }
+    .ant-list {
+      .ant-list-item {
+        color: #666;
+        font-size: 14px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+    }
+    .xc-content-table {
+      flex-grow: 1;
+      flex-shrink: 1;
+      flex-basis: 0%;
+      overflow-y: hidden;
+      .ant-spin-nested-loading {
+        height: 100%;
+      }
+      .ant-spin-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+      }
+      .ant-table {
+        height: 100%;
+        flex-grow: 1;
+        overflow-y: hidden;
+        .ant-table-thead > tr > th {
+          background: #f0f2f5;
+        }
+      }
+      .ant-table-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .ant-table-body {
+        flex: 1;
+      }
+    }
+    .title {
+      font-size: 16px;
+      color: #333;
+      border-bottom: 1px solid #e6e6e6;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+    .box {
+      overflow: auto;
+      flex: 1;
+    }
+  }
+}
+//上中下布局
+.xc-layout-thick{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 2px;
+  background-color: #fff;
+  .xc-header{
+    background-color: #fff;
+    margin: 0 16px;
+    border-bottom: 1px solid #E6E6E6;
+    &-title {
+      color: #333;
+      font-size: 16px;
+      height: 40px;
+      line-height: 40px;
+      border-bottom: 1px solid #e6e6e6;
+      margin-bottom: 8px;
+    }
+    &-table-search {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+    .ant-descriptions-item-label {
+      color: #333;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .ant-descriptions-item-content {
+      color: #666;
+    }
+    .ant-descriptions-title {
+      color: #333;
+      font-size: 16px;
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+    }
+  }
+  .xc-content {
+    background-color: #fff;
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+    // box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+    &-title {
+      color: #333;
+      font-size: 16px;
+      padding: 12px 0;
+      margin: 0 16px;
+      border-bottom: 1px solid #e6e6e6;
+    }
+    &-box {
+      // padding: 16px;
+      // background: pink;
+      flex: 1;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      .xc-content-table {
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: 0%;
+        overflow-y: hidden;
+        .ant-spin-nested-loading {
+          height: 100%;
+        }
+        .ant-spin-container {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          flex-wrap: nowrap;
+        }
+        .ant-table {
+          height: 100%;
+          flex-grow: 1;
+          overflow-y: hidden;
+          .ant-table-thead > tr > th {
+            background: #f0f2f5;
+          }
+        }
+        .ant-table-container {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+        .ant-table-body {
+          flex: 1;
+        }
+      }
+    }
+  }
+  .xc-foot {
+    width: 100%;
+    box-shadow: 0px -2px 4px 0px rgba(0,0,0,0.1);
+    text-align: right;
+    line-height: 48px;
+    padding-right: 16px;
+    margin-top: 8px;
+  }
+}
+
+

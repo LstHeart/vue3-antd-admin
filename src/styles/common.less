@@ -1,3 +1,4 @@
+// @menuBar:`selColor`;
 /* 滚动条凹槽的颜色，还可以设置边框属性 */
 *::-webkit-scrollbar-track-piece {
   background-color: #f8f8f8;
@@ -25,3 +26,444 @@
 *::-webkit-scrollbar-thumb:hover {
   background-color: #bbb;
 }
+
+// 以下内容参考 基础设置-产品信息管理 蓝湖设计图
+// views/basic/goods/index.vue 中使用，可参考
+// 表格头部form表单样式
+.table-header-form {
+  :deep(.ant-input) {
+    width: 180px;
+  }
+  .form-selsect {
+    width: 180px;
+  }
+  :deep(.ant-form-item) {
+    margin-bottom: 10px;
+    margin-right: 20px;
+  }
+}
+// 表格需要悬浮改变样式
+.goods-hover-table {
+  .ant-table-tbody > tr.ant-table-row:hover > td,
+  .ant-table-tbody > tr > td.ant-table-cell-row-hover  {
+    background: var(--ant-primary-1) !important;
+  }
+}
+// modal-box 弹框
+.modal-box-small {
+  .ant-modal {
+    width: 500px;
+  }
+  .ant-modal-footer {
+    padding: 8px 16px;
+    .ant-btn + .ant-btn:not(.ant-dropdown-trigger) {
+      margin-left: 16px;
+    }
+  }
+  .ant-form-item-control-input {
+    // width: 260px;
+    .ant-input,.ant-select,.ant-input-number,.ant-picker {
+      // width: 260px;
+      width: 90%;
+    }
+  }
+}
+
+.ant-modal {
+  max-height: 80% !important;
+  .ant-modal-body{
+     max-height: calc(80vh - 96px) !important;
+  }
+}
+.modal-box {
+  color: #333333;
+  // padding-top: 0px;
+  // height: calc(100vh - 360px);
+  .ant-btn + .ant-btn {
+    margin-left: 16px;
+  }
+  .ant-modal {
+    width: 800px !important;
+    min-width: 800px;
+    .ant-form-item-control-input {
+      min-width: 200px;
+    }
+  }
+  .ant-modal-body {
+    padding: 24px;
+
+    .ant-table-pagination.ant-pagination {
+      margin-bottom: 0;
+    }
+  }
+  .ant-modal-footer {
+    padding: 8px 16px;
+    .ant-btn + .ant-btn:not(.ant-dropdown-trigger) {
+      margin-left: 16px;
+    }
+  }
+  .ant-table-tbody > tr.ant-table-row:hover > td,
+  .ant-table-tbody > tr > td.ant-table-cell-row-hover  {
+    background: var(--ant-primary-1) !important;
+  }
+  //  弹框内详情
+  .modal-detail-body {
+    // 头部展示
+    .modal-detail-header {
+      font-size: 16px;
+      line-height: 16px;
+      padding: 8px 0px 8px;
+      .header-txt {
+        display: inline-block;
+        border-left: 4px solid var(--ant-primary-color);
+        padding-left: 8px;
+        font-weight: 700;
+      }
+    }
+    .label,
+    .value {
+      display: inline-block;
+      font-size: 14px;
+    }
+    .value {
+      color: #666;
+      margin-left: 8px;
+    }
+    :deep(.ant-col) {
+      display: flex;
+      .label {
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
+.ant-modal-footer {
+  padding: 8px 16px;
+  .ant-btn + .ant-btn:not(.ant-dropdown-trigger) {
+    margin-left: 16px;
+  }
+}
+
+// .ant-modal-body {
+//   .ant-form-item {
+//     margin-bottom: 8px;
+//   }
+// }
+.ant-table-tbody > tr.ant-table-row:hover > td {
+  background: var(--ant-primary-1) !important;
+}
+.ant-list-item:hover {
+  background: var(--ant-primary-1) !important;
+}
+
+.xc-content {
+  flex: 1;
+  overflow: auto;
+  // padding-bottom: 20px;
+}
+ .modal-detail-header {
+      font-size: 16px;
+      line-height: 16px;
+      padding: 8px 0px 8px;
+      .header-txt {
+        display: inline-block;
+        border-left: 4px solid var(--ant-primary-color);
+        padding-left: 8px;
+        font-weight: 700;
+      }
+    }
+// .ant-pagination {
+//   &::before {
+//     content: '';
+//     position: absolute;
+//     width: 100%;
+//     height: 1px;
+//     background-color: #E6E6E6;
+//   }
+// }
+
+// .dy-table .ant-table-pagination.ant-pagination {
+//     margin: 10px 8px;
+//     padding-top: 10px;
+// }
+
+// @fontSize: 13px;
+// .size-font-margin(@fontSize, @marginBtm) {
+//   font-size: @fontSize;
+//   input::-webkit-input-placeholder{
+//     font-size: @fontSize;
+//   }
+//   input::-moz-input-placeholder{
+//     font-size: @fontSize;
+//   }
+//   input::-ms-input-placeholder{
+//     font-size: @fontSize;
+//   }
+//   .ant-btn-sm {
+//     font-size: @fontSize;
+//   }
+//   .ant-form-item-label>label {
+//     font-size: @fontSize;
+//   }
+//   .ant-form-item {
+//     margin-bottom: @marginBtm;
+//   }
+// }
+
+// .theme-small {
+//   @fontSize: 14px;
+//   @marginBtm: 16px;
+//   .size-font-margin(@fontSize,@marginBtm)
+// }
+// .theme-default {
+//   @fontSize: 14px;
+//   @marginBtm: 16px;
+//   .size-font-margin(@fontSize,@marginBtm)
+// }
+// .theme-large {
+//   @fontSize: 16px;
+//   @marginBtm: 24px;
+//   .size-font-margin(@fontSize,@marginBtm)
+// }
+// body {
+//   min-width: 1366px;
+//   overflow-y: hidden;
+// }
+
+
+
+  // 修改-ui---- 弹框
+  .ant-modal-title {
+    line-height: 16px;
+  }
+  .ant-modal-header {
+    padding: 12px 16px;
+    height: 40px;
+    box-sizing: border-box;
+  }
+  .ant-modal-close-x {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+  }
+  .ant-modal-footer {
+    padding: 8px 16px;
+    // height: 60px;
+    box-sizing: border-box;
+  }
+
+  // 修改表格搜索
+  .xc-header-table-search {
+    padding: 0 16px;
+    // margin-bottom: 8px;
+    .ant-form {
+      display: flex;
+    }
+
+    .ant-form-inline .ant-form-item {
+      flex: 1;
+      // margin-right: 40px;
+      // max-width: 374px;
+      display: flex;
+
+      .ant-form-item-control {
+        // max-width: 274px;
+        flex: 1;
+        width: 0;
+        .ant-picker {
+          width: 100%;
+        }
+      }
+    }
+
+    .ant-form-item-label {
+      width: 100px;
+    }
+
+    // .ant-form-item-label>label:after {
+    //   content: '';
+    //       margin: 0 16px 0 0px;
+    // }
+
+    .ant-form-item-label>label {
+      color: #333;
+    }
+
+    .ant-btn + .ant-btn {
+      margin-left: 16px;
+    }
+  }
+  .ant-picker {
+    width: 100%;
+  }
+
+  .point-circle {
+    width: 6px;
+    height: 6px;
+    border-radius: 100%;
+    display: inline-block;
+    background-color: #CCCCCC;
+    margin-right: 6px;
+    margin-bottom: 2px;
+    &.active {
+        background-color: #52C41A;
+    }
+}
+.site-status {
+    padding: 1px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 22px;
+    background-color: #E6E6E6;
+    color: #666666;
+    &.active {
+        background-color: rgba(82, 196, 26, 0.1);
+        color: #52C41A;
+    }
+}
+.ant-table-cell .ant-btn {
+    padding: 0;
+    height: 20px;
+    line-height: 20px;
+    padding-right: 8px;
+}
+// .ant-table-cell {
+//     .ant-btn + .ant-btn {
+//         padding-left: 12px;
+//     }
+// }
+
+.ant-layout-sider-light .ant-layout-sider-trigger {
+    border-top: 1px solid #f0f0f0;
+}
+
+.ant-form-item-label {
+    // margin-bottom: 16px;
+}
+
+td.ant-table-cell:empty::before{
+	content:'--';
+}
+
+.ant-image-preview-mask {
+    background-color: rgba(0,0,0,.65);
+}
+
+// 基本信息-表格-底部按钮组合
+.return-page {
+    background: none;
+    padding: 0;
+
+    :deep(.ant-table-cell .ant-form-item) {
+      margin-bottom: 0;
+    }
+    .unique-code {
+      float: right;
+    }
+    .return-table {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+  }
+  .submit-box {
+    margin-bottom: 8px;
+    height: auto;
+    padding-top: 8px;
+    background-color: #fff;
+    // padding: 0px 5px 8px 0px;
+    border-radius: 4px;
+    .box-title{
+      font-size: 16px;
+      line-height: 22px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #f0f0f0;
+      margin-bottom: 16px;
+    }
+    .box-title-table {
+      font-size: 16px;
+      line-height: 32px;
+      padding: 8px 0;
+      // margin-left: 16px;
+      padding-left: 16px;
+      border-bottom: 1px solid #f0f0f0;
+      margin-bottom: 24px;
+      margin-bottom: 8px;
+    }
+  }
+  .bottom-btn-div {
+    height: 48px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: #fff;
+    margin-top: 8px;
+    .ant-btn {
+      margin-right: 10px;
+    }
+  }
+
+  // 详情
+  .xc-layout-tb {
+    .ant-descriptions-header {
+      margin-bottom: 0px;
+    }
+    .ant-descriptions-row>td, .ant-descriptions-row>th {
+      padding-bottom: 8px;
+    }
+    .headerShow table {
+      margin-top: 8px;
+    }
+    .xc-header-div {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding-bottom:7px;
+    }
+  }
+
+   .font-cl {
+    font-size: 14px;
+    margin-top: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ant-upload-disabled .ant-btn {
+    background-color: #f5f5f5;
+    border-color: #d9d9d9;
+    box-shadow: none;
+    color: rgba(0,0,0,.25);
+    cursor: not-allowed;
+    opacity: 1;
+  }
+
+    .mainHos1 {
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    padding: 1px 8px;
+    color: #10a397;
+    background-color: rgba(16, 163, 151, 0.1);
+    border-radius: 4px 4px 4px 4px;
+    margin-left: 8px;
+  }
+  .overflow{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+   .ellipsis {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: normal !important;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    }
