@@ -49,7 +49,7 @@
       .filter((n) => !n.meta?.hideInMenu)
       .sort((a, b) => (a?.meta?.orderNum || 0) - (b?.meta?.orderNum || 0));
   });
-  console.log('menus', menus.value);
+  // console.log('menus', menus.value);
   /** 侧边栏布局 */
   const isSideMenu = computed(() => themeStore.layout === 'sidemenu');
   // 根据activeMenu获取指定的menu

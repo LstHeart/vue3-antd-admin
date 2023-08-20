@@ -35,7 +35,5 @@ export const permissions: Permissions = modulesPermissionFiles
     }, {});
 
     modules[moduleName] = permissionModule;
-    // console.log('permissions modules', modules);
     return modules;
   }, {});
-console.log('permissions', permissions);

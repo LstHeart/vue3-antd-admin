@@ -27,9 +27,6 @@ export default defineComponent({
           </div>
           <div class={styles.copyright}>
             Copyright <CopyrightOutlined /> 2020
-            <a href="https://buqiyuan.gitee.io" target="_blank">
-              buqiyuan.gitee.io
-            </a>
           </div>
         </a-layout-footer>
       </>

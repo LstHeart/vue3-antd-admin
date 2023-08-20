@@ -107,5 +107,8 @@
   "i18n-ally.enabledFrameworks": [
     "vue",
     "react"
-  ]
+  ],
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
