@@ -130,6 +130,7 @@ const planApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
       //  {
       //   isLoading: false,

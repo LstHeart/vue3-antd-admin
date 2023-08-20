@@ -51,7 +51,7 @@ service.interceptors.response.use(
     const res = response.data;
 
     // if the custom code is not 200, it is judged as an error.
-    if (res.code !== 200) {
+    if (res.code && res.code !== 200) {
       $message.error(res.message || UNKNOWN_ERROR);
 
       // Illegal token

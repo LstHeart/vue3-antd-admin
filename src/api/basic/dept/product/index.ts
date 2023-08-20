@@ -101,6 +101,7 @@ const deptApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
     );
   },

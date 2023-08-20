@@ -10,6 +10,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
       //  {
       //   isLoading: false,
@@ -26,6 +27,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
       //  {
       //   isLoading: false,
@@ -42,6 +44,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
       //  {
       //   isLoading: false,
@@ -58,6 +61,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
       //  {
       //   isLoading: false,
@@ -74,6 +78,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
       //  {
       //   isLoading: false,
@@ -90,6 +95,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
       //  {
       //   isLoading: false,
@@ -106,6 +112,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
     );
   },
@@ -120,6 +127,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
     );
   },
@@ -132,6 +140,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
     );
   },
@@ -144,6 +153,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
     );
   },
@@ -158,6 +168,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
     );
   },
@@ -187,6 +198,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
     );
   },
@@ -218,6 +230,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
     );
   },
@@ -231,6 +244,7 @@ const initImportApi = {
       },
       {
         isMock: true,
+        isGetDataDirectly: false,
       },
     );
   },
