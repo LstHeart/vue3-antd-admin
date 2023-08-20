@@ -4,10 +4,14 @@
 export enum ResultEnum {
   SUCCESS = 0,
   ERROR = -1,
+  UNAUTHORIZED = 401,
   TIMEOUT = 10042,
   TYPE = 'success',
 }
-
+/**
+ * @description: 不需要统一的error弹框的状态码
+ */
+export const ResultErrorWhite = [14030066, -402, -403];
 /**
  * @description: 请求方法
  */

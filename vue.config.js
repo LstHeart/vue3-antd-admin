@@ -210,6 +210,14 @@ module.exports = defineConfig({
       //     '^/mock-api': ''
       //   }
       // },
+      '/mock-api': {
+        target: `http://127.0.0.1:4523/m1/376578-0-default`,
+        changeOrigin: true,
+        logLevel: 'debug',
+        pathRewrite: {
+          '^/mock-api': '',
+        },
+      },
       '^/api': {
         // target: process.env.VUE_APP_API_URL,
         target: 'https://nest-api.buqiyuan.site/api/',

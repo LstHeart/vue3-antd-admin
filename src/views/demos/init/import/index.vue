@@ -262,8 +262,8 @@
   // };
   // TODO delete
   const userQueryParams = {
-    hosId: '',
-    branchId: '',
+    hosId: 'h0347',
+    branchId: 'h0347-123',
   };
 
   // Data Definition
