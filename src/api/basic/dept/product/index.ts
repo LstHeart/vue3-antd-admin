@@ -93,11 +93,16 @@ const deptApi = {
 
   // 查询院区产品信息(对应单元含量下拉框)
   byGoodsId(data) {
-    return request({
-      url: `/herpService/branchGoodsPkgDef/byGoodsId`,
-      method: 'post',
-      data,
-    });
+    return request(
+      {
+        url: `/herpService/branchGoodsPkgDef/byGoodsId`,
+        method: 'post',
+        data,
+      },
+      {
+        isMock: true,
+      },
+    );
   },
   // 查询科室所属货位(对应货位下拉框)
   deptShelf(data) {

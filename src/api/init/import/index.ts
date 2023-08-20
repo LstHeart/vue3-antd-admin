@@ -8,6 +8,9 @@ const initImportApi = {
         method: 'post',
         data,
       },
+      {
+        isMock: true,
+      },
       //  {
       //   isLoading: false,
       //  },
@@ -20,6 +23,9 @@ const initImportApi = {
         url: `/herpService/basic/stockShelf/list`,
         method: 'post',
         data,
+      },
+      {
+        isMock: true,
       },
       //  {
       //   isLoading: false,
@@ -34,6 +40,9 @@ const initImportApi = {
         method: 'post',
         data,
       },
+      {
+        isMock: true,
+      },
       //  {
       //   isLoading: false,
       //  },
@@ -46,6 +55,9 @@ const initImportApi = {
         url: `/herpService/basic/mcmsGoodsInfo/provList`,
         method: 'get',
         params: data,
+      },
+      {
+        isMock: true,
       },
       //  {
       //   isLoading: false,
@@ -60,6 +72,9 @@ const initImportApi = {
         method: 'post',
         data,
       },
+      {
+        isMock: true,
+      },
       //  {
       //   isLoading: false,
       //  },
@@ -73,6 +88,9 @@ const initImportApi = {
         method: 'post',
         data,
       },
+      {
+        isMock: true,
+      },
       //  {
       //   isLoading: false,
       //  },
@@ -80,43 +98,68 @@ const initImportApi = {
   },
   // 分页查询期初单信息
   getInitStockListPage(data) {
-    return request({
-      url: `/herpService/mcmsInitStock/listVoPage`,
-      method: 'post',
-      data,
-    });
+    return request(
+      {
+        url: `/herpService/mcmsInitStock/listVoPage`,
+        method: 'post',
+        data,
+      },
+      {
+        isMock: true,
+      },
+    );
   },
 
   // 新增期初单信息接口
   addInitStock(data) {
-    return request({
-      url: `/herpService/mcmsInitStock/insertInitStock`,
-      method: 'post',
-      data,
-    });
+    return request(
+      {
+        url: `/herpService/mcmsInitStock/insertInitStock`,
+        method: 'post',
+        data,
+      },
+      {
+        isMock: true,
+      },
+    );
   },
   // 根据id删除期初单
   deleteStockById(id: string) {
-    return request({
-      url: `/herpService/mcmsInitStock/deleteById/${id}`,
-      method: 'delete',
-    });
+    return request(
+      {
+        url: `/herpService/mcmsInitStock/deleteById/${id}`,
+        method: 'delete',
+      },
+      {
+        isMock: true,
+      },
+    );
   },
   // 根据id查询期初单头信息
   getDetailHeader(id: string) {
-    return request({
-      url: `/herpService/mcmsInitStock/getById/${id}`,
-      method: 'get',
-    });
+    return request(
+      {
+        url: `/herpService/mcmsInitStock/getById/${id}`,
+        method: 'get',
+      },
+      {
+        isMock: true,
+      },
+    );
   },
 
   // 期初录入-查询详情接口
   getInitStockDetail(data) {
-    return request({
-      url: `/herpService/mcmsInitStock/getInitStockDetails`,
-      method: 'post',
-      data,
-    });
+    return request(
+      {
+        url: `/herpService/mcmsInitStock/getInitStockDetails`,
+        method: 'post',
+        data,
+      },
+      {
+        isMock: true,
+      },
+    );
   },
 
   // 期初录入-下载导入模板接口
@@ -136,45 +179,60 @@ const initImportApi = {
   },
   // 期初录入-新增产品分页查询接口
   getInitStockGoodsList(data) {
-    return request({
-      url: `/herpService/mcmsInitStock/getMcmsGoodsInfoVOS`,
-      method: 'post',
-      data,
-    });
+    return request(
+      {
+        url: `/herpService/mcmsInitStock/getMcmsGoodsInfoVOS`,
+        method: 'post',
+        data,
+      },
+      {
+        isMock: true,
+      },
+    );
   },
   // 期初录入-高值扫码识别接口
-  importInitStockByScanCode(data) {
-    return request({
-      url: `/herpService/mcmsInitStock/decode`,
-      method: 'post',
-      data,
-    });
-  },
+  // importInitStockByScanCode(data) {
+  //   return request({
+  //     url: `/herpService/mcmsInitStock/decode`,
+  //     method: 'post',
+  //     data,
+  //   });
+  // },
 
   // 期初明细-查询详情接口
-  getInitStockDetailListPage(data) {
-    return request({
-      url: `/herpService/mcmsInitStock/listInitStockDetailCondition`,
-      method: 'post',
-      data,
-    });
-  },
+  // getInitStockDetailListPage(data) {
+  //   return request({
+  //     url: `/herpService/mcmsInitStock/listInitStockDetailCondition`,
+  //     method: 'post',
+  //     data,
+  //   });
+  // },
 
   // 期初录入-暂存接口
   importInitStockTemp(data) {
-    return request({
-      url: `/herpService/mcmsInitStock/insertTemp`,
-      method: 'post',
-      data,
-    });
+    return request(
+      {
+        url: `/herpService/mcmsInitStock/insertTemp`,
+        method: 'post',
+        data,
+      },
+      {
+        isMock: true,
+      },
+    );
   },
   // 期初录入--生成期初库存数据
   generateInitStock(data) {
-    return request({
-      url: `/herpService/mcmsInitStock/generate`,
-      method: 'post',
-      data,
-    });
+    return request(
+      {
+        url: `/herpService/mcmsInitStock/generate`,
+        method: 'post',
+        data,
+      },
+      {
+        isMock: true,
+      },
+    );
   },
 
   //生成期初单进度

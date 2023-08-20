@@ -128,6 +128,9 @@ const planApi = {
         method: 'get',
         params: data,
       },
+      {
+        isMock: true,
+      },
       //  {
       //   isLoading: false,
       //  },
