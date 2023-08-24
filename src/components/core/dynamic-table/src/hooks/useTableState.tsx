@@ -3,7 +3,7 @@ import { isBoolean, omit } from 'lodash-es';
 import { Table } from 'ant-design-vue';
 import type { Slots } from 'vue';
 import type { DynamicTableProps } from '../dynamic-table';
-import type { SchemaFormInstance } from './../../../../../components/core/schema-form';
+import type { SchemaFormInstance } from '@/components/core/schema-form';
 import type { TableProps } from 'ant-design-vue';
 import type { TableColumn } from '../types/column';
 
@@ -23,6 +23,17 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   const queryFormRef = ref<SchemaFormInstance>();
 
   const innerPropsRef = ref<Partial<DynamicTableProps>>();
+
+  /** 编辑表格的表单实例 */
+  const editTableFormRef = ref<SchemaFormInstance>();
+  /** 编辑表单model */
+  const editFormModel = ref<Recordable>({});
+  /** 所有验证不通过的表单项 */
+  const editFormErrorMsgs = ref(new Map());
+  /** 当前所有正在被编辑的行key的格式为：`${recordKey}`  */
+  const editableRowKeys = ref(new Set<Key>());
+  /** 当前所有正在被编辑的单元格key的格式为：`${recordKey}.${dataIndex}`，仅`editableType`为`cell`时有效  */
+  const editableCellKeys = ref(new Set<Key>());
 
   // 分页配置参数
   const paginationRef = ref<Pagination>(false);
@@ -107,5 +118,10 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
     getProps,
     getBindValues,
     paginationRef,
+    editTableFormRef,
+    editFormModel,
+    editFormErrorMsgs,
+    editableCellKeys,
+    editableRowKeys,
   };
 };

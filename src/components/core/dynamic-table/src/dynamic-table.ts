@@ -3,11 +3,23 @@ import DynamicTable from './dynamic-table.vue';
 import { isBoolean } from './../../../../utils/is';
 import type { PropType, ExtractPropTypes } from 'vue';
 import type { BookType } from 'xlsx';
-import type { LoadDataParams, TableColumn, OnChangeCallbackParams } from './types/';
+import type {
+  LoadDataParams,
+  TableColumn,
+  OnChangeCallbackParams,
+  EditableType,
+  OnSave,
+  OnCancel,
+} from './types/';
 import type { SchemaFormProps } from './../../../../components/core/schema-form';
+import { GetRowKey } from 'ant-design-vue/es/table/interface';
 
 export const dynamicTableProps = {
   ...tableProps(),
+  rowKey: {
+    type: [String, Function] as PropType<string | GetRowKey<any>>,
+    default: 'id',
+  },
   /** 是否显示搜索表单 */
   search: {
     type: Boolean as PropType<boolean>,
@@ -20,14 +32,8 @@ export const dynamicTableProps = {
   },
   /** 表格列配置 */
   columns: {
-    type: Array,
+    type: Array as PropType<TableColumn[]>,
     required: true,
-    default: () => [],
-  },
-  //表格列显示隐藏
-  showHidecolumns: {
-    type: Array,
-    required: false,
     default: () => [],
   },
   /** 表格数据请求函数 */
@@ -40,12 +46,12 @@ export const dynamicTableProps = {
       ) => Promise<API.TableListResult>
     >,
   },
-  /** 是否立即加载表格 */
+  /** 是否显示索引号 */
   showIndex: {
     type: Boolean as PropType<boolean>,
     default: false,
   },
-  /** 是否显示索引号 */
+  /** 是否立即加载表格 */
   immediateLoadTable: {
     type: Boolean as PropType<boolean>,
     default: false,
@@ -60,10 +66,6 @@ export const dynamicTableProps = {
     type: Boolean as PropType<boolean>,
     default: true,
   },
-  size: {
-    type: String,
-    default: 'small',
-  },
   /** 是否显示表格设置 */
   showTableSetting: {
     type: Boolean as PropType<boolean>,
@@ -71,8 +73,6 @@ export const dynamicTableProps = {
   },
   /** 表格标题 */
   headerTitle: String as PropType<string>,
-  /** 表格名称 */
-  tableName: String as PropType<string>,
   /** 表格标题提示信息 */
   titleTooltip: String as PropType<string>,
   // excel导出配置
@@ -97,6 +97,39 @@ export const dynamicTableProps = {
     >,
     default: null,
   },
+  /** 表格名称 */
+  tableName: String as PropType<string>,
+  //表格列显示隐藏
+  showHidecolumns: {
+    type: Array,
+    required: false,
+    default: () => [],
+  },
+  // 表格大小模式
+  size: {
+    type: String,
+    default: 'small',
+  },
+  /** 编辑行类型
+   * @const `single`: 只能同时编辑一行
+   * @const `multiple`: 同时编辑多行
+   * @const `cell`: 可编辑单元格
+   * @defaultValue `single`
+   */
+  editableType: {
+    type: String as PropType<EditableType>,
+    default: 'single',
+  },
+  /** 单元格保存编辑回调 */
+  onSave: {
+    type: Function as PropType<OnSave>,
+  },
+  /** 单元格取消编辑回调 */
+  onCancel: {
+    type: Function as PropType<OnCancel>,
+  },
+  /** 只能编辑一行的的提示 */
+  onlyOneLineEditorAlertMessage: String,
 } as const;
 
 export type DynamicTableProps = ExtractPropTypes<typeof dynamicTableProps>;

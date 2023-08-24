@@ -8,5 +8,7 @@ export * from './useExportData2Excel';
 export * from './useTableForm';
 export * from './useTableState';
 export * from './useTableMethods';
+export * from './useColumns';
+export * from './useEditable';
 
 export type DynamicTableType = DynamicTableProps & TableState & TableMethods;

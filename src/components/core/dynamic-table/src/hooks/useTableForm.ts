@@ -1,8 +1,9 @@
 import { unref, computed, watchEffect } from 'vue';
+import { ColumnKeyFlag } from '../types/column';
 import type { TableMethods } from './useTableMethods';
 import type { TableState } from './useTableState';
 import type { ComputedRef, Slots } from 'vue';
-import type { FormSchema, SchemaFormProps } from './../../../../../components/core/schema-form';
+import type { FormSchema, SchemaFormProps } from '@/components/core/schema-form';
 
 export type UseTableFormContext = {
   tableState: TableState;
@@ -29,16 +30,17 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
   });
 
   const formSchemas = computed<FormSchema[]>(() => {
+    const columnKeyFlags = Object.keys(ColumnKeyFlag);
     return unref(getProps)
       .columns.filter((n: any) => {
         const field = getColumnKey(n);
-        return !n.hideInSearch && !!field && field !== '$action';
+        return !n.hideInSearch && !!field && !columnKeyFlags.includes(field as string);
       })
       .map((n: any) => {
         return {
           field: n.formItemProps?.field ?? n.searchField ?? (getColumnKey(n) as string),
           component: 'Input',
-          label: n.title,
+          label: n.title as string,
           colProps: {
             span: 8,
           },

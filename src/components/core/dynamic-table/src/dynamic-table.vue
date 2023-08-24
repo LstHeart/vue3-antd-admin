@@ -34,49 +34,59 @@
           <slot name="toolbar"></slot>
         </template>
       </ToolBar>
-      <Table
-        ref="tableRef"
-        v-bind="getBindValues"
-        :data-source="tableData"
-        class="xc-content"
-        :bordered="false"
-        :scroll="{ y: '100%' }"
-        :pagination="props.pagination"
-        @change="handleTableChange"
-        :locale="state.localeObj"
+      <SchemaForm
+        ref="editTableFormRef"
+        no-style
+        :initial-values="editFormModel"
+        :show-action-button-group="false"
+        :show-advanced-button="false"
+        @validate="handleEditFormValidate"
       >
-        <template
-          v-for="slotName in defaultSlots.filter((name) => Reflect.has($slots, name))"
-          #[slotName]="slotData"
-          :key="slotName"
+        <Table
+          ref="tableRef"
+          class="xc-content"
+          v-bind="getBindValues"
+          :columns="innerColumns"
+          :data-source="tableData"
+          :bordered="false"
+          :scroll="{ y: '100%' }"
+          :pagination="props.pagination"
+          @change="handleTableChange"
+          :locale="state.localeObj"
         >
-          <slot :name="slotName" v-bind="slotData"></slot>
-        </template>
-
-        <!-- 个性化单元格 start -->
-        <template
-          v-for="slotName in ['bodyCell', 'headerCell']"
-          #[slotName]="slotData"
-          :key="slotName"
-        >
-          <slot :name="slotName" v-bind="slotData"></slot>
-          <!-- 表格行操作start -->
-          <template v-if="slotName === 'bodyCell' && getColumnKey(slotData.column) === '$action'">
-            <TableAction :actions="slotData.column.actions(slotData)" />
-          </template>
-          <!-- 表格行操作end -->
           <template
-            v-for="slotItem in getBindValues.columns?.filter((item) => item[slotName])"
-            :key="getColumnKey(slotItem)"
+            v-for="slotName in defaultSlots.filter((name) => Reflect.has($slots, name))"
+            #[slotName]="slotData"
+            :key="slotName"
           >
-            <component
-              :is="getComponent(slotItem?.[slotName]?.(slotData))"
-              v-if="getColumnKey(slotData.column) === getColumnKey(slotItem)"
-            />
+            <slot :name="slotName" v-bind="slotData"></slot>
           </template>
-        </template>
-        <!-- 个性化单元格 end -->
-      </Table>
+
+          <!-- 个性化单元格 start -->
+          <template
+            v-for="slotName in ['bodyCell', 'headerCell']"
+            #[slotName]="slotData"
+            :key="slotName"
+          >
+            <slot :name="slotName" v-bind="slotData"></slot>
+            <!-- 表格行操作start -->
+            <template v-if="slotName === 'bodyCell' && getColumnKey(slotData.column) === '$action'">
+              <TableAction :actions="slotData.column.actions(slotData)" />
+            </template>
+            <!-- 表格行操作end -->
+            <template
+              v-for="slotItem in getBindValues.columns?.filter((item) => item[slotName])"
+              :key="getColumnKey(slotItem)"
+            >
+              <component
+                :is="getComponent(slotItem?.[slotName]?.(slotData))"
+                v-if="getColumnKey(slotData.column) === getColumnKey(slotItem)"
+              />
+            </template>
+          </template>
+          <!-- 个性化单元格 end -->
+        </Table>
+      </SchemaForm>
       <!-- <span>入库品种：1111</span> -->
       <div class="summary-table"> <slot name="summaryTable"></slot></div>
       <xcTableNoData style="display: none"></xcTableNoData>
@@ -93,6 +103,8 @@
     useExportData2Excel,
     useTableForm,
     useTableState,
+    useColumns,
+    useEditable,
   } from './hooks';
   import { TableAction, ToolBar } from './components';
   import { dynamicTableProps, defaultSlots, dynamicTableEmits } from './dynamic-table';
@@ -126,7 +138,7 @@
 
   // 表格内部状态
   const tableState = useTableState({ props, slots });
-  const { tableData, queryFormRef, getBindValues } = tableState;
+  const { tableData, queryFormRef, getBindValues, editTableFormRef, editFormModel } = tableState;
   // 表格内部方法
   const tableMethods = useTableMethods({ state: tableState, props, emit });
   const {
@@ -139,19 +151,31 @@
     getComponent,
   } = tableMethods;
 
+  // 控制编辑行
+  const editableHooks = useEditable({ props, state: tableState });
+
+  const tableAction: TableActionType = {
+    setProps,
+    reload,
+    fetchData,
+    ...editableHooks,
+  };
+
+  // 表格列的配置描述
+  const { innerColumns } = useColumns({
+    props,
+    slots,
+    state: tableState,
+    methods: tableMethods,
+    tableAction,
+  });
+
   // 搜索表单
   const { getFormProps, replaceFormSlotKey, getFormSlotKeys } = useTableForm({
     tableState,
     tableMethods,
     slots,
   });
-
-  // 当前组件所有的状态和方法
-  const instance = {
-    ...props,
-    ...tableState,
-    ...tableMethods,
-  };
 
   // 表单导出
   const { exportData2Excel } = useExportData2Excel({
@@ -160,11 +184,14 @@
     methods: tableMethods,
   });
 
-  const tableAction: TableActionType = {
-    setProps,
-    reload,
-    fetchData,
+  // 当前组件所有的状态和方法
+  const instance = {
+    ...props,
+    ...tableState,
+    ...tableMethods,
+    ...editableHooks,
   };
+
   createTableContext(instance);
 
   fetchData();
