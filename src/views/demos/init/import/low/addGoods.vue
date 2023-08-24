@@ -37,7 +37,7 @@
         class="xc-content"
         :scroll="{ y: '100%' }"
         :row-key="(record) => record.id"
-        :columns="columnsAddModal"
+        :columns="addGoodsColumns"
         :row-selection="rowSelectionEntity"
         :data-source="state.productAddList"
         :pagination="state.paginationHos"
@@ -53,7 +53,7 @@
   import cloneDeep from 'lodash-es/cloneDeep';
   import { PAGE_OBJ } from '@/enums/paginationEnums';
   import { DraggableModal } from '@/components/core/draggable-modal';
-  import { columnsAddModal } from './columns';
+  import { addGoodsColumns } from './columns';
   import { message } from 'ant-design-vue';
   import initImportApi from '@/api/init/import';
   import { BaseDetail, DetailGoods, Goods } from '../typing';

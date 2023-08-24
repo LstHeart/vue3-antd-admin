@@ -100,7 +100,6 @@ const deptApi = {
         data,
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
     );

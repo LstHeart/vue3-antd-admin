@@ -1,6 +1,6 @@
 import type { TableColumn } from '@/components/core/dynamic-table';
 
-export const lowColumnsDetail: TableColumn[] = [
+export const lowDetailColumns: TableColumn[] = [
   {
     title: '产品编码',
     dataIndex: 'hosGoodsCode',
@@ -104,7 +104,7 @@ export const lowColumnsDetail: TableColumn[] = [
   },
 ];
 
-export const columnsAddModal: TableColumn[] = [
+export const addGoodsColumns: TableColumn[] = [
   {
     title: '产品编号',
     dataIndex: 'hosGoodsCode',
@@ -158,7 +158,7 @@ export const batchColumns: TableColumn[] = [
     width: 120,
   },
   {
-    title: '效期',
+    title: '有效期至',
     dataIndex: 'expdtDate',
     ellipsis: true,
     resizable: true,
@@ -169,7 +169,7 @@ export const batchColumns: TableColumn[] = [
     dataIndex: 'stockQty',
     ellipsis: true,
     resizable: true,
-    width: 80,
+    width: 100,
   },
   {
     title: '单元含量',
@@ -181,7 +181,7 @@ export const batchColumns: TableColumn[] = [
   {
     title: '操作',
     dataIndex: 'action',
-    width: 80,
+    width: 60,
     resizable: true,
     fixed: 'right',
   },

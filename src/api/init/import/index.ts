@@ -9,7 +9,6 @@ const initImportApi = {
         data,
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
       //  {
@@ -26,7 +25,6 @@ const initImportApi = {
         data,
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
       //  {
@@ -43,7 +41,6 @@ const initImportApi = {
         data,
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
       //  {
@@ -60,7 +57,6 @@ const initImportApi = {
         params: data,
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
       //  {
@@ -77,7 +73,6 @@ const initImportApi = {
         data,
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
       //  {
@@ -94,7 +89,6 @@ const initImportApi = {
         data,
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
       //  {
@@ -111,7 +105,6 @@ const initImportApi = {
         data,
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
     );
@@ -126,7 +119,6 @@ const initImportApi = {
         data,
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
     );
@@ -139,7 +131,6 @@ const initImportApi = {
         method: 'delete',
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
     );
@@ -152,7 +143,6 @@ const initImportApi = {
         method: 'get',
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
     );
@@ -167,7 +157,6 @@ const initImportApi = {
         data,
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
     );
@@ -197,7 +186,6 @@ const initImportApi = {
         data,
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
     );
@@ -229,7 +217,6 @@ const initImportApi = {
         data,
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
     );
@@ -243,7 +230,6 @@ const initImportApi = {
         data,
       },
       {
-        isMock: true,
         isGetDataDirectly: false,
       },
     );

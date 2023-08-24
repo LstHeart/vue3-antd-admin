@@ -93,7 +93,7 @@
         // 请求头token信息，请根据实际情况进行修改
         obj['token'] = token;
       }
-      obj['X-APP-CODE'] = process.env.VUE_APP_CODE;
+      // obj['X-APP-CODE'] = process.env.VUE_APP_CODE;
       if (!isProd && token) {
         obj['X-SESSION-ID'] = token;
       }

@@ -10,16 +10,16 @@
 
     <div class="xc-content xc-page">
       <div class="xc-content-box" style="padding-top: 8px">
-        <a-row>
-          <a-col :span="state.showBatch ? 14 : 24">
-            <a-form
-              ref="tableFormRef"
-              class="xc-content return-table"
-              :model="state.form"
-              autocomplete="off"
-            >
+        <a-form
+          ref="tableFormRef"
+          class="xc-content return-table"
+          :model="state.form"
+          autocomplete="off"
+        >
+          <a-row>
+            <a-col span="16">
               <DynamicTable
-                :columns="lowColumnsDetail"
+                :columns="lowDetailColumns"
                 :row-key="(record) => record.hosGoodsCode"
                 :data-source="state.form.displayList"
                 :scroll="{ y: '100%' }"
@@ -27,6 +27,7 @@
                 :pagination="false"
                 @resizeColumn="handleResizeColumn"
                 :row-selection="rowSelectionEntity"
+                :row-class-name="handleRowClass"
               >
                 <template #tableTopAction>
                   <a-form layout="inline" autocomplete="off">
@@ -118,23 +119,107 @@
                     </a-form-item>
                   </template>
                   <template v-if="column.dataIndex === 'action'">
-                    <a-button type="link" @click="editBatch(record, index)" v-if="!record.editing"
+                    <a-button type="link" @click="editBatch(record)" v-if="!record.editing"
                       >编辑批次</a-button
                     >
                   </template>
                 </template>
               </DynamicTable>
-            </a-form>
-          </a-col>
-          <a-col :span="state.showBatch ? 10 : 0">
-            <MaintainBatch
-              v-show="state.showBatch"
-              :canEdit="canEdit"
-              :pkgDefList="state.pkgDefList"
-              v-model:batchRecord="state.batchRecord"
-            ></MaintainBatch>
-          </a-col>
-        </a-row>
+            </a-col>
+            <a-col span="8">
+              <DynamicTable
+                :columns="batchColumns"
+                :data-source="state.form.batchData"
+                :scroll="{ y: '100%' }"
+                :table-name="'HERP_INIT_IMPORT_DETAIL_LOW_BATCH_TABLE'"
+                :pagination="false"
+                :show-index="false"
+                @resizeColumn="handleResizeColumn"
+              >
+                <template #tableTopAction v-if="canEdit">
+                  <a-button type="primary" @click="addBatch">添加</a-button>
+                </template>
+
+                <template #bodyCell="{ column, record, index }">
+                  <template v-if="column.dataIndex === 'batchCode'">
+                    <a-form-item
+                      :name="['batchData', index, 'batchCode']"
+                      :rules="{
+                        required: true,
+                        message: '请输入批号!',
+                      }"
+                    >
+                      <a-input
+                        :placeholder="'请输入批号'"
+                        v-model:value="record.batchCode"
+                      ></a-input>
+                    </a-form-item>
+                  </template>
+                  <template v-if="column.dataIndex === 'productDate'">
+                    <a-form-item
+                      :name="['batchData', index, 'productDate']"
+                      :rules="{
+                        required: true,
+                        message: '请选择生产日期!',
+                      }"
+                    >
+                      <a-date-picker v-model:value="record.productDate" format="YYYY-MM-DD" />
+                    </a-form-item>
+                  </template>
+                  <template v-if="column.dataIndex === 'expdtDate'">
+                    <a-form-item
+                      :name="['batchData', index, 'expdtDate']"
+                      :rules="{
+                        required: true,
+                        message: '请选择有效期至!',
+                      }"
+                    >
+                      <a-date-picker v-model:value="record.expdtDate" format="YYYY-MM-DD" />
+                    </a-form-item>
+                  </template>
+                  <template v-if="column.dataIndex === 'stockQty'">
+                    <a-form-item
+                      :name="['batchData', index, 'stockQty']"
+                      :rules="{
+                        required: true,
+                        message: '请输入库存数量!',
+                      }"
+                    >
+                      <a-input-number
+                        v-model:value="record.stockQty"
+                        style="margin: -5px 0"
+                        :min="1"
+                        :precision="0"
+                        @change="handleQtyChange"
+                      />
+                    </a-form-item>
+                  </template>
+                  <template v-if="column.dataIndex === 'pkgDefId'">
+                    <a-form-item
+                      :name="['batchData', index, 'pkgDefId']"
+                      :rules="{
+                        required: true,
+                        message: '请选择单元含量!',
+                      }"
+                    >
+                      <a-select
+                        :disabled="state.stockLevel !== 1"
+                        v-model:value="record.pkgDefId"
+                        :options="state.pkgDefList"
+                        :field-names="{ label: 'pkgDefName', value: 'id' }"
+                        style="width: 100%"
+                        allowClear
+                      ></a-select>
+                    </a-form-item>
+                  </template>
+                  <template v-if="column.dataIndex === 'action'">
+                    <a-button type="link" @click="removeBatchRow(index)">移除</a-button>
+                  </template>
+                </template>
+              </DynamicTable>
+            </a-col>
+          </a-row>
+        </a-form>
 
         <template v-if="state.addVisible">
           <AddGoods
@@ -208,13 +293,18 @@
   import { useFormModal } from '@/hooks/useModal/index';
   import { BaseDetail, DetailInfo, DetailGoods, InitStockParam } from '../typing';
   import initImportApi from '@/api/init/import';
-  import { lowColumnsDetail } from './columns';
+  import { lowDetailColumns, batchColumns } from './columns';
   import AddGoods from './addGoods.vue';
   import ExcelImport from './excelImport.vue';
-  import MaintainBatch from './maintainBatch.vue';
   import deptApi from '@/api/basic/dept/product';
   import { selColor } from '@/utils/getColor';
   import { DraggableModal } from '@/components/core/draggable-modal';
+  import dayjs from 'dayjs';
+  import weekday from 'dayjs/plugin/weekday';
+  import localeData from 'dayjs/plugin/localeData';
+
+  dayjs.extend(weekday);
+  dayjs.extend(localeData);
 
   const [DynamicTable] = useTable();
   const props = defineProps({
@@ -247,6 +337,7 @@
     form: {
       // 低值数据表单
       displayList: [] as any[], // 低值表格展示的数据
+      batchData: [] as any[], // 批次数据
     },
     baseDetail: {} as BaseDetail,
     filterGoodsName: '', // 产品名称筛选
@@ -262,21 +353,16 @@
     subProvList: [] as any[], // 二级供应商下拉取值
     settleTypeList: [] as any[], // 结算方式下拉取值
     showBatch: false, // 显示批次维护表格
-    batchRecord: {}, // 批次关联的产品
+    batchRecord: {} as any, // 批次关联的产品
+    stockLevel: props.stockInfoList.find(
+      (item) => item.stockId === props.detailInfo.stockId,
+    ) as number,
     pkgDefList: [] as any[], // 单元含量下拉取值
-    // displayData: [] as any[],
-    // recordRed: [] as any[], // 当前编辑表格颜色
-    // clickedGoodsId: '',
-    // editingKey: '',
-    // editRecord: {} as any,
-
-    // search: {
-    //   //搜索框
-    //   hosGoodsName: '',
-    // },
+    maxPkgDef: {} as any, // 最大的单元含量
     saveTempLoading: false,
     tempDone: false,
     generateLoading: false,
+    // 生成按钮的进度条
     progress: {
       visible: false,
       percent: 0,
@@ -291,7 +377,6 @@
 
   const rowSelectionEntity = ref({
     selectedRowKeys: [] as any[],
-    // selectedRows: [] as any[],
     selectedList: [] as any[],
     onChange: (selectedRowKeys, selectedRows) => {
       rowSelectionEntity.value.selectedList = selectedRows;
@@ -303,6 +388,10 @@
   // Common Functions(Table/Pagination/Styles...)
   const handleResizeColumn = (w, col) => {
     col.width = w;
+  };
+
+  const handleRowClass = (record) => {
+    return state.batchRecord === record ? 'ant-table-row-selected' : '';
   };
 
   // 供应商选单变更回调
@@ -345,10 +434,8 @@
       branchId: props.detailInfo.branchId,
       hosGoodsId: record.hosGoodsId,
     } as any;
-    const stockLevel = props.stockInfoList.find(
-      (item) => item.stockId === props.detailInfo.stockId,
-    );
-    if (stockLevel != 1) {
+
+    if (state.stockLevel != 1) {
       params = { pkgDefId: record.pkgDefId };
     }
 
@@ -356,6 +443,12 @@
       const { code, data } = await deptApi.byGoodsId(params);
       if (code === 0) {
         state.pkgDefList = data || [];
+        state.maxPkgDef = state.pkgDefList.reduce((pre, current) => {
+          if (pre.qty >= current.qty) {
+            return pre;
+          }
+          return current;
+        }, state.pkgDefList[0]);
       }
     } catch (error) {}
   };
@@ -379,6 +472,11 @@
         const goodsList = data || [];
         state.tableData = goodsList;
         state.form.displayList = goodsList;
+        if (state.form.displayList.length) {
+          // 默认编辑第一笔
+          editBatch(state.form.displayList[0]);
+          state.showBatch = true;
+        }
       }
     } catch (err) {}
   };
@@ -407,7 +505,9 @@
   };
   const handleGoodsSave = (data) => {
     console.log('goods saved', data);
+
     resetGoodsFilter();
+    editBatch(state.form.displayList[0]);
   };
 
   // 移除产品
@@ -417,7 +517,7 @@
       content: '是否确认移除？',
       onOk: async () => {
         remove(state.form.displayList, (item) => {
-          return rowSelectionEntity.value.selectedRowKeys.includes(item.mfrCode);
+          return rowSelectionEntity.value.selectedRowKeys.includes(item.hosGoodsCode);
         });
         rowSelectionEntity.value.selectedList = [];
         rowSelectionEntity.value.selectedRowKeys = [];
@@ -489,11 +589,49 @@
   };
 
   //  编辑批次
-  const editBatch = (record, index) => {
-    console.log('clicked row', record, index);
+  const editBatch = (record) => {
+    //  TODO 编辑前是否保存之前的数据
     state.batchRecord = record;
+    state.form.batchData = record.initStockBatchVOS.map((batch) => {
+      return {
+        ...batch,
+        productDate: dayjs(batch.productDate, 'YYYY-MM-DD'),
+        expdtDate: dayjs(batch.expdtDate, 'YYYY-MM-DD'),
+      };
+    });
+    record.initStockBatchVOS = state.form.batchData;
     getPkgDefList(record);
-    state.showBatch = true;
+  };
+
+  // 添加批次
+  const addBatch = () => {
+    const defaultBatch = {
+      batchCode: '',
+      productDate: '',
+      expdtDate: '',
+      stockQty: 0,
+      pkgDefId: state.maxPkgDef?.id || '',
+    };
+    state.form.batchData.push(defaultBatch);
+  };
+  // 批次行移除
+  const removeBatchRow = (index: number): void => {
+    Modal.confirm({
+      title: '提示',
+      content: '是否确认移除？',
+      onOk: async () => {
+        state.form.batchData.splice(index, 1);
+      },
+      onCancel() {},
+    });
+  };
+
+  const handleQtyChange = () => {
+    const { batchData } = tableFormRef.value.getFieldsValue();
+    const totalQty = batchData.reduce((pre, current) => {
+      return pre + current.stockQty;
+    }, 0);
+    state.batchRecord.stockQty = totalQty;
   };
 
   // 返回期初管理初始页面
@@ -508,10 +646,20 @@
 
     try {
       await tableFormRef?.value?.validate().then(async () => {
+        const initStockDetailDTOList = state.tableData.map((item) => {
+          return {
+            hosGoodsId: item.hosGoodsId,
+            hosGoodsCode: item.hosGoodsCode,
+            provId: item.provId,
+            subProvId: item.subProvId,
+            inSettlement: item.inSettlement,
+            initStockBatchVOS: item.initStockBatchVOS,
+          };
+        });
         const params = {
           initStockId: props.detailInfo.id,
           orderNo: props.detailInfo.orderNo,
-          initStockDetailDTOList: state.tableData,
+          initStockDetailDTOList,
         };
         const res = await initImportApi.importInitStockTemp(params);
         if (res.code === 0) {
@@ -576,57 +724,6 @@
       }
     }, 1000);
   };
-
-  // const submit = () => {
-  //   state.submitLoading = true;
-  //   try {
-  //     tableformRef?.value?.validate().then(async () => {
-  //       await saveEdit();
-  //     });
-  //   } finally {
-  //     state.submitLoading = false;
-  //   }
-  // };
-
-  // const getParams = () => {
-  //   const planDetailList = [] as any[];
-  //   state.tableData.forEach((item: any) => {
-  //     const data = pick(item, [
-  //       'hosGoodsCode',
-  //       'id',
-  //       'inSettlement',
-  //       'hosGoodsId',
-  //       'provId',
-  //       'subProvId',
-  //       'provName',
-  //       'subProvName',
-  //     ]);
-  //     data.hosGoodsCode = item.goodsCode;
-  //     let arr = [] as any[];
-  //     arr.push(
-  //       pick(item, [
-  //         'batchCode',
-  //         'detailId',
-  //         'expdtDate',
-  //         'id',
-  //         'lastModified',
-  //         'lastModifiedUser',
-  //         'pid',
-  //         'pkgDefId',
-  //         'pkgDefName',
-  //         'pkgDefQty',
-  //         'productDate',
-  //         'stockQty',
-  //       ]),
-  //     );
-  //     const obj = {
-  //       ...data,
-  //       initStockBatches: arr,
-  //     };
-  //     planDetailList.push(obj);
-  //   });
-  //   return planDetailList;
-  // };
 </script>
 
 <style lang="less" scoped>
