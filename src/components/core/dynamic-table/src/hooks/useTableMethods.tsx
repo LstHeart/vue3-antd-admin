@@ -1,11 +1,9 @@
-import { nextTick, unref } from 'vue';
-import { isFunction, isObject, isString } from 'lodash-es';
-import { useEditable } from './useEditable';
+import { unref } from 'vue';
+import { isObject, isString } from 'lodash-es';
 import type { VNode } from 'vue';
 import type { DynamicTableProps, DynamicTableEmitFn } from '../dynamic-table';
 import type { OnChangeCallbackParams, TableColumn } from '../types/';
 import type { TableState } from './useTableState';
-import { isAsyncFunction } from '@/utils/is';
 
 export type TableMethods = ReturnType<typeof useTableMethods>;
 
@@ -16,11 +14,7 @@ export type UseTableMethodsContext = {
 };
 
 export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) => {
-  const { innerPropsRef, tableData, loadingRef, queryFormRef, paginationRef, editFormErrorMsgs } =
-    state;
-
-  // 可编辑行
-  const editableMethods = useEditable({ state, props });
+  const { innerPropsRef, tableData, loadingRef, queryFormRef, paginationRef } = state;
 
   const setProps = (props: Partial<DynamicTableProps>) => {
     innerPropsRef.value = { ...unref(innerPropsRef), ...props };
@@ -47,16 +41,8 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     // 如果用户没有提供dataSource并且dataRequest是一个函数，那就进行接口请求
     if (
       Object.is(props.dataSource, undefined) &&
-      (isFunction(props.dataRequest) || isAsyncFunction(props.dataRequest))
+      Object.prototype.toString.call(props.dataRequest).includes('Function')
     ) {
-      await nextTick();
-      if (queryFormRef.value) {
-        const values = await queryFormRef.value.validate();
-        params = {
-          ...queryFormRef.value.handleFormValues(values),
-          ...params,
-        };
-      }
       const _pagination = unref(paginationRef)!;
       // 是否启用了分页
       const enablePagination = isObject(_pagination);
@@ -143,22 +129,12 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     return column?.key || column?.dataIndex;
   };
 
-  /** 编辑表单验证失败回调 */
-  const handleEditFormValidate = (name: string[], status, errorMsgs) => {
-    if (status) {
-      editFormErrorMsgs.value.delete(name.join('.'));
-    } else {
-      editFormErrorMsgs.value.set(name.join('.'), errorMsgs);
-    }
-  };
-
   /**
    * @description当外部需要动态改变搜索表单的值或选项时，需要调用此方法获取dynamicFormRef实例
    */
   const getQueryFormRef = () => queryFormRef.value;
 
   return {
-    ...editableMethods,
     setProps,
     getComponent,
     handleSubmit,
@@ -167,6 +143,5 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
     fetchData,
     getQueryFormRef,
     reload,
-    handleEditFormValidate,
   };
 };

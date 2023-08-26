@@ -84,19 +84,19 @@
   import Checkbox from './../../../../../../components/basic/check-box/index.vue';
   import { useSortable } from './../../../../../../hooks/useSortable';
   import { isNullAndUnDef } from './../../../../../../utils/is';
-  // import {
-  //   sysProjectTableInsert,
-  //   updateTableSetting,
-  //   sysProjectTableTableSetting,
-  // } from './../../../../../../api/login';
-  // import { getRunProject, getUserId } from './../../../../../../utils/authUtil';
-  // import { useUserStore } from './../../../../../../store/modules/user';
+  import {
+    sysProjectTableInsert,
+    updateTableSetting,
+    sysProjectTableTableSetting,
+  } from './../../../../../../api/login';
+  import { getRunProject, getUserId } from './../../../../../../utils/authUtil';
+  import { useUserStore } from './../../../../../../store/modules/user';
   import type { TableColumn } from '../../types/column';
 
-  // const userStore = useUserStore();
-  // const corpId = userStore.userInfo.mgrCorpId;
-  // const projectCode = getRunProject();
-  // const userId = getUserId();
+  const userStore = useUserStore();
+  const corpId = userStore.userInfo.mgrCorpId;
+  const projectCode = getRunProject();
+  const userId = getUserId();
 
   // type TableColumnType<T = any> = TableColumn<T> & {
   //   /** 目的是解决：类型实例化过深，且可能无限 */
@@ -104,9 +104,9 @@
   // };
 
   const table = useTableContext();
-  // const tableName = table.tableName;
+  const tableName = table.tableName;
 
-  // let tableId = null;
+  let tableId = null;
   let inited = false;
 
   let defaultShowIndex = !!table.showIndex;
@@ -130,40 +130,40 @@
 
   // 初始化选中状态
   const initCheckStatus = async () => {
-    // const dataProp = await sysProjectTableTableSetting({
-    //   corpId: userStore.userInfo.mgrCorpId,
-    //   projectCode,
-    //   tableName,
-    //   userId,
-    // });
-    // tableId = dataProp.id;
-    // if (dataProp && dataProp.columns && dataProp.columns.length) {
-    //   const temp: any = cloneDeep(table.columns);
-    //   for (let i = 0; i < temp.length; i++) {
-    //     const res = dataProp.columns.find((item) => {
-    //       return item.title === temp[i].title && item.dataIndex === temp[i].dataIndex;
-    //     });
-    //     if (res) {
-    //       temp[i].fixed = temp[i].fixed ? temp[i].fixed : res.fixed;
-    //       temp[i].hideInTable = res.hideInTable;
-    //       temp[i].sort = res.sort;
-    //     }
-    //   }
-    //   dataProp.bordered = dataProp?.border ? true : false;
-    //   dataProp.bordered = false;
-    //   defaultColumns = temp;
-    //   defaultColumns.sort((a, b) => {
-    //     return Number(a.sort) - Number(b.sort);
-    //   });
-    // } else {
-    //   defaultColumns = cloneDeep(table.columns);
-    //   dataProp.bordered = true;
-    //   dataProp.bordered = false; // 暂时去掉表格边框，后面可能会需要动态配置边框
-    //   dataProp.showIndex = true;
-    // }
-    // defaultBordered = dataProp.bordered;
-    // defaultShowIndex = dataProp.showIndex;
-    // table.setProps({ showIndex: defaultShowIndex });
+    const dataProp = await sysProjectTableTableSetting({
+      corpId: userStore.userInfo.mgrCorpId,
+      projectCode,
+      tableName,
+      userId,
+    });
+    tableId = dataProp.id;
+    if (dataProp && dataProp.columns && dataProp.columns.length) {
+      const temp: any = cloneDeep(table.columns);
+      for (let i = 0; i < temp.length; i++) {
+        const res = dataProp.columns.find((item) => {
+          return item.title === temp[i].title && item.dataIndex === temp[i].dataIndex;
+        });
+        if (res) {
+          temp[i].fixed = temp[i].fixed ? temp[i].fixed : res.fixed;
+          temp[i].hideInTable = res.hideInTable;
+          temp[i].sort = res.sort;
+        }
+      }
+      dataProp.bordered = dataProp?.border ? true : false;
+      dataProp.bordered = false;
+      defaultColumns = temp;
+      defaultColumns.sort((a, b) => {
+        return Number(a.sort) - Number(b.sort);
+      });
+    } else {
+      defaultColumns = cloneDeep(table.columns);
+      dataProp.bordered = true;
+      dataProp.bordered = false; // 暂时去掉表格边框，后面可能会需要动态配置边框
+      dataProp.showIndex = true;
+    }
+    defaultBordered = dataProp.bordered;
+    defaultShowIndex = dataProp.showIndex;
+    table.setProps({ showIndex: defaultShowIndex });
     resetInit();
   };
 
@@ -193,57 +193,57 @@
   // 设置序号列
   const handleIndexCheckChange = (e) => {
     table.setProps({ showIndex: e.target.checked });
-    // // updateOrInsertTable();
+    updateOrInsertTable();
   };
   const handleCheckAllChange = () => {
-    // updateOrInsertTable();
+    updateOrInsertTable();
   };
   // 设置边框
   // const handleBorderedCheckChange = (e) => {
   //   table.setProps({ bordered: e.target.checked });
-  //   // updateOrInsertTable();
+  //   updateOrInsertTable();
   // };
   const handleColumsCheckChange = () => {
-    // updateOrInsertTable();
+    updateOrInsertTable();
   };
 
   const handleColumnFixed = (columItem: TableColumn<any>, direction: 'left' | 'right') => {
     columItem.fixed = columItem.fixed === direction ? false : direction;
-    // // updateOrInsertTable();
+    updateOrInsertTable();
   };
 
-  // const updateOrInsertTable = async () => {
-  //   const columsItem = tableColumns.value.map((item) => {
-  //     let { title, dataIndex, fixed = '', hideInTable, sort = 0 } = item;
-  //     hideInTable = hideInTable ? 1 : 0;
-  //     return { title, dataIndex, fixed, hideInTable, sort };
-  //   });
-  //   // 设置sort 便于后面保存
-  //   for (let i = 0; i < columsItem.length; i++) {
-  //     columsItem[i].sort = i;
-  //   }
-  //   const params = {
-  //     border: checkBordered.value ? 1 : 0,
-  //     showIndex: checkIndex.value ? 1 : 0,
-  //     columns: [...columsItem],
-  //     tableName,
-  //     projectCode,
-  //     userId,
-  //     corpId,
-  //   };
-  //   if (tableId) {
-  //     updateTableSetting(params);
-  //   } else {
-  //     await sysProjectTableInsert(params);
-  //     const res = await sysProjectTableTableSetting({
-  //       corpId,
-  //       projectCode,
-  //       tableName,
-  //       userId,
-  //     });
-  //     tableId = res?.id;
-  //   }
-  // };
+  const updateOrInsertTable = async () => {
+    const columsItem = tableColumns.value.map((item) => {
+      let { title, dataIndex, fixed = '', hideInTable, sort = 0 } = item;
+      hideInTable = hideInTable ? 1 : 0;
+      return { title, dataIndex, fixed, hideInTable, sort };
+    });
+    // 设置sort 便于后面保存
+    for (let i = 0; i < columsItem.length; i++) {
+      columsItem[i].sort = i;
+    }
+    const params = {
+      border: checkBordered.value ? 1 : 0,
+      showIndex: checkIndex.value ? 1 : 0,
+      columns: [...columsItem],
+      tableName,
+      projectCode,
+      userId,
+      corpId,
+    };
+    if (tableId) {
+      updateTableSetting(params);
+    } else {
+      await sysProjectTableInsert(params);
+      const res = await sysProjectTableTableSetting({
+        corpId,
+        projectCode,
+        tableName,
+        userId,
+      });
+      tableId = res?.id;
+    }
+  };
 
   async function handleVisibleChange() {
     if (inited) return;
@@ -263,7 +263,7 @@
         // Sort column
         const columns = tableColumns.value;
         columns.splice(newIndex, 0, columns.splice(oldIndex, 1)[0]);
-        // updateOrInsertTable();
+        updateOrInsertTable();
       },
     });
     initSortable();
@@ -271,14 +271,14 @@
   }
 
   const reset = () => {
-    defaultColumns = defaultColumns.map((item: any) => {
+    defaultColumns = defaultColumns.map((item) => {
       item.hideInTable = 0;
       return item;
     });
     defaultBordered = table.bordered;
     defaultBordered = false;
     resetInit();
-    // updateOrInsertTable();
+    updateOrInsertTable();
     table.setProps({ showIndex: defaultShowIndex, bordered: defaultBordered });
   };
 </script>
