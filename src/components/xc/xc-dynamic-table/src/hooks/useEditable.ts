@@ -3,7 +3,7 @@ import { cloneDeep } from 'lodash-es';
 import { message } from 'ant-design-vue';
 import type { XCDynamicTableProps } from '../xc-dynamic-table';
 import type { TableState } from './useTableState';
-import type { TableColumn } from '@/components/core/dynamic-table/src/types/column';
+import type { TableColumn } from '../types';
 
 type UseTableMethodsContext = {
   state: TableState;

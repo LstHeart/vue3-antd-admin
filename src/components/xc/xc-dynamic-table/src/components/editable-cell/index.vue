@@ -39,7 +39,7 @@
   import { Popover, Typography, Row, Col, Spin } from 'ant-design-vue';
   import { useTableContext } from '../../hooks';
   import type { PropType } from 'vue';
-  import type { CustomRenderParams, EditableType } from '@/components/core/dynamic-table/src/types';
+  import type { CustomRenderParams, EditableType } from '../../types';
   import { schemaFormItemProps, SchemaFormItem } from '@/components/core/schema-form';
   import { isAsyncFunction } from '@/utils/is';
 
