@@ -1,10 +1,7 @@
 import { debounce } from 'lodash-es';
-// import { PlusOutlined } from '@ant-design/icons-vue';
-import {
-  Tag,
-  // Image
-} from 'ant-design-vue';
-import type { TableColumn } from '@/components/core/dynamic-table';
+import { PlusOutlined } from '@ant-design/icons-vue';
+import { Tag, Image } from 'ant-design-vue';
+import type { TableColumn } from '@/components/xc/xc-dynamic-table';
 
 import {
   fetchStatusMapData,
@@ -15,9 +12,9 @@ import {
 export { tableData };
 
 // 数据项类型
-// export type ListItemType = typeof tableData[number];
+export type ListItemType = typeof tableData[number];
 // 使用TableColumn<ListItemType> 将会限制dataIndex的类型，但换来的是dataIndex有类型提示
-export const columns: TableColumn[] = [
+export const columns: TableColumn<ListItemType>[] = [
   {
     title: '姓名',
     align: 'center',
@@ -58,7 +55,7 @@ export const columns: TableColumn[] = [
           },
         ],
         onChange() {
-          console.log('formModel', formModel);
+          console.log('formModel1', formModel);
 
           // 根据当前选择的性别，更新衣服可选项
           formInstance?.updateSchema({
@@ -104,39 +101,39 @@ export const columns: TableColumn[] = [
       }),
     },
   },
-  // {
-  //   title: '图片',
-  //   dataIndex: 'img',
-  //   hideInSearch: true,
-  //   formItemProps: {
-  //     component: 'Upload',
-  //     defaultValue: [
-  //       {
-  //         uid: '-1',
-  //         name: 'image.png',
-  //         status: 'done',
-  //         url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-  //       },
-  //     ],
-  //     componentProps: {
-  //       maxCount: 1,
-  //       listType: 'picture-card',
-  //       action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  //     },
-  //     componentSlots: ({ formModel }) => ({
-  //       default: () =>
-  //         formModel['img']?.length ? (
-  //           ''
-  //         ) : (
-  //           <div>
-  //             <PlusOutlined />
-  //             <div class="mt-8px">Upload</div>
-  //           </div>
-  //         ),
-  //     }),
-  //   },
-  //   customRender: ({ record }) => <Image width={100} src={record.img}></Image>,
-  // },
+  {
+    title: '图片',
+    dataIndex: 'img',
+    hideInSearch: true,
+    formItemProps: {
+      component: 'Upload',
+      defaultValue: [
+        {
+          uid: '-1',
+          name: 'image.png',
+          status: 'done',
+          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+        },
+      ],
+      componentProps: {
+        maxCount: 1,
+        listType: 'picture-card',
+        action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      },
+      componentSlots: ({ formModel }) => ({
+        default: () =>
+          formModel['img']?.length ? (
+            ''
+          ) : (
+            <div>
+              <PlusOutlined />
+              <div class="mt-8px">Upload</div>
+            </div>
+          ),
+      }),
+    },
+    customRender: ({ record }) => <Image width={100} src={record.img}></Image>,
+  },
   {
     title: '价格',
     align: 'center',

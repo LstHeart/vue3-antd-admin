@@ -276,7 +276,7 @@
 </template>
 
 <script setup lang="tsx">
-  import { onMounted, reactive, defineProps, ref } from 'vue';
+  import { onMounted, reactive, ref } from 'vue';
   import {
     // pick,
     remove,

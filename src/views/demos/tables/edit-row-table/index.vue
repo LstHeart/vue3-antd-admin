@@ -4,7 +4,7 @@
       <template #description> 可编辑行表格-可编辑行表格使用示例 </template>
     </Alert>
     <Card title="可编辑行表格基本使用示例" style="margin-top: 20px">
-      <DynamicTable
+      <XCDynamicTable
         size="small"
         bordered
         :data-request="loadData"
@@ -14,6 +14,8 @@
         :on-cancel="handleCancelSave"
         row-key="id"
       >
+        <template #headerTitle>test</template>
+        <template #tableTopAction>tableTopAction</template>
         <template #toolbar>
           <Select ref="select" v-model:value="editableType">
             <Select.Option value="single">单行编辑</Select.Option>
@@ -21,7 +23,7 @@
             <Select.Option value="cell">可编辑单元格</Select.Option>
           </Select>
         </template>
-      </DynamicTable>
+      </XCDynamicTable>
     </Card>
   </div>
 </template>
@@ -30,22 +32,29 @@
   import { ref, computed } from 'vue';
   import { Alert, Card, Select, message } from 'ant-design-vue';
   import { columns, tableData } from './columns';
-  import type {
-    OnChangeCallbackParams,
-    EditableType,
-    OnSave,
-    OnCancel,
-  } from '@/components/core/dynamic-table';
-  import { useTable } from '@/components/core/dynamic-table';
+  // import type {
+  //   OnChangeCallbackParams,
+  //   EditableType,
+  //   OnSave,
+  //   OnCancel,
+  // } from '@/components/core/dynamic-table';
+  // import { useTable } from '@/components/core/dynamic-table';
   import { waitTime } from '@/utils/common';
+  import { useTable } from '@/components/xc/xc-dynamic-table';
+  import type {
+    EditableType,
+    OnCancel,
+    OnChangeCallbackParams,
+    OnSave,
+  } from '@/components/xc/xc-dynamic-table';
 
   defineOptions({
     name: 'EditRowTable',
   });
 
-  const [DynamicTable] = useTable();
+  const [XCDynamicTable] = useTable();
 
-  const editableType = ref<EditableType>('cell');
+  const editableType = ref<EditableType>('single');
 
   const loadData = async (
     params,
