@@ -140,6 +140,19 @@ const routes: Array<RouteRecordRaw> = [
               ),
           },
           {
+            path: 'edit-row-table',
+            name: `${moduleName}-edit-row-table`,
+            meta: {
+              title: '可编辑表格',
+              icon: 'icon-zhuomian',
+              keepAlive: false,
+            },
+            component: () =>
+              import(
+                /* webpackChunkName: "edit-row-table" */ '@/views/demos/tables/edit-row-table/index.vue'
+              ),
+          },
+          {
             path: 'wzry',
             name: `${moduleName}-table-wzry`,
             meta: {

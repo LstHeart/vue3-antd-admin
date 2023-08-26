@@ -1,5 +1,6 @@
 import { Tag } from 'ant-design-vue';
 import type { TableColumn } from '@/components/core/dynamic-table';
+import { waitTime } from '@/utils/common';
 
 const names = ['王路飞', '王大蛇', '李白', '刺客伍六七'];
 const clothes = ['西装', '领带', '裙子', '包包'];
@@ -12,8 +13,20 @@ export const tableData = Array.from({ length: 30 }).map((_, i) => ({
   gender: ~~(Math.random() * 2),
   status: ~~(Math.random() * 2),
 }));
-
-const getClothesByGender = (gender: number) => {
+export const fetchStatusMapData = (keyword = '') => {
+  const data = [
+    {
+      label: '已售罄',
+      value: 0,
+    },
+    {
+      label: '热卖中',
+      value: 1,
+    },
+  ].filter((n) => n.label.includes(keyword));
+  return waitTime<LabelValueOptions>(2000, data);
+};
+export const getClothesByGender = (gender: number) => {
   if (gender === 1) {
     // 男
     return [
