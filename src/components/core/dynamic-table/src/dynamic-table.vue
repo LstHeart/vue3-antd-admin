@@ -1,6 +1,6 @@
 <template>
   <div class="xc-content xc-table">
-    <SchemaForm
+    <XCSchemaForm
       v-if="search"
       ref="queryFormRef"
       class="bg-white dark:bg-black mb-16px pt-24px pr-24px"
@@ -13,7 +13,7 @@
       <template v-for="item in getFormSlotKeys" #[replaceFormSlotKey(item)]="data">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
-    </SchemaForm>
+    </XCSchemaForm>
     <div class="bg-white dark:bg-black dy-table">
       <ToolBar
         v-if="showToolBar"
@@ -97,7 +97,7 @@
   import { TableAction, ToolBar } from './components';
   import { dynamicTableProps, defaultSlots, dynamicTableEmits } from './dynamic-table';
   import { TableActionType } from './types';
-  import { SchemaForm } from '@/components/core/schema-form';
+  import { XCSchemaForm } from '@/components/xc/xc-schema-form';
   import xcTableNoData from '@/components/xc/xc-table/xc-table-noData/index.vue';
   // require('@/assets/images/login/resource_login_bg.png')
 

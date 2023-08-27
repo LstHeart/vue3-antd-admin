@@ -1,15 +1,15 @@
 import { formProps, type FormProps } from 'ant-design-vue/es/form';
-import type SchemaForm from './schema-form.vue';
+import type SchemaForm from './xc-schema-form.vue';
 import type { ColEx } from './types/component';
 import type { ExtractPropTypes, ComponentInternalInstance, CSSProperties } from 'vue';
 import type { FieldMapToTime, FormSchema, RowProps } from './types/form';
 import type { ButtonProps } from '@/components/basic/button';
-import type { TableActionType } from '@/components/core/dynamic-table';
+import type { TableActionType } from '../../xc-dynamic-table';
 import { isObject } from '@/utils/is';
 
 export const aFormPropKeys = Object.keys(formProps());
 
-export const schemaFormProps = {
+export const xcSchemaFormProps = {
   ...formProps(),
   layout: {
     type: String as PropType<FormProps['layout']>,
@@ -106,7 +106,7 @@ export const schemaFormProps = {
   isDrawerButton: { type: Boolean as PropType<boolean> },
 };
 
-export const schemaFormEmits = {
+export const xcSchemaFormEmits = {
   register: (exposed: ComponentInternalInstance['exposed']) => isObject(exposed),
   reset: (formModel: Recordable<any>) => isObject(formModel),
   submit: (formModel: Recordable<any>) => isObject(formModel),
@@ -114,15 +114,15 @@ export const schemaFormEmits = {
   'toggle-Drawer': () => true,
 };
 
-export type SchemaFormEmits = typeof schemaFormEmits;
+export type XCSchemaFormEmits = typeof xcSchemaFormEmits;
 
-export type SchemaFormEmitFn = EmitFn<SchemaFormEmits>;
+export type XCSchemaFormEmitFn = EmitFn<XCSchemaFormEmits>;
 
-export type SchemaFormProps<T = any> = Partial<
-  ExtractPropTypes<typeof schemaFormProps> & {
+export type XCSchemaFormProps<T = any> = Partial<
+  ExtractPropTypes<typeof xcSchemaFormProps> & {
     schemas: FormSchema<T>[];
   }
 >;
 
 // @ts-ignore:next-line
-export type SchemaFormInstance = InstanceType<typeof SchemaForm>;
+export type XCSchemaFormInstance = InstanceType<typeof SchemaForm>;

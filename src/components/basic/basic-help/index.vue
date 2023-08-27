@@ -5,6 +5,7 @@
   import type { CSSProperties, PropType } from 'vue';
   import { isString, isArray } from '@/utils/is';
   import { getSlot } from '@/utils/helper/tsxHelper';
+  import { TooltipPlacement } from 'ant-design-vue/es/tooltip/Tooltip';
 
   const props = {
     /**
@@ -30,7 +31,7 @@
     /**
      * Help text list
      */
-    placement: { type: String, default: 'right' },
+    placement: { type: String as PropType<TooltipPlacement>, default: 'right' },
     /**
      * Help text list
      */
@@ -77,7 +78,7 @@
             title={<div style={unref(getTooltipStyle)}>{renderTitle()}</div>}
             autoAdjustOverflow={true}
             overlayStyle={unref(getOverlayStyle)}
-            placement={props.placement as 'right'}
+            placement={props.placement}
           >
             <span class="basic-help">{getSlot(slots) || <InfoCircleOutlined />}</span>
           </Tooltip>

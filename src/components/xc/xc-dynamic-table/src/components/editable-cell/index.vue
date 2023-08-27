@@ -8,7 +8,7 @@
           </template>
         </template>
         <a-row type="flex" :gutter="[8]">
-          <SchemaFormItem
+          <XCSchemaFormItem
             v-if="(getIsEditable || getIsCellEdit) && getSchema"
             v-model:form-model="editFormModel"
             :schema="getSchema"
@@ -18,7 +18,7 @@
             <template v-for="item in Object.keys($slots)" #[item]="data" :key="item">
               <slot :name="item" v-bind="data || {}"></slot>
             </template>
-          </SchemaFormItem>
+          </XCSchemaFormItem>
           <a-col v-if="getIsCellEdit" :span="4" class="flex items-center">
             <CheckOutlined @click="handleSaveCell" />
             <CloseOutlined @click="handleCancelSaveCell" />
@@ -40,13 +40,13 @@
   import { useTableContext } from '../../hooks';
   import type { PropType } from 'vue';
   import type { CustomRenderParams, EditableType } from '../../types';
-  import { schemaFormItemProps, SchemaFormItem } from '@/components/core/schema-form';
+  import { xcSchemaFormItemProps, XCSchemaFormItem } from '@/components/xc/xc-schema-form';
   import { isAsyncFunction } from '@/utils/is';
 
   export default defineComponent({
     name: 'EditableCell',
     components: {
-      SchemaFormItem,
+      XCSchemaFormItem,
       EditOutlined,
       CloseOutlined,
       CheckOutlined,
@@ -57,7 +57,7 @@
       'a-typography-text': Typography.Text,
     },
     props: {
-      ...schemaFormItemProps,
+      ...xcSchemaFormItemProps,
       rowKey: [String, Number] as PropType<Key>,
       editableType: [String] as PropType<EditableType>,
       column: [Object] as PropType<CustomRenderParams>,

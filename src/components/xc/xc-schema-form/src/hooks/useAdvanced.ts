@@ -1,15 +1,15 @@
 import { computed, unref, watch } from 'vue';
-import type { SchemaFormEmitFn } from '../schema-form';
+import type { XCSchemaFormEmitFn } from '../xc-schema-form';
 import type { ColEx } from '../types/component';
-import type { SchemaFormType } from './';
+import type { XCSchemaFormType } from './';
 import { isBoolean, isFunction, isNumber, isObject } from '@/utils/is';
 import { useBreakpoint } from '@/hooks/event/useBreakpoint';
 
 const BASIC_COL_LEN = 24;
 
 type UseAdvancedContext = {
-  instance: SchemaFormType;
-  emit: SchemaFormEmitFn;
+  instance: XCSchemaFormType;
+  emit: XCSchemaFormEmitFn;
 };
 
 export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {

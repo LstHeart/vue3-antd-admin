@@ -5,12 +5,12 @@ import { dateItemType, handleInputNumberValue } from '../helper';
 import type { FormSchema } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
 import type { FormState, FormMethods } from './index';
-import type { SchemaFormEmitFn } from '../schema-form';
+import type { XCSchemaFormEmitFn } from '../xc-schema-form';
 import { isArray, isFunction, isObject, isString } from '@/utils/is';
 import { deepMerge } from '@/utils';
 
 type UseFormActionContext = FormState & {
-  emit: SchemaFormEmitFn;
+  emit: XCSchemaFormEmitFn;
   handleFormValues: FormMethods['handleFormValues'];
 };
 

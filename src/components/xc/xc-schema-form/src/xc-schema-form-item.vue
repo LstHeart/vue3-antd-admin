@@ -50,7 +50,7 @@
   import { componentMap } from './componentMap';
   import { createPlaceholderMessage } from './helper';
   import { useFormContext } from './hooks/useFormContext';
-  import { schemaFormItemProps } from './schema-form-item';
+  import { xcSchemaFormItemProps } from './xc-schema-form-item';
   import type { ComponentMapType } from './componentMap';
   import type { CustomRenderFn, FormSchema, RenderCallbackParams, ComponentProps } from './types/';
   import type { RuleObject } from 'ant-design-vue/es/form/';
@@ -58,10 +58,10 @@
   import BasicHelp from '@/components/basic/basic-help/index.vue';
 
   defineOptions({
-    name: 'SchemaFormItem',
+    name: 'XCSchemaFormItem',
   });
 
-  const props = defineProps(schemaFormItemProps);
+  const props = defineProps(xcSchemaFormItemProps);
   const emit = defineEmits(['update:formModel']);
 
   // schemaForm组件实例
@@ -268,7 +268,6 @@
     if (!getHelpMessage || (Array.isArray(getHelpMessage) && getHelpMessage.length === 0)) {
       return renderLabel;
     }
-    console.log('render help');
     return (
       <span>
         {renderLabel}

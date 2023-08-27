@@ -2,10 +2,10 @@ import { nextTick, ref, unref, watch } from 'vue';
 import { isEmpty } from 'lodash-es';
 import SchemaForm from '../../index';
 import type { Ref, SetupContext } from 'vue';
-import type { SchemaFormInstance, SchemaFormProps } from '../schema-form';
+import type { XCSchemaFormInstance, XCSchemaFormProps } from '../xc-schema-form';
 
-export function useForm(props?: Partial<SchemaFormProps>) {
-  const formRef = ref<SchemaFormInstance>({} as SchemaFormInstance);
+export function useForm(props?: Partial<XCSchemaFormProps>) {
+  const formRef = ref<XCSchemaFormInstance>({} as XCSchemaFormInstance);
 
   async function getFormInstance() {
     await nextTick();
@@ -21,7 +21,6 @@ export function useForm(props?: Partial<SchemaFormProps>) {
       if (props) {
         await nextTick();
         const formInstance = await getFormInstance();
-        // console.log('form onMounted');
         formInstance.setSchemaFormProps?.(props);
       }
     },
@@ -32,7 +31,7 @@ export function useForm(props?: Partial<SchemaFormProps>) {
     },
   );
 
-  const methods = new Proxy<Ref<SchemaFormInstance>>(formRef, {
+  const methods = new Proxy<Ref<XCSchemaFormInstance>>(formRef, {
     get(target, key) {
       if (Reflect.has(target, key)) {
         return unref(target);
@@ -48,7 +47,7 @@ export function useForm(props?: Partial<SchemaFormProps>) {
   });
 
   const SchemaFormRender = (
-    compProps: Partial<SchemaFormProps>,
+    compProps: Partial<XCSchemaFormProps>,
     { attrs, slots }: SetupContext,
   ) => {
     return (

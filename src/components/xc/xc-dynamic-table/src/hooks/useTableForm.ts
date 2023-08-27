@@ -3,7 +3,7 @@ import { ColumnKeyFlag } from '../types/column';
 import type { TableMethods } from './useTableMethods';
 import type { TableState } from './useTableState';
 import type { ComputedRef, Slots } from 'vue';
-import type { FormSchema, SchemaFormProps } from '@/components/core/schema-form/';
+import type { FormSchema, XCSchemaFormProps } from '@/components/xc/xc-schema-form/';
 
 export type UseTableFormContext = {
   tableState: TableState;
@@ -15,7 +15,7 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
   const { getProps, loadingRef } = tableState;
   const { getColumnKey, getQueryFormRef } = tableMethods;
 
-  const getFormProps = computed((): SchemaFormProps => {
+  const getFormProps = computed((): XCSchemaFormProps => {
     const { formProps } = unref(getProps);
     const { submitButtonOptions } = formProps || {};
     return {

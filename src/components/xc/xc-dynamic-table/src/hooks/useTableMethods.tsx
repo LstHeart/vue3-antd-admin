@@ -145,7 +145,6 @@ export const useTableMethods = ({ state, props, emit }: UseTableMethodsContext) 
 
   /** 编辑表单验证失败回调 */
   const handleEditFormValidate: FormProps['onValidate'] = (name, status, errorMsgs) => {
-    // console.log('errorInfo', editFormErrorMsgs);
     const key = Array.isArray(name) ? name.join('.') : name;
     if (status) {
       editFormErrorMsgs.value.delete(key);

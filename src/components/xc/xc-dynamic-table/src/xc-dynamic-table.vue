@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SchemaForm
+    <XCSchemaForm
       v-if="search"
       ref="queryFormRef"
       class="bg-white dark:bg-black mb-16px !pt-24px pr-24px"
@@ -13,7 +13,7 @@
       <template v-for="item of getFormSlotKeys" #[replaceFormSlotKey(item)]="data">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
-    </SchemaForm>
+    </XCSchemaForm>
     <div class="bg-white dark:bg-black dy-table">
       <ToolBar
         v-if="showToolBar"
@@ -26,7 +26,7 @@
           <slot :name="name" v-bind="data || {}"></slot>
         </template>
       </ToolBar>
-      <SchemaForm
+      <XCSchemaForm
         ref="editTableFormRef"
         no-style
         :initial-values="editFormModel"
@@ -50,7 +50,7 @@
             <slot name="bodyCell" v-bind="slotData"></slot>
           </template>
         </Table>
-      </SchemaForm>
+      </XCSchemaForm>
     </div>
   </div>
 </template>
@@ -68,7 +68,7 @@
     useEditable,
   } from './hooks';
   import { ToolBar } from './components';
-  import { SchemaForm } from '@/components/core/schema-form';
+  import { XCSchemaForm } from '@/components/xc/xc-schema-form';
   import { xcDynamicTableProps, xcDynamicTableEmits } from './xc-dynamic-table';
   import type { TableActionType } from './types';
 

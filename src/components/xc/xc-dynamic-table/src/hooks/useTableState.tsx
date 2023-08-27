@@ -3,7 +3,7 @@ import { omit } from 'lodash-es';
 import { useScroll } from './useScroll';
 import type { Slots } from 'vue';
 import type { XCDynamicTableProps } from '../xc-dynamic-table';
-import type { SchemaFormInstance } from '@/components/core/schema-form';
+import type { XCSchemaFormInstance } from '@/components/xc/xc-schema-form';
 import type { TableProps, Table } from 'ant-design-vue';
 
 export type Pagination = TableProps['pagination'];
@@ -19,9 +19,9 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   /** 表格实例 */
   const tableRef = ref<InstanceType<typeof Table>>();
   /** 查询表单实例 */
-  const queryFormRef = ref<SchemaFormInstance>();
+  const queryFormRef = ref<XCSchemaFormInstance>();
   /** 编辑表格的表单实例 */
-  const editTableFormRef = ref<SchemaFormInstance>();
+  const editTableFormRef = ref<XCSchemaFormInstance>();
   /** 表格数据 */
   const tableData = ref<any[]>([]);
   /** 内部属性 */

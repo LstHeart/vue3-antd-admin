@@ -10,7 +10,7 @@ import type {
   TableState,
   XCDynamicTableProps,
 } from '../../../xc-dynamic-table';
-import type { FormSchema } from '@/components/core/schema-form';
+import type { FormSchema } from '@/components/xc/xc-schema-form';
 import { isBoolean } from '@/utils/is';
 import { TableAction } from '../components/';
 

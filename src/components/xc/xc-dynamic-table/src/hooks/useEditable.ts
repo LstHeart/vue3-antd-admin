@@ -38,7 +38,6 @@ export const useEditable = ({ state, props }: UseTableMethodsContext) => {
     Reflect.set(editFormModel.value, recordKey, editValue);
     nextTick(() => {
       editTableFormRef.value?.setFormModel(recordKey, editValue);
-      console.log('set editForm', recordKey, editValue);
     });
   };
 
@@ -78,14 +77,12 @@ export const useEditable = ({ state, props }: UseTableMethodsContext) => {
    */
   const startEditable = (recordKey: Key, currentRow?: Recordable) => {
     editableCellKeys.value.clear();
-    console.log('startEditable editFormModel', editFormModel);
     // 如果是单行的话，不允许多行编辑
     if (editableRowKeys.value.size > 0 && props.editableType === 'single') {
       message.warn(props.onlyOneLineEditorAlertMessage || '只能同时编辑一行');
       return false;
     }
     const editValue = getEditValue(recordKey, currentRow, props.columns);
-    console.log('startEditable editValue', editValue);
     setEditFormModel(recordKey, editValue);
     editableRowKeys.value.add(recordKey);
     return true;

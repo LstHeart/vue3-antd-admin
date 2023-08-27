@@ -2,7 +2,7 @@ import { computed, reactive, ref, unref, watchEffect } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import type { SetupContext, DefineComponent } from 'vue';
 import type { AdvanceState } from '../types/hooks';
-import type { SchemaFormProps } from '../schema-form';
+import type { XCSchemaFormProps } from '../xc-schema-form';
 import type { FormInstance } from 'ant-design-vue';
 import type { ComponentProps, RenderCallbackParams } from '../types';
 import { isFunction } from '@/utils/is';
@@ -10,13 +10,13 @@ import { isFunction } from '@/utils/is';
 export type FormState = ReturnType<typeof useFormState>;
 
 export type useFormStateParams = {
-  props: SchemaFormProps;
+  props: XCSchemaFormProps;
   attrs: SetupContext['attrs'];
 };
 
 export const useFormState = ({ props, attrs }: useFormStateParams) => {
   // TODO 将formSchema克隆一份，避免修改原有的formSchema
-  const formPropsRef = ref<SchemaFormProps>(cloneDeep(props));
+  const formPropsRef = ref<XCSchemaFormProps>(cloneDeep(props));
   /** 表单项数据 */
   const formModel = reactive({ ...props.initialValues });
   // 表单默认数据
@@ -45,7 +45,7 @@ export const useFormState = ({ props, attrs }: useFormStateParams) => {
     return {
       ...attrs,
       ...formPropsRef.value,
-    } as SchemaFormProps;
+    } as XCSchemaFormProps;
   });
 
   // 获取栅栏Row配置

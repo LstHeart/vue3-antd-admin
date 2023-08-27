@@ -9,7 +9,7 @@
       <slot name="formHeader"></slot>
       <slot>
         <template v-for="schemaItem in formSchemasRef" :key="schemaItem.field">
-          <SchemaFormItem
+          <XCSchemaFormItem
             v-model:form-model="formModel"
             :schema="schemaItem"
             :table-instance="tableInstance"
@@ -17,7 +17,7 @@
             <template v-for="item in Object.keys($slots)" #[item]="data" :key="item">
               <slot :name="item" v-bind="data || {}"></slot>
             </template>
-          </SchemaFormItem>
+          </XCSchemaFormItem>
         </template>
         <FormAction
           v-if="showActionButtonGroup"
@@ -41,7 +41,7 @@
   import { useAttrs } from 'vue';
   import { pick } from 'lodash-es';
   import { Form, Row } from 'ant-design-vue';
-  import SchemaFormItem from './schema-form-item.vue';
+  import XCSchemaFormItem from './xc-schema-form-item.vue';
   import FormAction from './components/form-action.vue';
   import {
     createFormContext,
@@ -49,16 +49,16 @@
     useFormEvents,
     useFormMethods,
     useAdvanced,
-    type SchemaFormType,
+    type XCSchemaFormType,
   } from './hooks/';
-  import { schemaFormProps, schemaFormEmits, aFormPropKeys } from './schema-form';
+  import { xcSchemaFormProps, xcSchemaFormEmits, aFormPropKeys } from './xc-schema-form';
 
   defineOptions({
-    name: 'SchemaForm',
+    name: 'XCSchemaForm',
   });
 
-  const props = defineProps(schemaFormProps);
-  const emit = defineEmits(schemaFormEmits);
+  const props = defineProps(xcSchemaFormProps);
+  const emit = defineEmits(xcSchemaFormEmits);
   const attrs = useAttrs();
 
   // 表单内部状态
@@ -87,7 +87,7 @@
     ...formState,
     ...formEvents,
     ...formMethods,
-  } as SchemaFormType;
+  } as XCSchemaFormType;
 
   // 搜索表单 展开/收起 表单项hooks
   const { handleToggleAdvanced } = useAdvanced({

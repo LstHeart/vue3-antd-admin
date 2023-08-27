@@ -19,7 +19,6 @@ export function useTable(props?: Partial<XCDynamicTableProps>) {
     () => props,
     async () => {
       if (props) {
-        // console.log('table onMounted');
         await nextTick();
         const tableInstance = await getTableInstance();
         tableInstance?.setProps?.(props);

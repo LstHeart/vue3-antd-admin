@@ -10,7 +10,7 @@ import type {
   OnSave,
   OnCancel,
 } from './types/';
-import type { SchemaFormProps } from '@/components/core/schema-form';
+import type { XCSchemaFormProps } from '@/components/xc/xc-schema-form';
 import type { GetRowKey } from 'ant-design-vue/es/table/interface';
 import { isBoolean } from '@/utils/is';
 
@@ -27,7 +27,7 @@ export const xcDynamicTableProps = {
   },
   /** 表单属性配置 */
   formProps: {
-    type: Object as PropType<SchemaFormProps>,
+    type: Object as PropType<XCSchemaFormProps>,
     default: () => ({}),
   },
   /** 表格列配置 */

@@ -40,7 +40,6 @@ export const useScroll = ({ props }: UseScrollParams) => {
       // 简单粗糙的实现
       scrollY.value = y - 30;
     }
-    // console.log('innerScroll.value', el, scrollY.value);
   });
 
   setTimeout(getScrollY);

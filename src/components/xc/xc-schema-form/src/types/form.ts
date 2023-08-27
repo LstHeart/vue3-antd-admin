@@ -5,9 +5,9 @@ import type { Component, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
 import type { ColEx, ComponentMapType, ComponentProps } from './component';
 // import type { TableActionType } from '/@/components/Table/src/types/table'
-import type { SchemaFormInstance } from '../schema-form';
-import type { SchemaFormType } from '../hooks';
-import type { TableActionType } from '@/components/core/dynamic-table';
+import type { XCSchemaFormInstance } from '../xc-schema-form';
+import type { XCSchemaFormType } from '../hooks';
+import type { TableActionType } from '../../../xc-dynamic-table';
 
 export type { RowProps };
 
@@ -26,7 +26,7 @@ export interface RenderCallbackParams<T = string> {
   field: T extends string ? string : GetFieldKeys<T>;
   values: any;
   /** 动态表单实例 */
-  formInstance: SchemaFormType;
+  formInstance: XCSchemaFormType;
   /** 动态表格实例 */
   tableInstance?: TableActionType;
   /** 动态表格rowKey */
@@ -64,7 +64,7 @@ export interface FormActionType {
   scrollToField: (name: NamePath, options?: ScrollOptions) => Promise<void>;
 }
 
-export type RegisterFn = (formInstance: SchemaFormInstance) => void;
+export type RegisterFn = (formInstance: XCSchemaFormInstance) => void;
 
 /** 表单项 */
 export interface FormSchema<T = string> {

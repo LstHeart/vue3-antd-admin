@@ -35,9 +35,7 @@
         </div>
 
         <slot name="advanceBefore"></slot>
-        <!-- v-if="showAdvancedButton && !hideAdvanceBtn" -->
         <Button v-if="false" type="link" size="small" @click="toggleAdvanced">
-          <!-- {{ isAdvanced ? t('component.form.putAway') : t('component.form.unfold') }} -->
           <BasicArrow class="ml-1" :expand="!isAdvanced" />
         </Button>
         <slot name="advanceAfter"></slot>
