@@ -94,7 +94,7 @@ const routes: Array<RouteRecordRaw> = [
             component: () => import('@/views/demos/form/dynamic-form/index.vue'),
           },
           {
-            path: 'dynamic',
+            path: 'search',
             name: `${moduleName}-form-search`,
             meta: {
               title: '搜索表单',

@@ -6,7 +6,6 @@
     <Form.Item
       v-else
       v-bind="{ ...schema.formItemProps }"
-      :label="renderLabelHelpMessage"
       :name="namePath"
       :label-col="itemLabelWidthProp.labelCol"
       :wrapper-col="itemLabelWidthProp.wrapperCol"
@@ -14,6 +13,8 @@
     >
       <slot v-if="schema.slot" :name="schema.slot" v-bind="getValues"> </slot>
       <component
+        :class="{ 'component-prefix': itemLabelWidthProp.showInnerLabel }"
+        :style="{ '--width': itemLabelWidthProp.innerLabelWidth }"
         :is="getComponent"
         v-else-if="getComponent"
         :ref="setItemRef(schema.field)"
@@ -23,6 +24,7 @@
         :disabled="getDisable"
         :loading="schema.loading"
         v-on="componentEvents"
+        v-label="getLabel"
       >
         <template v-if="Object.is(schema.loading, true)" #notFoundContent>
           <Spin size="small" />
@@ -31,7 +33,7 @@
           v-for="(slotFn, slotName) in getComponentSlots"
           #[slotName]="slotData"
           :key="slotName"
-        >
+          >999
           <component
             :is="slotFn?.({ ...getValues, slotData }) ?? slotFn"
             :key="slotName"
@@ -56,6 +58,7 @@
   import type { RuleObject } from 'ant-design-vue/es/form/';
   import { isBoolean, isNull, isObject, isString, isFunction, isArray } from '@/utils/is';
   import BasicHelp from '@/components/basic/basic-help/index.vue';
+  import { vLabel } from './directives/label';
 
   defineOptions({
     name: 'SchemaFormItem',
@@ -249,6 +252,10 @@
       if (/on([A-Z])/.test(key)) {
         // eg: onChange => change
         const eventKey = key.replace(/on([A-Z])/, '$1').toLocaleLowerCase();
+        console.log(
+          '🚀 ~ file: schema-form-item.vue:259 ~ returnObject.keys ~ eventKey:',
+          eventKey,
+        );
         prev[eventKey] = componentProps[key];
       }
       return prev;
@@ -440,3 +447,11 @@
     initRequestConfig();
   });
 </script>
+
+<style lang="less" scoped>
+  .component-prefix::before {
+    color: red;
+    width: var(--width);
+    content: attr(data-label);
+  }
+</style>

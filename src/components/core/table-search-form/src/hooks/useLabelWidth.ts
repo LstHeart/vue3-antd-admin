@@ -10,6 +10,12 @@ export function useItemLabelWidth(schemaRef: Ref<FormSchema>, formPropsRef: Ref<
     const { labelCol = {}, wrapperCol = {} } = schemaItem.formItemProps || {};
     const { labelWidth, disabledLabelWidth } = schemaItem;
 
+    // 内部标签宽度
+    const innerLabelWidth = isNumber(labelWidth) ? `${labelWidth}px` : labelWidth;
+    // 内部标签是否显示
+    const showInnerLabel =
+      (isNumber(innerLabelWidth) && innerLabelWidth) || (labelWidth && labelWidth[0] !== '0');
+
     const {
       labelWidth: globalLabelWidth,
       labelCol: globalLabelCol,
@@ -21,9 +27,11 @@ export function useItemLabelWidth(schemaRef: Ref<FormSchema>, formPropsRef: Ref<
       labelCol.style = {
         textAlign: 'left',
       };
-      return { labelCol, wrapperCol };
+      return { innerLabelWidth, showInnerLabel, labelCol, wrapperCol };
     }
     let width = labelWidth || globalLabelWidth;
+    console.log('label-Width', width);
+
     const col = { ...globalLabelCol, ...labelCol };
     const wrapCol = { ...globWrapperCol, ...wrapperCol };
 
@@ -32,6 +40,8 @@ export function useItemLabelWidth(schemaRef: Ref<FormSchema>, formPropsRef: Ref<
     }
 
     return {
+      innerLabelWidth,
+      showInnerLabel,
       labelCol: { style: { width }, ...col },
       wrapperCol: { style: { width: `calc(100% - ${width})` }, ...wrapCol },
     };

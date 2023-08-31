@@ -205,6 +205,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
       });
     });
 
+    // @ts-ignore
     unref(formPropsRef).schemas = uniqBy(schemas, 'field');
   };
 
