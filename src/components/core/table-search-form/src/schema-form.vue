@@ -6,33 +6,25 @@
     :model="formModel"
   >
     <Row v-bind="getRowConfig" style="width: 100%">
-      <slot name="formHeader"></slot>
-      <slot>
-        <template v-for="schemaItem in formSchemasRef" :key="schemaItem.field">
-          <SchemaFormItem
-            v-model:form-model="formModel"
-            :schema="schemaItem"
-            :table-instance="tableInstance"
-          >
-            <template v-for="item in Object.keys($slots)" #[item]="data" :key="item">
-              <slot :name="item" v-bind="data || {}"></slot>
-            </template>
-          </SchemaFormItem>
-        </template>
-        <FormAction
-          v-if="showActionButtonGroup"
-          v-bind="getFormActionBindProps"
-          @toggle-advanced="handleToggleAdvanced"
+      <!-- 表单项 -->
+      <template v-for="schemaItem in formSchemasRef" :key="schemaItem.field">
+        <SchemaFormItem
+          v-model:form-model="formModel"
+          :schema="schemaItem"
+          :table-instance="tableInstance"
         >
-          <template
-            v-for="item in ['resetBefore', 'submitBefore', 'advanceBefore', 'advanceAfter']"
-            #[item]="data"
-          >
+          <template v-for="item in Object.keys($slots)" #[item]="data" :key="item">
             <slot :name="item" v-bind="data || {}"></slot>
           </template>
-        </FormAction>
-      </slot>
-      <slot name="formFooter"></slot>
+        </SchemaFormItem>
+      </template>
+      <!-- 展开、收起、查询、重置按钮 -->
+      <FormAction
+        v-if="showActionButtonGroup"
+        v-bind="getFormActionBindProps"
+        @toggle-advanced="handleToggleAdvanced"
+      >
+      </FormAction>
     </Row>
   </Form>
 </template>

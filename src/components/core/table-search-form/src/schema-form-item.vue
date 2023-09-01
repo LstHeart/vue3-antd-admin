@@ -1,29 +1,22 @@
 <template>
-  <Col v-if="getShow.isIfShow" v-show="getShow.isShow" v-bind="schema.colProps">
-    <Divider v-if="schema.component === 'Divider'" v-bind="getComponentProps">
-      <component :is="renderLabelHelpMessage"></component>
-    </Divider>
+  <Col v-bind="schema.colProps">
     <Form.Item
-      v-else
       v-bind="{ ...schema.formItemProps }"
       :name="namePath"
+      :label="getLabel"
       :label-col="itemLabelWidthProp.labelCol"
       :wrapper-col="itemLabelWidthProp.wrapperCol"
-      :rules="getRules"
     >
-      <slot v-if="schema.slot" :name="schema.slot" v-bind="getValues"> </slot>
       <component
         :class="{ 'component-prefix': itemLabelWidthProp.showInnerLabel }"
         :style="{ '--width': itemLabelWidthProp.innerLabelWidth }"
         :is="getComponent"
-        v-else-if="getComponent"
         :ref="setItemRef(schema.field)"
         v-bind="getComponentProps"
         v-model:[modelValueType]="modelValue"
         :allow-clear="true"
         :disabled="getDisable"
         :loading="schema.loading"
-        v-on="componentEvents"
         v-label="getLabel"
       >
         <template v-if="Object.is(schema.loading, true)" #notFoundContent>
@@ -33,7 +26,7 @@
           v-for="(slotFn, slotName) in getComponentSlots"
           #[slotName]="slotData"
           :key="slotName"
-          >999
+        >
           <component
             :is="slotFn?.({ ...getValues, slotData }) ?? slotFn"
             :key="slotName"
@@ -46,18 +39,18 @@
 
 <script setup lang="tsx">
   import { computed, unref, toRefs, isVNode, onMounted, watch, nextTick } from 'vue';
-  import { cloneDeep, debounce } from 'lodash-es';
-  import { Form, Col, Spin, Divider } from 'ant-design-vue';
+  import { debounce } from 'lodash-es';
+  import { Form, Col, Spin } from 'ant-design-vue';
   import { useItemLabelWidth } from './hooks/useLabelWidth';
   import { componentMap } from './componentMap';
   import { createPlaceholderMessage } from './helper';
   import { useFormContext } from './hooks/useFormContext';
   import { schemaFormItemProps } from './schema-form-item';
-  import type { ComponentMapType } from './componentMap';
+  // import type { ComponentMapType } from './componentMap';
   import type { CustomRenderFn, FormSchema, RenderCallbackParams, ComponentProps } from './types/';
-  import type { RuleObject } from 'ant-design-vue/es/form/';
-  import { isBoolean, isNull, isObject, isString, isFunction, isArray } from '@/utils/is';
-  import BasicHelp from '@/components/basic/basic-help/index.vue';
+  // import type { RuleObject } from 'ant-design-vue/es/form/';
+  import { isBoolean, isObject, isString, isFunction, isArray } from '@/utils/is';
+  // import BasicHelp from '@/components/basic/basic-help/index.vue';
   import { vLabel } from './directives/label';
 
   defineOptions({
@@ -126,30 +119,30 @@
     };
   });
 
-  const getShow = computed<{ isShow: boolean; isIfShow: boolean }>(() => {
-    const { vShow, vIf, isAdvanced = false } = unref(schema);
-    const { showAdvancedButton } = unref(formPropsRef);
-    const itemIsAdvanced = showAdvancedButton ? (isBoolean(isAdvanced) ? isAdvanced : true) : true;
+  // const getShow = computed<{ isShow: boolean; isIfShow: boolean }>(() => {
+  //   const { vShow, vIf, isAdvanced = false } = unref(schema);
+  //   const { showAdvancedButton } = unref(formPropsRef);
+  //   const itemIsAdvanced = showAdvancedButton ? (isBoolean(isAdvanced) ? isAdvanced : true) : true;
 
-    let isShow = true;
-    let isIfShow = true;
+  //   let isShow = true;
+  //   let isIfShow = true;
 
-    if (isBoolean(vShow)) {
-      isShow = vShow;
-    }
-    if (isBoolean(vIf)) {
-      isIfShow = vIf;
-    }
-    if (isFunction(vShow)) {
-      isShow = vShow(unref(getValues));
-    }
-    if (isFunction(vIf)) {
-      isIfShow = vIf(unref(getValues));
-    }
-    isShow = isShow && itemIsAdvanced;
+  //   if (isBoolean(vShow)) {
+  //     isShow = vShow;
+  //   }
+  //   if (isBoolean(vIf)) {
+  //     isIfShow = vIf;
+  //   }
+  //   if (isFunction(vShow)) {
+  //     isShow = vShow(unref(getValues));
+  //   }
+  //   if (isFunction(vIf)) {
+  //     isIfShow = vIf(unref(getValues));
+  //   }
+  //   isShow = isShow && itemIsAdvanced;
 
-    return { isShow, isIfShow };
-  });
+  //   return { isShow, isIfShow };
+  // });
 
   const getDisable = computed(() => {
     const { disabled: globDisabled } = unref(formPropsRef);
@@ -246,145 +239,22 @@
   /**
    * @description 表单组件事件
    */
-  const componentEvents = computed(() => {
-    const componentProps = props.schema?.componentProps || {};
-    return Object.keys(componentProps).reduce((prev, key) => {
-      if (/on([A-Z])/.test(key)) {
-        // eg: onChange => change
-        const eventKey = key.replace(/on([A-Z])/, '$1').toLocaleLowerCase();
-        console.log(
-          '🚀 ~ file: schema-form-item.vue:259 ~ returnObject.keys ~ eventKey:',
-          eventKey,
-        );
-        prev[eventKey] = componentProps[key];
-      }
-      return prev;
-    }, {});
-  });
+  // const componentEvents = computed(() => {
+  //   const componentProps = props.schema?.componentProps || {};
+  //   const events = Object.keys(componentProps).reduce((prev, key) => {
+  //     if (/on([A-Z])/.test(key)) {
+  //       // eg: onChange => change
+  //       const eventKey = key.replace(/on([A-Z])/, '$1').toLocaleLowerCase();
+  //       console.log('🚀 ~ file: schema-form-item.vue:252 ~ events ~ eventKey:', eventKey);
+  //       prev[eventKey] = componentProps[key];
+  //     }
+  //     return prev;
+  //   }, {});
 
-  const renderLabelHelpMessage = computed(() => {
-    const { helpMessage, helpComponentProps, subLabel } = props.schema;
-    const renderLabel = subLabel ? (
-      <span>
-        {getLabel.value} <span class="text-secondary">{subLabel}</span>
-      </span>
-    ) : (
-      vnodeFactory(getLabel.value)
-    );
-    const getHelpMessage = isFunction(helpMessage) ? helpMessage(unref(getValues)) : helpMessage;
-    if (!getHelpMessage || (Array.isArray(getHelpMessage) && getHelpMessage.length === 0)) {
-      return renderLabel;
-    }
-    console.log('render help');
-    return (
-      <span>
-        {renderLabel}
-        <BasicHelp placement="top" class="mx-1" text={getHelpMessage} {...helpComponentProps} />
-      </span>
-    );
-  });
+  //   // console.log('🚀 ~ file: schema-form-item.vue:256 ~ events ~ events:', events);
 
-  function setComponentRuleType(
-    rule: RuleObject,
-    component: ComponentMapType,
-    valueFormat: string,
-  ) {
-    if (['DatePicker', 'MonthPicker', 'WeekPicker', 'TimePicker'].includes(component)) {
-      rule.type = valueFormat ? 'string' : 'object';
-    } else if (['RangePicker', 'Upload', 'CheckboxGroup', 'TimePicker'].includes(component)) {
-      rule.type = 'array';
-    } else if (['InputNumber'].includes(component)) {
-      rule.type = 'number';
-    }
-  }
-
-  const getRules = computed(() => {
-    const {
-      rules: defRules = [],
-      component,
-      rulesMessageJoinLabel,
-      dynamicRules,
-      required,
-    } = props.schema;
-
-    if (isFunction(dynamicRules)) {
-      return dynamicRules(unref(getValues)) as RuleObject[];
-    }
-
-    let rules = cloneDeep<RuleObject[]>(defRules);
-    const { rulesMessageJoinLabel: globalRulesMessageJoinLabel } = unref(formPropsRef);
-
-    const joinLabel = Reflect.has(unref(formPropsRef), 'rulesMessageJoinLabel')
-      ? rulesMessageJoinLabel
-      : globalRulesMessageJoinLabel;
-    const defaultMsg = isString(component)
-      ? `${createPlaceholderMessage(component, getLabel.value)}${joinLabel ? getLabel.value : ''}`
-      : undefined;
-
-    function validator(rule: any, value: any) {
-      const msg = rule.message || defaultMsg;
-
-      if (value === undefined || isNull(value)) {
-        // 空值
-        return Promise.reject(msg);
-      } else if (Array.isArray(value) && value.length === 0) {
-        // 数组类型
-        return Promise.reject(msg);
-      } else if (typeof value === 'string' && value.trim() === '') {
-        // 空字符串
-        return Promise.reject(msg);
-      } else if (
-        typeof value === 'object' &&
-        Reflect.has(value, 'checked') &&
-        Reflect.has(value, 'halfChecked') &&
-        Array.isArray(value.checked) &&
-        Array.isArray(value.halfChecked) &&
-        value.checked.length === 0 &&
-        value.halfChecked.length === 0
-      ) {
-        // 非关联选择的tree组件
-        return Promise.reject(msg);
-      }
-      return Promise.resolve();
-    }
-
-    const getRequired = isFunction(required) ? required(unref(getValues)) : required;
-
-    if ((!rules || rules.length === 0) && getRequired) {
-      rules = [{ required: getRequired, validator }];
-    }
-
-    const requiredRuleIndex: number = rules.findIndex(
-      (rule) => Reflect.has(rule, 'required') && !Reflect.has(rule, 'validator'),
-    );
-
-    if (requiredRuleIndex !== -1) {
-      const rule = rules[requiredRuleIndex];
-
-      if (component && isString(component)) {
-        if (!Reflect.has(rule, 'type')) {
-          rule.type = component === 'InputNumber' ? 'number' : 'string';
-        }
-
-        rule.message = rule.message || defaultMsg;
-
-        if (component.includes('Input') || component.includes('Textarea')) {
-          rule.whitespace = true;
-        }
-        const valueFormat = unref(getComponentProps)?.valueFormat;
-        setComponentRuleType(rule, component, valueFormat);
-      }
-    }
-
-    // Maximum input length rule check
-    const characterInx = rules.findIndex((val) => val.max);
-    if (characterInx !== -1 && !rules[characterInx].validator) {
-      rules[characterInx].message =
-        rules[characterInx].message || `字符数应小于${[rules[characterInx].max] as Recordable}位`;
-    }
-
-    return rules;
-  });
+  //   return events;
+  // });
 
   const fetchRemoteData = async (request) => {
     if (request) {
@@ -446,6 +316,10 @@
     }
     initRequestConfig();
   });
+
+  // const handleChange = ($event) => {
+  //   console.log('$event', $event);
+  // };
 </script>
 
 <style lang="less" scoped>

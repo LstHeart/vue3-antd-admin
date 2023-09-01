@@ -10,4 +10,11 @@ export const vLabel: ObjectDirective = {
      */
     el.setAttribute('data-label', binding.value); // 设定自定义属性，用来显示设定的label属性值
   },
+  // updated(el: HTMLDivElement, binding) {
+  //   console.log(
+  //     '🚀 ~ file: label.ts:14 ~ updated ~ el: HTMLDivElement, binding, vnode:',
+  //     el,
+  //     binding,
+  //   );
+  // },
 };

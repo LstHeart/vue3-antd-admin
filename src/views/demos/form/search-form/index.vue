@@ -1,7 +1,13 @@
 <template>
   <div>
     <a-card>
-      <schema-form ref="dynamicForm" v-bind="formProps" @submit="confirm"> </schema-form>
+      <schema-form
+        ref="dynamicForm"
+        v-bind="formProps"
+        @submit="confirm"
+        @toggle-advanced="(e) => $emit('toggle-advanced', e)"
+      >
+      </schema-form>
     </a-card>
   </div>
 </template>
@@ -22,7 +28,12 @@
    */
   const dynamicForm = ref<SchemaFormInstance>();
 
-  const formProps: SchemaFormProps = { schemas, labelWidth: 120, actionColOptions: { span: 24 } };
+  const formProps: SchemaFormProps = {
+    schemas,
+    labelWidth: 120,
+    actionColOptions: { span: 24 },
+    // hideAdvanceBtn: false,
+  };
 
   // 点击提交
   function confirm() {

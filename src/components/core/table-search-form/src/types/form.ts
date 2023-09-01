@@ -72,9 +72,9 @@ export interface FormSchema<T = string> {
   field: T extends string ? string : GetFieldKeys<T>;
   // 内部值更改触发的事件名称, default change
   changeEvent?: string;
-  // 绑定到v-model的变量名 Default value
+  /** 绑定到v-model的变量名 Default value */
   valueField?: string;
-  // Label name
+  /** 标签名称 */
   label?: string | ((v: RenderCallbackParams<T>) => string);
   // Auxiliary text
   subLabel?: string;
@@ -90,7 +90,7 @@ export interface FormSchema<T = string> {
   // 禁用掉LabelWidth, and manually set labelCol and wrapperCol by yourself
   disabledLabelWidth?: boolean;
   /** 表单项对应的组件，eg: Input */
-  component?: ComponentMapType | CustomRenderFn<T> | ((opt: RenderCallbackParams<T>) => Component);
+  component: ComponentMapType | CustomRenderFn<T> | ((opt: RenderCallbackParams<T>) => Component);
   /** 表单组件属性 */
   componentProps?:
     | ComponentProps

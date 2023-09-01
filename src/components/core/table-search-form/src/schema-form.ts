@@ -10,10 +10,11 @@ import { isObject } from '@/utils/is';
 export const aFormPropKeys = Object.keys(formProps());
 
 export const schemaFormProps = {
+  /** antd 原生form props */
   ...formProps(),
   layout: {
     type: String as PropType<FormProps['layout']>,
-    default: 'horizontal',
+    default: 'inline',
   },
   /** 预置字段默认值 */
   initialValues: {
@@ -57,7 +58,10 @@ export const schemaFormProps = {
     default: 0,
   },
   /** 是否显示收起展开按钮 */
-  showAdvancedButton: { type: Boolean as PropType<boolean> },
+  showAdvancedButton: {
+    type: Boolean as PropType<boolean>,
+    default: true,
+  },
   /** 转化时间 */
   transformDateFunc: {
     type: Function as PropType<Fn>,

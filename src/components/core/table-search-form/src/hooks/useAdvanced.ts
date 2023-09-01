@@ -145,6 +145,7 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
   }
 
   function handleToggleAdvanced() {
+    debugger;
     advanceState.isAdvanced = !advanceState.isAdvanced;
   }
 

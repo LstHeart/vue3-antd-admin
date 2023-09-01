@@ -33,9 +33,10 @@ export const useFormState = ({ props, attrs }: useFormStateParams) => {
     (opt: RenderCallbackParams) => ComponentProps
   >();
 
+  // 展开/收起状态
   const advanceState = reactive<AdvanceState>({
     isAdvanced: true,
-    hideAdvanceBtn: false,
+    hideAdvanceBtn: false, // 初始不隐藏
     isLoad: false,
     actionSpan: 6,
   });

@@ -2,18 +2,33 @@
   <Col v-if="showActionButtonGroup" v-bind="actionColOpt">
     <div style="width: 100%" :style="{ textAlign: actionColOpt.style.textAlign }">
       <Form.Item>
-        <slot name="resetBefore"></slot>
-        <Button
-          v-if="showResetButton"
-          type="default"
-          class="mr-2"
-          v-bind="getResetBtnOptions"
-          @click="resetFields"
-        >
-          {{ getResetBtnOptions.text }}
-        </Button>
-        <slot name="submitBefore"></slot>
+        <template v-if="isDrawerButton">
+          <div :style="{ color: selColor }" class="advance-filter" @click="toggleDrawer">
+            <i class="fa fa-filter fa-fw"></i>
+            <span>高级筛选</span>
+          </div>
+        </template>
 
+        <template v-else>
+          <!-- <slot name="advanceBefore"></slot> -->
+          <Button
+            v-if="showAdvancedButton && !hideAdvanceBtn"
+            type="link"
+            size="small"
+            @click="toggleAdvanced"
+          >
+            {{ isAdvanced ? '收起' : '展开' }}
+            <template v-if="isAdvanced">
+              <CaretUpOutlined />
+            </template>
+            <template v-else>
+              <CaretDownOutlined />
+            </template>
+          </Button>
+        </template>
+
+        <!-- <slot name="advanceAfter"></slot> -->
+        <!-- <slot name="submitBefore"></slot> -->
         <Button
           v-if="showSubmitButton"
           type="primary"
@@ -24,33 +39,26 @@
           {{ getSubmitBtnOptions.text }}
         </Button>
 
-        <div
-          v-if="isDrawerButton"
-          :style="{ color: selColor }"
-          class="advance-filter"
-          @click="toggleDrawer"
+        <!-- <slot name="resetBefore"></slot> -->
+        <Button
+          v-if="showResetButton"
+          type="default"
+          class="mr-2"
+          v-bind="getResetBtnOptions"
+          @click="resetFields"
         >
-          <i class="fa fa-filter fa-fw"></i>
-          <span>高级筛选</span>
-        </div>
-
-        <slot name="advanceBefore"></slot>
-        <!-- v-if="showAdvancedButton && !hideAdvanceBtn" -->
-        <Button v-if="false" type="link" size="small" @click="toggleAdvanced">
-          <!-- {{ isAdvanced ? t('component.form.putAway') : t('component.form.unfold') }} -->
-          <BasicArrow class="ml-1" :expand="!isAdvanced" />
+          {{ getResetBtnOptions.text }}
         </Button>
-        <slot name="advanceAfter"></slot>
       </Form.Item>
     </div>
   </Col>
 </template>
 <script lang="ts" setup>
-  import { computed, type PropType } from 'vue';
+  import { computed, onMounted, type PropType } from 'vue';
   import { Form, Col } from 'ant-design-vue';
   import { useFormContext } from '../hooks/useFormContext';
-  import { Button, ButtonProps } from './../../../../../components/basic/button';
-  import { BasicArrow } from './../../../../../components/basic/basic-arrow';
+  import { Button, ButtonProps } from '@/components/basic/button';
+  import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons-vue';
   import type { ColEx } from '../types/component';
   import { selColor } from '@/utils/getColor';
 
@@ -101,6 +109,10 @@
     isDrawerButton: Boolean,
   });
 
+  onMounted(() => {
+    debugger;
+  });
+
   const { resetFields, submit, toggleDrawer } = useFormContext();
   const actionColOpt = computed(() => {
     const { showAdvancedButton, actionSpan: span, actionColOptions } = props;
@@ -112,6 +124,7 @@
       ...advancedSpanObj,
       ...actionColOptions,
     };
+    debugger;
     return actionColOpt;
   });
 
@@ -133,7 +146,10 @@
     );
   });
 
+  // 点击【展开/收起】按钮触发
   function toggleAdvanced() {
+    debugger;
+
     emit('toggle-advanced', props.isAdvanced);
   }
 </script>
