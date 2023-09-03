@@ -38,11 +38,12 @@ export const useFormState = ({ props, attrs }: useFormStateParams) => {
     isAdvanced: true,
     hideAdvanceBtn: false, // 初始不隐藏
     isLoad: false,
-    actionSpan: 6,
+    actionSpan: 5,
   });
 
   // 获取表单所有属性
   const getFormProps = computed(() => {
+    // debugger;
     return {
       ...attrs,
       ...formPropsRef.value,
@@ -58,9 +59,13 @@ export const useFormState = ({ props, attrs }: useFormStateParams) => {
     };
   });
 
-  const getFormActionBindProps = computed(
-    (): Recordable => ({ ...getFormProps.value, ...advanceState }),
-  );
+  const getFormActionBindProps = computed((): Recordable => {
+    debugger;
+    return {
+      ...getFormProps.value,
+      ...advanceState,
+    };
+  });
 
   watchEffect(() => {
     formPropsRef.value.schemas?.forEach((item) => {

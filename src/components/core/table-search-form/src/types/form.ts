@@ -3,7 +3,7 @@ import type { NamePath, RuleObject } from 'ant-design-vue/es/form/interface';
 import type { FormItemProps } from 'ant-design-vue/es/form/FormItem';
 import type { Component, VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
-import type { ColEx, ComponentMapType, ComponentProps } from './component';
+import type { ComponentMapType, ComponentProps } from './component';
 // import type { TableActionType } from '/@/components/Table/src/types/table'
 import type { SchemaFormInstance } from '../schema-form';
 import type { SchemaFormType } from '../hooks';
@@ -119,7 +119,7 @@ export interface FormSchema<T = string> {
   formItemProps?: Partial<FormItemProps>;
 
   // col configuration outside formModelItem
-  colProps?: Partial<ColEx>;
+  // colProps?: Partial<ColEx>;
 
   /** 搜索表单项排序 */
   order?: number;

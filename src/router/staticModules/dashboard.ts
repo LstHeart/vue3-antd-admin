@@ -25,6 +25,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () =>
           import(/* webpackChunkName: "dashboard-welcome" */ '@/views/dashboard/welcome/index.vue'),
       },
+      {
+        path: 'search',
+        name: `${moduleName}-form-search`,
+        meta: {
+          title: '搜索表单',
+          icon: 'icon-zhuomian',
+          keepAlive: true,
+        },
+        component: () => import('@/views/demos/form/search-form/index.vue'),
+      },
     ],
   },
 ];

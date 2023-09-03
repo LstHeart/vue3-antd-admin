@@ -30,9 +30,8 @@
 
   const formProps: SchemaFormProps = {
     schemas,
-    labelWidth: 120,
-    actionColOptions: { span: 24 },
-    // hideAdvanceBtn: false,
+    // labelWidth: 120,
+    // actionColOptions: { span: 24 },
   };
 
   // 点击提交

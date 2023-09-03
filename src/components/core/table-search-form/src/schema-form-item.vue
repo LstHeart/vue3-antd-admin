@@ -1,12 +1,6 @@
 <template>
-  <Col v-bind="schema.colProps">
-    <Form.Item
-      v-bind="{ ...schema.formItemProps }"
-      :name="namePath"
-      :label="getLabel"
-      :label-col="itemLabelWidthProp.labelCol"
-      :wrapper-col="itemLabelWidthProp.wrapperCol"
-    >
+  <Col v-show="getShow.isShow" class="form-item-col">
+    <Form.Item v-bind="{ ...schema.formItemProps }" :name="namePath">
       <component
         :class="{ 'component-prefix': itemLabelWidthProp.showInnerLabel }"
         :style="{ '--width': itemLabelWidthProp.innerLabelWidth }"
@@ -119,30 +113,30 @@
     };
   });
 
-  // const getShow = computed<{ isShow: boolean; isIfShow: boolean }>(() => {
-  //   const { vShow, vIf, isAdvanced = false } = unref(schema);
-  //   const { showAdvancedButton } = unref(formPropsRef);
-  //   const itemIsAdvanced = showAdvancedButton ? (isBoolean(isAdvanced) ? isAdvanced : true) : true;
+  const getShow = computed<{ isShow: boolean; isIfShow: boolean }>(() => {
+    const { vShow, vIf, isAdvanced = false } = unref(schema);
+    const { showAdvancedButton } = unref(formPropsRef); // 默认显示
+    const itemIsAdvanced = showAdvancedButton ? (isBoolean(isAdvanced) ? isAdvanced : true) : true;
 
-  //   let isShow = true;
-  //   let isIfShow = true;
+    let isShow = true;
+    let isIfShow = true;
 
-  //   if (isBoolean(vShow)) {
-  //     isShow = vShow;
-  //   }
-  //   if (isBoolean(vIf)) {
-  //     isIfShow = vIf;
-  //   }
-  //   if (isFunction(vShow)) {
-  //     isShow = vShow(unref(getValues));
-  //   }
-  //   if (isFunction(vIf)) {
-  //     isIfShow = vIf(unref(getValues));
-  //   }
-  //   isShow = isShow && itemIsAdvanced;
-
-  //   return { isShow, isIfShow };
-  // });
+    if (isBoolean(vShow)) {
+      isShow = vShow;
+    }
+    if (isBoolean(vIf)) {
+      isIfShow = vIf;
+    }
+    if (isFunction(vShow)) {
+      isShow = vShow(unref(getValues));
+    }
+    if (isFunction(vIf)) {
+      isIfShow = vIf(unref(getValues));
+    }
+    isShow = isShow && itemIsAdvanced;
+    debugger;
+    return { isShow, isIfShow };
+  });
 
   const getDisable = computed(() => {
     const { disabled: globDisabled } = unref(formPropsRef);
@@ -327,5 +321,17 @@
     color: red;
     width: var(--width);
     content: attr(data-label);
+  }
+  .form-item-col {
+    @media screen and(max-width: 1440px) {
+      display: block;
+      flex: 0 0 25%;
+      max-width: 25%;
+    }
+    @media screen and(min-width: 1440px) {
+      display: block;
+      flex: 0 0 20%;
+      max-width: 20%;
+    }
   }
 </style>

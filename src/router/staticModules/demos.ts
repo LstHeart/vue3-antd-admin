@@ -93,16 +93,7 @@ const routes: Array<RouteRecordRaw> = [
             },
             component: () => import('@/views/demos/form/dynamic-form/index.vue'),
           },
-          {
-            path: 'search',
-            name: `${moduleName}-form-search`,
-            meta: {
-              title: '搜索表单',
-              icon: 'icon-zhuomian',
-              keepAlive: true,
-            },
-            component: () => import('@/views/demos/form/search-form/index.vue'),
-          },
+
           {
             path: 'useForm',
             name: `${moduleName}-form-use`,

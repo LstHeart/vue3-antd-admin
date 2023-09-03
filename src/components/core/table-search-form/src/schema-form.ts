@@ -8,13 +8,14 @@ import type { TableActionType } from '@/components/core/dynamic-table';
 import { isObject } from '@/utils/is';
 
 export const aFormPropKeys = Object.keys(formProps());
+type ButtonOptions = Partial<ButtonProps> & { text: string };
 
 export const schemaFormProps = {
   /** antd 原生form props */
   ...formProps(),
   layout: {
     type: String as PropType<FormProps['layout']>,
-    default: 'inline',
+    default: 'horizontal',
   },
   /** 预置字段默认值 */
   initialValues: {
@@ -43,9 +44,9 @@ export const schemaFormProps = {
   baseRowStyle: {
     type: Object as PropType<CSSProperties>,
   },
-  baseColProps: {
-    type: Object as PropType<Partial<ColEx>>,
-  },
+  // baseColProps: {
+  //   type: Object as PropType<Partial<ColEx>>,
+  // },
   autoSetPlaceHolder: { type: Boolean as PropType<boolean>, default: true },
   /** 在INPUT组件上单击回车时，是否自动提交 */
   autoSubmitOnEnter: { type: Boolean as PropType<boolean>, default: false },
@@ -62,6 +63,21 @@ export const schemaFormProps = {
     type: Boolean as PropType<boolean>,
     default: true,
   },
+  /** 查询按钮配置项 */
+  submitButtonOptions: {
+    type: Object as PropType<ButtonOptions>,
+    default: () => ({
+      text: '查询',
+    }),
+  },
+  /** 重置按钮配置项 */
+  resetButtonOptions: {
+    type: Object as PropType<ButtonOptions>,
+    default: () => ({
+      text: '重置',
+    }),
+  },
+
   /** 转化时间 */
   transformDateFunc: {
     type: Function as PropType<Fn>,
@@ -70,10 +86,10 @@ export const schemaFormProps = {
     },
   },
   rulesMessageJoinLabel: { type: Boolean as PropType<boolean>, default: true },
-  /** 超过3行自动折叠 */
+  /** 超过2行自动折叠 */
   autoAdvancedLine: {
     type: Number as PropType<number>,
-    default: 3,
+    default: 2,
   },
   /** 不受折叠影响的行数 */
   alwaysShowLines: {
@@ -89,14 +105,8 @@ export const schemaFormProps = {
   showResetButton: { type: Boolean as PropType<boolean>, default: true },
   /** 是否聚焦第一个输入框，只在第一个表单项为input的时候作用 */
   autoFocusFirstItem: { type: Boolean as PropType<boolean> },
-  /** 重置按钮配置 */
-  resetButtonOptions: Object as PropType<Partial<ButtonProps>>,
-
   /** 显示确认按钮 */
   showSubmitButton: { type: Boolean as PropType<boolean>, default: true },
-  /** 确认按钮配置 */
-  submitButtonOptions: Object as PropType<Partial<ButtonProps>>,
-
   /** 自定义重置函数 */
   resetFunc: Function as PropType<() => Promise<void>>,
   submitFunc: Function as PropType<() => Promise<void>>,

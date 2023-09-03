@@ -16,6 +16,7 @@ export interface CreateCallbackParams {
 }
 
 export function useBreakpoint() {
+  createBreakpointListen();
   return {
     screenRef: computed(() => unref(globalScreenRef)),
     widthRef: globalWidthRef,
@@ -31,11 +32,14 @@ export function createBreakpointListen(fn?: (opt: CreateCallbackParams) => void)
 
   function getWindowWidth() {
     const width = document.body.clientWidth;
+    console.log('🚀 ~ file: useBreakpoint.ts:34 ~ getWindowWidth ~ width:', width);
     const xs = screenMap.get(sizeEnum.XS)!;
     const sm = screenMap.get(sizeEnum.SM)!;
     const md = screenMap.get(sizeEnum.MD)!;
     const lg = screenMap.get(sizeEnum.LG)!;
     const xl = screenMap.get(sizeEnum.XL)!;
+    const xsl = screenMap.get(sizeEnum.XSL)!;
+    const xml = screenMap.get(sizeEnum.XML)!;
     if (width < xs) {
       screenRef.value = sizeEnum.XS;
     } else if (width < sm) {
@@ -46,9 +50,14 @@ export function createBreakpointListen(fn?: (opt: CreateCallbackParams) => void)
       screenRef.value = sizeEnum.LG;
     } else if (width < xl) {
       screenRef.value = sizeEnum.XL;
+    } else if (width < xsl) {
+      screenRef.value = sizeEnum.XSL;
+    } else if (width < xml) {
+      screenRef.value = sizeEnum.XML;
     } else {
       screenRef.value = sizeEnum.XXL;
     }
+    console.log('🚀 ~ file: useBreakpoint.ts:59 ~ getWindowWidth ~ screenRef:', screenRef);
     realWidthRef.value = width;
   }
 

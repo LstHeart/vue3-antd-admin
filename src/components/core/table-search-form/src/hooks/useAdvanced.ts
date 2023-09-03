@@ -1,11 +1,12 @@
 import { computed, unref, watch } from 'vue';
 import type { SchemaFormEmitFn } from '../schema-form';
-import type { ColEx } from '../types/component';
+// import type { ColEx } from '../types/component';
 import type { SchemaFormType } from './';
 import { isBoolean, isFunction, isNumber, isObject } from '@/utils/is';
 import { useBreakpoint } from '@/hooks/event/useBreakpoint';
 
-const BASIC_COL_LEN = 24;
+// const BASIC_COL_LEN = 24;
+const BASIC_COL_LEN = 100; // 一行为100,100%
 
 type UseAdvancedContext = {
   instance: SchemaFormType;
@@ -13,7 +14,7 @@ type UseAdvancedContext = {
 };
 
 export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
-  const { realWidthRef, screenEnum, screenRef } = useBreakpoint();
+  const { realWidthRef, screenRef } = useBreakpoint();
   const { advanceState, getFormProps, formSchemasRef, formModel, defaultFormValues } = instance;
   const getEmptySpan = computed((): number => {
     if (!advanceState.isAdvanced) {
@@ -46,48 +47,30 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
     { immediate: true },
   );
 
-  function getAdvanced(itemCol: Partial<ColEx>, itemColSum = 0, isLastAction = false) {
+  // 计算span
+  function getAdvanced(itemColSum = 0, isLastAction = false) {
     const width = unref(realWidthRef);
+    debugger;
 
-    const mdWidth =
-      parseInt(itemCol.md as string) ||
-      parseInt(itemCol.xs as string) ||
-      parseInt(itemCol.sm as string) ||
-      (itemCol.span as number) ||
-      BASIC_COL_LEN;
-
-    const lgWidth = parseInt(itemCol.lg as string) || mdWidth;
-    const xlWidth = parseInt(itemCol.xl as string) || lgWidth;
-    const xxlWidth = parseInt(itemCol.xxl as string) || xlWidth;
-    if (width <= screenEnum.LG) {
-      itemColSum += mdWidth;
-    } else if (width < screenEnum.XL) {
-      itemColSum += lgWidth;
-    } else if (width < screenEnum.XXL) {
-      itemColSum += xlWidth;
-    } else {
-      itemColSum += xxlWidth;
-    }
-
+    const baseSpan = width >= 1440 ? 20 : 25;
+    itemColSum += baseSpan;
     if (isLastAction) {
+      // 当前为action btn区域，
       advanceState.hideAdvanceBtn = false;
-      if (itemColSum <= BASIC_COL_LEN * 2) {
-        // When less than or equal to 2 lines, the collapse and expand buttons are not displayed
+      if (itemColSum <= BASIC_COL_LEN + baseSpan) {
+        // 少于1行，则不显示折叠按钮
         advanceState.hideAdvanceBtn = true;
         advanceState.isAdvanced = true;
-      } else if (
-        itemColSum > BASIC_COL_LEN * 2 &&
-        itemColSum <= BASIC_COL_LEN * (unref(getFormProps).autoAdvancedLine || 3)
-      ) {
+      } else if (itemColSum <= BASIC_COL_LEN * (unref(getFormProps).autoAdvancedLine || 2)) {
         advanceState.hideAdvanceBtn = false;
-
-        // More than 3 lines collapsed by default
+        // 超过2行自动折叠
       } else if (!advanceState.isLoad) {
         advanceState.isLoad = true;
         advanceState.isAdvanced = !advanceState.isAdvanced;
       }
       return { isAdvanced: advanceState.isAdvanced, itemColSum };
     }
+
     if (itemColSum > BASIC_COL_LEN * (unref(getFormProps).alwaysShowLines || 1)) {
       return { isAdvanced: advanceState.isAdvanced, itemColSum };
     } else {
@@ -96,13 +79,17 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
     }
   }
 
+  /**
+   * 更新advance状态
+   */
   function updateAdvanced() {
+    debugger;
     let itemColSum = 0;
     let realItemColSum = 0;
-    const { baseColProps = {} } = unref(getFormProps);
+    // const { baseColProps = {} } = unref(getFormProps);
 
     for (const schema of unref(formSchemasRef)) {
-      const { vShow, colProps } = schema;
+      const { vShow } = schema;
       let isShow = true;
 
       if (isBoolean(vShow)) {
@@ -122,11 +109,8 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
         });
       }
 
-      if (isShow && (colProps || baseColProps)) {
-        const { itemColSum: sum, isAdvanced } = getAdvanced(
-          { ...baseColProps, ...colProps },
-          itemColSum,
-        );
+      if (isShow) {
+        const { itemColSum: sum, isAdvanced } = getAdvanced(itemColSum);
 
         itemColSum = sum || 0;
         if (isAdvanced) {
@@ -135,17 +119,19 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
 
         schema.isAdvanced = isAdvanced;
       }
+      // debugger;
     }
 
     advanceState.actionSpan = (realItemColSum % BASIC_COL_LEN) + unref(getEmptySpan);
 
-    getAdvanced(unref(getFormProps).actionColOptions || { span: BASIC_COL_LEN }, itemColSum, true);
-
+    // getAdvanced(unref(getFormProps).actionColOptions || { span: BASIC_COL_LEN }, itemColSum, true);
+    getAdvanced(itemColSum, true);
+    debugger;
     emit('advanced-change');
   }
 
   function handleToggleAdvanced() {
-    debugger;
+    // debugger;
     advanceState.isAdvanced = !advanceState.isAdvanced;
   }
 

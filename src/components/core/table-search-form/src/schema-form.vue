@@ -18,6 +18,7 @@
           </template>
         </SchemaFormItem>
       </template>
+
       <!-- 展开、收起、查询、重置按钮 -->
       <FormAction
         v-if="showActionButtonGroup"
@@ -34,7 +35,6 @@
   import { pick } from 'lodash-es';
   import { Form, Row } from 'ant-design-vue';
   import SchemaFormItem from './schema-form-item.vue';
-  import FormAction from './components/form-action.vue';
   import {
     createFormContext,
     useFormState,
@@ -44,6 +44,7 @@
     type SchemaFormType,
   } from './hooks/';
   import { schemaFormProps, schemaFormEmits, aFormPropKeys } from './schema-form';
+  import FormAction from './components/form-action.vue';
 
   defineOptions({
     name: 'SchemaForm',
@@ -63,6 +64,7 @@
     getFormActionBindProps,
     formSchemasRef,
   } = formState;
+  console.log('🚀 ~ file: schema-form.vue:100 ~ formSchemasRef:', formSchemasRef);
 
   // 表单内部方法
   const formMethods = useFormMethods({ ...formState });
@@ -93,3 +95,16 @@
 
   defineExpose(instance);
 </script>
+
+<style lang="less" scoped>
+  // .ant-col-4-8 {
+  //   display: block;
+  //   flex: 0 0 20%;
+  //   max-width: 20%;
+  // }
+  // .ant-col-6 {
+  //   display: block;
+  //   flex: 0 0 20%;
+  //   max-width: 20%;
+  // }
+</style>

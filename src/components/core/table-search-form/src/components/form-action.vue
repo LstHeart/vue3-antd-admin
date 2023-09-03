@@ -1,34 +1,30 @@
 <template>
-  <Col v-if="showActionButtonGroup" v-bind="actionColOpt">
-    <div style="width: 100%" :style="{ textAlign: actionColOpt.style.textAlign }">
+  <Col v-if="showActionButtonGroup" class="form-btn-col" :style="{ '--span': spanWidth }">
+    <div style="width: 100%; text-align: right">
       <Form.Item>
-        <template v-if="isDrawerButton">
+        <!-- <template v-if="isDrawerButton">
           <div :style="{ color: selColor }" class="advance-filter" @click="toggleDrawer">
             <i class="fa fa-filter fa-fw"></i>
             <span>高级筛选</span>
           </div>
-        </template>
+        </template> -->
 
-        <template v-else>
-          <!-- <slot name="advanceBefore"></slot> -->
-          <Button
-            v-if="showAdvancedButton && !hideAdvanceBtn"
-            type="link"
-            size="small"
-            @click="toggleAdvanced"
-          >
-            {{ isAdvanced ? '收起' : '展开' }}
-            <template v-if="isAdvanced">
-              <CaretUpOutlined />
-            </template>
-            <template v-else>
-              <CaretDownOutlined />
-            </template>
-          </Button>
-        </template>
+        <!-- <template> -->
+        <Button
+          v-if="showAdvancedButton && !hideAdvanceBtn"
+          type="link"
+          size="small"
+          @click="toggleAdvanced"
+        >
+          {{ isAdvanced ? '收起' : '展开' }}
+          <template v-if="isAdvanced">
+            <CaretUpOutlined />
+          </template>
+          <template v-else>
+            <CaretDownOutlined />
+          </template>
+        </Button>
 
-        <!-- <slot name="advanceAfter"></slot> -->
-        <!-- <slot name="submitBefore"></slot> -->
         <Button
           v-if="showSubmitButton"
           type="primary"
@@ -39,11 +35,9 @@
           {{ getSubmitBtnOptions.text }}
         </Button>
 
-        <!-- <slot name="resetBefore"></slot> -->
         <Button
           v-if="showResetButton"
           type="default"
-          class="mr-2"
           v-bind="getResetBtnOptions"
           @click="resetFields"
         >
@@ -59,8 +53,8 @@
   import { useFormContext } from '../hooks/useFormContext';
   import { Button, ButtonProps } from '@/components/basic/button';
   import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons-vue';
-  import type { ColEx } from '../types/component';
-  import { selColor } from '@/utils/getColor';
+  // import type { ColEx } from '../types/component';
+  // import { selColor } from '@/utils/getColor';
 
   type ButtonOptions = Partial<ButtonProps> & { text: string };
 
@@ -96,13 +90,13 @@
       type: Object as PropType<ButtonOptions>,
       default: () => ({}),
     },
-    actionColOptions: {
-      type: Object as PropType<Partial<ColEx>>,
-      default: () => ({}),
-    },
+    // actionColOptions: {
+    //   type: Object as PropType<Partial<ColEx>>,
+    //   default: () => ({}),
+    // },
     actionSpan: {
       type: Number,
-      default: 6,
+      default: 25,
     },
     isAdvanced: Boolean,
     hideAdvanceBtn: Boolean,
@@ -113,20 +107,26 @@
     debugger;
   });
 
-  const { resetFields, submit, toggleDrawer } = useFormContext();
-  const actionColOpt = computed(() => {
-    const { showAdvancedButton, actionSpan: span, actionColOptions } = props;
-    const actionSpan = 24 - span;
-    const advancedSpanObj = showAdvancedButton ? { span: actionSpan < 6 ? 24 : actionSpan } : {};
-    const actionColOpt: Partial<ColEx> = {
-      style: { textAlign: 'right' },
-      span: showAdvancedButton ? 6 : 4,
-      ...advancedSpanObj,
-      ...actionColOptions,
-    };
-    debugger;
-    return actionColOpt;
+  const { resetFields, submit } = useFormContext();
+
+  // 计算action区域宽度
+  const spanWidth = computed(() => {
+    const { actionSpan: span } = props;
+    return `${100 - span}%`;
   });
+  // 计算 action btn的span
+  // const actionColOpt = computed(() => {
+  //   const { showAdvancedButton, actionSpan: span } = props;
+  //   const actionSpan = 100 - span;
+  //   const advancedSpanObj = showAdvancedButton ? { span: actionSpan < 6 ? 24 : actionSpan } : {};
+  //   const actionColOpt: Partial<ColEx> = {
+  //     style: { textAlign: 'right' },
+  //     span: showAdvancedButton ? 6 : 4,
+  //     ...advancedSpanObj,
+  //   };
+  //   debugger;
+  //   return actionColOpt;
+  // });
 
   const getResetBtnOptions = computed((): ButtonOptions => {
     return Object.assign(
@@ -148,8 +148,16 @@
 
   // 点击【展开/收起】按钮触发
   function toggleAdvanced() {
-    debugger;
+    // debugger;
 
     emit('toggle-advanced', props.isAdvanced);
   }
 </script>
+
+<style lang="less" scoped>
+  .form-btn-col {
+    display: block;
+    flex: 0 0 var(--span);
+    max-width: var(--span);
+  }
+</style>
