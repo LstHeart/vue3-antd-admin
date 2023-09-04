@@ -160,4 +160,7 @@
     flex: 0 0 var(--span);
     max-width: var(--span);
   }
+  .ant-form-item {
+    margin-right: 16px !important;
+  }
 </style>

@@ -110,5 +110,6 @@
   ],
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "vue.codeActions.enabled": false
 }

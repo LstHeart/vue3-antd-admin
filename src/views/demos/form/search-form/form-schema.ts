@@ -1,28 +1,6 @@
 import type { FormSchema } from '@/components/core/table-search-form';
 
 export const schemas: FormSchema[] = [
-  // {
-  //   field: 'field1',
-  //   component: 'Input',
-  //   label: '字段1',
-  //   colProps: {
-  //     span: 8,
-  //   },
-  //   vShow: ({ formModel }) => {
-  //     return !!formModel.field5;
-  //   },
-  // },
-  // {
-  //   field: 'field2',
-  //   component: 'Input',
-  //   label: '字段2',
-  //   colProps: {
-  //     span: 8,
-  //   },
-  //   vShow: ({ formModel }) => {
-  //     return !!formModel.field6;
-  //   },
-  // },
   {
     field: 'field1',
     component: 'Input',
@@ -30,24 +8,24 @@ export const schemas: FormSchema[] = [
     // dynamicDisabled: ({ formModel }) => {
     //   return !!formModel.field7;
     // },
-    // componentProps: ({ formInstance }) => ({
-    //   onChange(e) {
-    //     console.log('formInstance', formInstance);
-    //     console.log('this', this);
-    //     const schema = formInstance.getSchemaByFiled('field1') as FormSchema;
-    //     schema.labelWidth = e ? 64 : 0;
-    //     console.log('field3 schema', schema);
-    //     formInstance.updateSchema(schema);
-    //     console.log('e', e);
-    //     // requestIdleCallback(() => {
-    //     //   e ? formInstance?.validateFields() : formInstance?.clearValidate();
-    //     // });
-    //   },
-    // }),
+    componentProps: ({ formInstance }) => ({
+      onChange(e) {
+        console.log('formInstance', formInstance);
+        console.log('this', this);
+        const schema = formInstance.getSchemaByFiled('field1') as FormSchema;
+        // schema.labelWidth = e ? 64 : 0;
+        console.log('field1 schema', schema);
+        // formInstance.updateSchema(schema);
+        console.log('e', e);
+        // requestIdleCallback(() => {
+        //   e ? formInstance?.validateFields() : formInstance?.clearValidate();
+        // });
+      },
+    }),
   },
   {
     field: 'field2',
-    component: 'DatePicker',
+    component: 'AutoComplete',
     label: '字段2',
     // dynamicDisabled: ({ formModel }) => {
     //   return !!formModel.field7;
@@ -89,10 +67,10 @@ export const schemas: FormSchema[] = [
       ],
       onChange(e) {
         console.log('formInstance', formInstance);
-        const schema = formInstance.getSchemaByFiled('field3') as FormSchema;
-        schema.labelWidth = e ? 32 : 0;
-        console.log('field3 schema', schema);
-        formInstance.updateSchema(schema);
+        // const schema = formInstance.getSchemaByFiled('field3') as FormSchema;
+        // schema.labelWidth = e ? 32 : 0;
+        // console.log('field3 schema', schema);
+        // formInstance.updateSchema(schema);
         console.log('e', e);
         // requestIdleCallback(() => {
         //   e ? formInstance?.validateFields() : formInstance?.clearValidate();
@@ -102,7 +80,7 @@ export const schemas: FormSchema[] = [
   },
   {
     field: 'field4',
-    component: 'DatePicker',
+    component: 'RangePicker',
     label: '字段4',
     // colProps: {
     //   span: '4-8',
@@ -113,11 +91,11 @@ export const schemas: FormSchema[] = [
     componentProps: ({ formInstance }) => ({
       onChange(e) {
         console.log('formInstance', formInstance);
-        console.log('this', this);
-        const schema = formInstance.getSchemaByFiled('field4') as FormSchema;
-        schema.labelWidth = e ? 64 : 0;
-        console.log('field3 schema', schema);
-        formInstance.updateSchema(schema);
+        // console.log('this', this);
+        // const schema = formInstance.getSchemaByFiled('field4') as FormSchema;
+        // schema.labelWidth = e ? 64 : 0;
+        // console.log('field3 schema', schema);
+        // formInstance.updateSchema(schema);
         console.log('e', e);
         // requestIdleCallback(() => {
         //   e ? formInstance?.validateFields() : formInstance?.clearValidate();
@@ -139,10 +117,10 @@ export const schemas: FormSchema[] = [
       onChange(e) {
         console.log('formInstance', formInstance);
         console.log('this', this);
-        const schema = formInstance.getSchemaByFiled('field5') as FormSchema;
-        schema.labelWidth = e ? 64 : 0;
-        console.log('field3 schema', schema);
-        formInstance.updateSchema(schema);
+        // const schema = formInstance.getSchemaByFiled('field5') as FormSchema;
+        // schema.labelWidth = e ? 64 : 0;
+        // console.log('field3 schema', schema);
+        // formInstance.updateSchema(schema);
         console.log('e', e);
         // requestIdleCallback(() => {
         //   e ? formInstance?.validateFields() : formInstance?.clearValidate();
@@ -152,7 +130,7 @@ export const schemas: FormSchema[] = [
   },
   {
     field: 'field6',
-    component: 'DatePicker',
+    component: 'Input',
     label: '字段6',
     // colProps: {
     //   span: '4-8',
@@ -164,10 +142,10 @@ export const schemas: FormSchema[] = [
       onChange(e) {
         console.log('formInstance', formInstance);
         console.log('this', this);
-        const schema = formInstance.getSchemaByFiled('field4') as FormSchema;
-        schema.labelWidth = e ? 64 : 0;
-        console.log('field3 schema', schema);
-        formInstance.updateSchema(schema);
+        // const schema = formInstance.getSchemaByFiled('field4') as FormSchema;
+        // schema.labelWidth = e ? 64 : 0;
+        // console.log('field3 schema', schema);
+        // formInstance.updateSchema(schema);
         console.log('e', e);
         // requestIdleCallback(() => {
         //   e ? formInstance?.validateFields() : formInstance?.clearValidate();
@@ -189,10 +167,10 @@ export const schemas: FormSchema[] = [
       onChange(e) {
         console.log('formInstance', formInstance);
         console.log('this', this);
-        const schema = formInstance.getSchemaByFiled('field5') as FormSchema;
-        schema.labelWidth = e ? 64 : 0;
-        console.log('field3 schema', schema);
-        formInstance.updateSchema(schema);
+        // const schema = formInstance.getSchemaByFiled('field5') as FormSchema;
+        // schema.labelWidth = e ? 64 : 0;
+        // console.log('field3 schema', schema);
+        // formInstance.updateSchema(schema);
         console.log('e', e);
         // requestIdleCallback(() => {
         //   e ? formInstance?.validateFields() : formInstance?.clearValidate();

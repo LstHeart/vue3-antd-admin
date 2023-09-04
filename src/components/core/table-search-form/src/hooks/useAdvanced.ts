@@ -37,7 +37,17 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
   });
 
   watch(
-    [formSchemasRef, () => advanceState.isAdvanced, () => unref(realWidthRef)],
+    [formSchemasRef, () => unref(realWidthRef)],
+    () => {
+      const { showAdvancedButton } = unref(getFormProps);
+      if (showAdvancedButton) {
+        updateAdvanced();
+      }
+    },
+    { immediate: true },
+  );
+  watch(
+    () => advanceState.isAdvanced,
     () => {
       const { showAdvancedButton } = unref(getFormProps);
       if (showAdvancedButton) {
@@ -50,7 +60,7 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
   // 计算span
   function getAdvanced(itemColSum = 0, isLastAction = false) {
     const width = unref(realWidthRef);
-    debugger;
+    // debugger;
 
     const baseSpan = width >= 1440 ? 20 : 25;
     itemColSum += baseSpan;
@@ -83,7 +93,6 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
    * 更新advance状态
    */
   function updateAdvanced() {
-    debugger;
     let itemColSum = 0;
     let realItemColSum = 0;
     // const { baseColProps = {} } = unref(getFormProps);
@@ -121,12 +130,12 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
       }
       // debugger;
     }
-
     advanceState.actionSpan = (realItemColSum % BASIC_COL_LEN) + unref(getEmptySpan);
 
     // getAdvanced(unref(getFormProps).actionColOptions || { span: BASIC_COL_LEN }, itemColSum, true);
     getAdvanced(itemColSum, true);
-    debugger;
+    // debugger;
+
     emit('advanced-change');
   }
 

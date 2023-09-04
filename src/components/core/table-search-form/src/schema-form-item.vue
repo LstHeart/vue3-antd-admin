@@ -1,9 +1,16 @@
 <template>
   <Col v-show="getShow.isShow" class="form-item-col">
-    <Form.Item v-bind="{ ...schema.formItemProps }" :name="namePath">
+    <Form.Item
+      v-bind="{ ...schema.formItemProps }"
+      :name="namePath"
+      class="form-item"
+      :label="renderLabelHelpMessage"
+      :style="{ '--label-Width': itemLabelWidthProp.innerLabelWidth }"
+    >
+      <!-- <div class="test">6666</div> -->
+      <!-- <div :class="{ 'component-prefix': itemLabelWidthProp.showInnerLabel }" v-label="getLabel"> -->
       <component
-        :class="{ 'component-prefix': itemLabelWidthProp.showInnerLabel }"
-        :style="{ '--width': itemLabelWidthProp.innerLabelWidth }"
+        class="form-item-comp"
         :is="getComponent"
         :ref="setItemRef(schema.field)"
         v-bind="getComponentProps"
@@ -11,7 +18,7 @@
         :allow-clear="true"
         :disabled="getDisable"
         :loading="schema.loading"
-        v-label="getLabel"
+        :style="{ '--label-Width': itemLabelWidthProp.innerLabelWidth }"
       >
         <template v-if="Object.is(schema.loading, true)" #notFoundContent>
           <Spin size="small" />
@@ -27,6 +34,7 @@
           ></component>
         </template>
       </component>
+      <!-- </div> -->
     </Form.Item>
   </Col>
 </template>
@@ -44,8 +52,8 @@
   import type { CustomRenderFn, FormSchema, RenderCallbackParams, ComponentProps } from './types/';
   // import type { RuleObject } from 'ant-design-vue/es/form/';
   import { isBoolean, isObject, isString, isFunction, isArray } from '@/utils/is';
-  // import BasicHelp from '@/components/basic/basic-help/index.vue';
-  import { vLabel } from './directives/label';
+  import BasicHelp from '@/components/basic/basic-help/index.vue';
+  // import { vLabel } from './directives/label';
 
   defineOptions({
     name: 'SchemaFormItem',
@@ -63,6 +71,28 @@
 
   // @ts-ignore
   const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);
+
+  const renderLabelHelpMessage = computed(() => {
+    const { helpMessage, helpComponentProps, subLabel } = props.schema;
+    const renderLabel = subLabel ? (
+      <span>
+        {getLabel.value} <span class="text-secondary">{subLabel}</span>
+      </span>
+    ) : (
+      vnodeFactory(getLabel.value)
+    );
+    const getHelpMessage = isFunction(helpMessage) ? helpMessage(unref(getValues)) : helpMessage;
+    if (!getHelpMessage || (Array.isArray(getHelpMessage) && getHelpMessage.length === 0)) {
+      return renderLabel;
+    }
+    console.log('render help');
+    return (
+      <span>
+        {renderLabel}
+        <BasicHelp placement="top" class="mx-1" text={getHelpMessage} {...helpComponentProps} />
+      </span>
+    );
+  });
 
   const namePath = computed<string[]>(() => {
     return isArray(schema.value.field) ? schema.value.field : schema.value.field.split('.');
@@ -134,7 +164,7 @@
       isIfShow = vIf(unref(getValues));
     }
     isShow = isShow && itemIsAdvanced;
-    debugger;
+    // debugger;
     return { isShow, isIfShow };
   });
 
@@ -212,6 +242,17 @@
 
     if (isFunction(componentProps)) {
       componentProps = componentProps(unref(getValues)) ?? {};
+      if (isFunction(componentProps.onChange)) {
+        const { onChange } = componentProps;
+        componentProps.onChange = (e) => {
+          handleChangeBefore(e, schema);
+          return onChange(e);
+        };
+      }
+      // console.log(
+      //   '🚀 ~ file: schema-form-item.vue:216 ~ getComponentProps ~ componentProps:',
+      //   componentProps,
+      // );
     }
 
     if (component !== 'RangePicker' && isString(component)) {
@@ -311,18 +352,100 @@
     initRequestConfig();
   });
 
-  // const handleChange = ($event) => {
-  //   console.log('$event', $event);
-  // };
+  const handleChangeBefore = ($event, schema) => {
+    console.log('$event', $event);
+    console.log('schema', schema);
+  };
 </script>
 
 <style lang="less" scoped>
-  .component-prefix::before {
-    color: red;
-    width: var(--width);
-    content: attr(data-label);
-  }
+  // .component-prefix::before {
+  //   color: red;
+  //   width: var(--label-Width);
+  //   content: attr(data-label);
+  // }
   .form-item-col {
+    :deep(.ant-form-item-label) {
+      display: flex;
+      background-color: rgb(240, 235, 235);
+      position: absolute;
+      z-index: 11111;
+      padding-left: 8px;
+      pointer-events: none;
+      label::after {
+        content: ':';
+      }
+
+      // width: var(--label-Width);
+    }
+
+    .ant-form-item {
+      margin-right: 16px !important;
+    }
+    :deep(.ant-form-item-control-input-content) {
+      .paddingL {
+        padding-left: var(--label-Width) !important;
+      }
+      .ant-input-affix-wrapper {
+        padding-left: 0px !important;
+        padding-right: 8px !important;
+      }
+      .form-item-comp > .ant-input,
+      // .ant-input-affix-wrapper,
+      .ant-select-selector>.ant-select-selection-search,
+      .ant-select-selector>.ant-select-selection-item,
+      .ant-select-selector>.ant-select-selection-placeholder,
+      .ant-select-auto-complete > span,
+      .ant-picker-range,
+      .ant-picker {
+        .paddingL();
+      }
+      .form-item-comp {
+        .ant-select-clear {
+          padding-right: 11px !important;
+        }
+        .ant-select-selection-search {
+          left: 0px !important;
+          right: 0px !important;
+        }
+      }
+      .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+        padding: 0px !important;
+      }
+      // .ant-select-selection-search {
+      //   left: 0px !important;
+      //   right: 0px !important;
+      // }
+      // .ant-select-selector>.ant-select-selection-placeholder{
+      //   padding-left: calc();
+      // }
+      // :deep(.ant-input) {
+      //   .paddingL();
+      // }
+      // :deep(.ant-select-selection-placeholder) {
+      //   .paddingL();
+      // }
+      // :deep(.ant-picker) {
+      //   background-color: red;
+      //   padding-left: var(--label-Width) !important;
+      // }
+    }
+    .form-item-comp {
+      // padding-left: var(--label-Width);
+      // :deep(.ant-input) {
+      //   padding-left: var(--label-Width) !important;
+      // }
+      // :deep(.ant-select-selection-placeholder) {
+      //   padding-left: var(--label-Width) !important;
+      // }
+      // // .ant-select-selection-item {
+      // //   padding-left: var(--label-Width);
+      // // }
+      // & :deep(.ant-picker) {
+      //   background-color: red;
+      //   padding-left: var(--label-Width) !important;
+      // }
+    }
     @media screen and(max-width: 1440px) {
       display: block;
       flex: 0 0 25%;

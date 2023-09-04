@@ -38,8 +38,6 @@ export function createBreakpointListen(fn?: (opt: CreateCallbackParams) => void)
     const md = screenMap.get(sizeEnum.MD)!;
     const lg = screenMap.get(sizeEnum.LG)!;
     const xl = screenMap.get(sizeEnum.XL)!;
-    const xsl = screenMap.get(sizeEnum.XSL)!;
-    const xml = screenMap.get(sizeEnum.XML)!;
     if (width < xs) {
       screenRef.value = sizeEnum.XS;
     } else if (width < sm) {
@@ -50,10 +48,6 @@ export function createBreakpointListen(fn?: (opt: CreateCallbackParams) => void)
       screenRef.value = sizeEnum.LG;
     } else if (width < xl) {
       screenRef.value = sizeEnum.XL;
-    } else if (width < xsl) {
-      screenRef.value = sizeEnum.XSL;
-    } else if (width < xml) {
-      screenRef.value = sizeEnum.XML;
     } else {
       screenRef.value = sizeEnum.XXL;
     }
