@@ -1,7 +1,7 @@
 import type { RowProps } from 'ant-design-vue';
 import type { NamePath, RuleObject } from 'ant-design-vue/es/form/interface';
 import type { FormItemProps } from 'ant-design-vue/es/form/FormItem';
-import type { Component, VNode } from 'vue';
+import type { VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
 import type { ComponentMapType, ComponentProps } from './component';
 // import type { TableActionType } from '/@/components/Table/src/types/table'
@@ -87,10 +87,13 @@ export interface FormSchema<T = string> {
   helpComponentProps?: Partial<HelpComponentProps>;
   // Label width, if it is passed, the labelCol and WrapperCol configured by itemProps will be invalid
   labelWidth?: string | number;
+  realLabelWidth?: string | number;
   // 禁用掉LabelWidth, and manually set labelCol and wrapperCol by yourself
   disabledLabelWidth?: boolean;
+  /* 搜索表单限定组件，禁用自定义组件 */
   /** 表单项对应的组件，eg: Input */
-  component: ComponentMapType | CustomRenderFn<T> | ((opt: RenderCallbackParams<T>) => Component);
+  // component: ComponentMapType | CustomRenderFn<T> | ((opt: RenderCallbackParams<T>) => Component);
+  component: ComponentMapType;
   /** 表单组件属性 */
   componentProps?:
     | ComponentProps
@@ -98,15 +101,16 @@ export interface FormSchema<T = string> {
         (opt: RenderCallbackParams<T>): ComponentProps;
         requestResult: ComponentProps['requestResult'];
       };
+  // 搜索表单不开放组件插槽
   /** 表单组件slots，例如 a-input 的 suffix slot 可以写成：{ suffix: () => VNode } */
-  componentSlots?:
-    | ((renderCallbackParams: RenderCallbackParams<T>) => Recordable<CustomRenderFn<T>>)
-    | Recordable<CustomRenderFn<T>>
-    | ReturnType<CustomRenderFn>;
+  // componentSlots?:
+  //   | ((renderCallbackParams: RenderCallbackParams<T>) => Recordable<CustomRenderFn<T>>)
+  //   | Recordable<CustomRenderFn<T>>
+  //   | ReturnType<CustomRenderFn>;
   // Required
   required?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
-  suffix?: string | number | ((values: RenderCallbackParams<T>) => string | number);
+  // suffix?: string | number | ((values: RenderCallbackParams<T>) => string | number);
 
   // Validation rules
   rules?: Rule[];
@@ -125,6 +129,7 @@ export interface FormSchema<T = string> {
   order?: number;
   // 默认值
   defaultValue?: any;
+  /* 表单项是否折叠 */
   isAdvanced?: boolean;
 
   // Matching details components

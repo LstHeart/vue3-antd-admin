@@ -3,14 +3,13 @@
     <Form.Item
       v-bind="{ ...schema.formItemProps }"
       :name="namePath"
-      class="form-item"
       :label="renderLabelHelpMessage"
-      :style="{ '--label-Width': itemLabelWidthProp.innerLabelWidth }"
+      v-label="schema"
     >
       <!-- <div class="test">6666</div> -->
       <!-- <div :class="{ 'component-prefix': itemLabelWidthProp.showInnerLabel }" v-label="getLabel"> -->
       <component
-        class="form-item-comp"
+        :class="getComponentClass"
         :is="getComponent"
         :ref="setItemRef(schema.field)"
         v-bind="getComponentProps"
@@ -18,12 +17,15 @@
         :allow-clear="true"
         :disabled="getDisable"
         :loading="schema.loading"
-        :style="{ '--label-Width': itemLabelWidthProp.innerLabelWidth }"
+        :style="{
+          '--label-Width': schema.realLabelWidth,
+          width: '100%',
+        }"
       >
         <template v-if="Object.is(schema.loading, true)" #notFoundContent>
           <Spin size="small" />
         </template>
-        <template
+        <!-- <template
           v-for="(slotFn, slotName) in getComponentSlots"
           #[slotName]="slotData"
           :key="slotName"
@@ -32,7 +34,7 @@
             :is="slotFn?.({ ...getValues, slotData }) ?? slotFn"
             :key="slotName"
           ></component>
-        </template>
+        </template> -->
       </component>
       <!-- </div> -->
     </Form.Item>
@@ -43,17 +45,17 @@
   import { computed, unref, toRefs, isVNode, onMounted, watch, nextTick } from 'vue';
   import { debounce } from 'lodash-es';
   import { Form, Col, Spin } from 'ant-design-vue';
-  import { useItemLabelWidth } from './hooks/useLabelWidth';
-  import { componentMap } from './componentMap';
+  // import { useItemLabelWidth } from './hooks/useLabelWidth';
+  import { componentMap, innerLabelMap } from './componentMap';
   import { createPlaceholderMessage } from './helper';
   import { useFormContext } from './hooks/useFormContext';
   import { schemaFormItemProps } from './schema-form-item';
   // import type { ComponentMapType } from './componentMap';
-  import type { CustomRenderFn, FormSchema, RenderCallbackParams, ComponentProps } from './types/';
+  import type { RenderCallbackParams, ComponentProps } from './types/';
   // import type { RuleObject } from 'ant-design-vue/es/form/';
-  import { isBoolean, isObject, isString, isFunction, isArray } from '@/utils/is';
+  import { isBoolean, isString, isFunction, isArray } from '@/utils/is';
   import BasicHelp from '@/components/basic/basic-help/index.vue';
-  // import { vLabel } from './directives/label';
+  import { vLabel } from './directives/label';
 
   defineOptions({
     name: 'SchemaFormItem',
@@ -70,16 +72,20 @@
   const { schema } = toRefs(props);
 
   // @ts-ignore
-  const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);
+  // const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);
 
   const renderLabelHelpMessage = computed(() => {
     const { helpMessage, helpComponentProps, subLabel } = props.schema;
+    console.log('isInnerLabel', isInnerLabel());
     const renderLabel = subLabel ? (
       <span>
         {getLabel.value} <span class="text-secondary">{subLabel}</span>
       </span>
+    ) : isInnerLabel() ? (
+      // vnodeFactory(getLabel.value)
+      <span class="inner-label">{getLabel.value}</span>
     ) : (
-      vnodeFactory(getLabel.value)
+      <span>{getLabel.value}</span>
     );
     const getHelpMessage = isFunction(helpMessage) ? helpMessage(unref(getValues)) : helpMessage;
     if (!getHelpMessage || (Array.isArray(getHelpMessage) && getHelpMessage.length === 0)) {
@@ -95,7 +101,10 @@
   });
 
   const namePath = computed<string[]>(() => {
-    return isArray(schema.value.field) ? schema.value.field : schema.value.field.split('.');
+    const namePath = isArray(schema.value.field)
+      ? schema.value.field
+      : schema.value.field.split('.');
+    return namePath;
   });
 
   const modelValue = computed({
@@ -182,51 +191,66 @@
     return disabled;
   });
 
-  const vnodeFactory = (
-    component: FormSchema['componentSlots'] | FormSchema['component'],
-    values = unref(getValues),
-  ) => {
-    if (isString(component)) {
-      return <>{component}</>;
-    } else if (isVNode(component)) {
-      return component;
-    } else if (isFunction(component)) {
-      return vnodeFactory((component as CustomRenderFn)(values));
-    } else if (isObject(component)) {
-      const compKeys = Object.keys(component);
-      // 如果是组件对象直接return
-      if (compKeys.some((n) => n.startsWith('_') || ['setup', 'render'].includes(n))) {
-        return component;
-      }
-      return compKeys.reduce<Recordable<CustomRenderFn>>((slots, slotName) => {
-        slots[slotName] = (...rest: any) => vnodeFactory(component[slotName], ...rest);
-        return slots;
-      }, {});
-    }
-    return component;
-  };
+  // const vnodeFactory = (
+  //   // component: FormSchema['componentSlots'] | FormSchema['component'],
+  //   values = unref(getValues),
+  // ) => {
+  //   if (isString(component)) {
+  //     return <>{component}</>;
+  //   } else if (isVNode(component)) {
+  //     return component;
+  //   } else if (isFunction(component)) {
+  //     return vnodeFactory((component as CustomRenderFn)(values));
+  //   } else if (isObject(component)) {
+  //     const compKeys = Object.keys(component);
+  //     // 如果是组件对象直接return
+  //     if (compKeys.some((n) => n.startsWith('_') || ['setup', 'render'].includes(n))) {
+  //       return component;
+  //     }
+  //     return compKeys.reduce<Recordable<CustomRenderFn>>((slots, slotName) => {
+  //       slots[slotName] = (...rest: any) => vnodeFactory(component[slotName], ...rest);
+  //       return slots;
+  //     }, {});
+  //   }
+  //   return component;
+  // };
 
   /**
    * @description 当前表单项组件
    */
   const getComponent = computed(() => {
     const component = props.schema.component;
-    return isString(component)
-      ? componentMap[component] ?? vnodeFactory(component)
-      : vnodeFactory(component);
+    return componentMap[component];
+    // return isString(component)
+    //   ? componentMap[component] ?? vnodeFactory(component)
+    //   : vnodeFactory(component);
   });
 
+  const isInnerLabel = () => {
+    const component = props.schema.component;
+    return innerLabelMap[component] == getComponent.value;
+    // const innerLabelCompList = ['AInput', 'AInputNumber', 'ASelect', 'ADatePicker', 'ARangePicker'];
+    // return innerLabelCompList.includes(getComponent.value.name);
+  };
+
+  const getComponentClass = computed(() => {
+    const component = props.schema.component as string;
+    const compName = componentMap[component].name;
+    console.log('compName', compName);
+
+    return `form-item-comp-${compName}`;
+  });
   /**
    * @description 当前表单项组件的插槽
    */
-  const getComponentSlots = computed<Recordable<CustomRenderFn>>(() => {
-    const componentSlots = props.schema.componentSlots ?? {};
-    return isString(componentSlots) || isVNode(componentSlots)
-      ? {
-          default: (...rest: any) => vnodeFactory(componentSlots, rest),
-        }
-      : vnodeFactory(componentSlots);
-  });
+  // const getComponentSlots = computed<Recordable<CustomRenderFn>>(() => {
+  //   const componentSlots = props.schema.componentSlots ?? {};
+  //   return isString(componentSlots) || isVNode(componentSlots)
+  //     ? {
+  //         default: (...rest: any) => vnodeFactory(componentSlots, rest),
+  //       }
+  //     : vnodeFactory(componentSlots);
+  // });
 
   const getLabel = computed(() => {
     const label = props.schema.label;
@@ -249,21 +273,22 @@
           return onChange(e);
         };
       }
-      // console.log(
-      //   '🚀 ~ file: schema-form-item.vue:216 ~ getComponentProps ~ componentProps:',
-      //   componentProps,
-      // );
+    }
+
+    if (component === 'InputNumber') {
+      const { name } = unref(formPropsRef);
+      componentProps = Object.assign({ id: `${name}_${schema.field}` }, componentProps);
     }
 
     if (component !== 'RangePicker' && isString(component)) {
       componentProps.placeholder ??= createPlaceholderMessage(component, getLabel.value);
     }
-    if (schema.component === 'Divider') {
-      componentProps = Object.assign({ type: 'horizontal' }, componentProps, {
-        orientation: 'left',
-        plain: true,
-      });
-    }
+    // if (schema.component === 'Divider') {
+    //   componentProps = Object.assign({ id: 'horizontal' }, componentProps, {
+    //     orientation: 'left',
+    //     plain: true,
+    //   });
+    // }
     if (isVNode(getComponent.value)) {
       Object.assign(componentProps, getComponent.value.props);
     }
@@ -280,14 +305,10 @@
   //     if (/on([A-Z])/.test(key)) {
   //       // eg: onChange => change
   //       const eventKey = key.replace(/on([A-Z])/, '$1').toLocaleLowerCase();
-  //       console.log('🚀 ~ file: schema-form-item.vue:252 ~ events ~ eventKey:', eventKey);
   //       prev[eventKey] = componentProps[key];
   //     }
   //     return prev;
   //   }, {});
-
-  //   // console.log('🚀 ~ file: schema-form-item.vue:256 ~ events ~ events:', events);
-
   //   return events;
   // });
 
@@ -365,96 +386,84 @@
   //   content: attr(data-label);
   // }
   .form-item-col {
-    :deep(.ant-form-item-label) {
-      display: flex;
-      background-color: rgb(240, 235, 235);
-      position: absolute;
-      z-index: 11111;
-      padding-left: 8px;
-      pointer-events: none;
-      label::after {
-        content: ':';
-      }
-
-      // width: var(--label-Width);
-    }
-
-    .ant-form-item {
-      margin-right: 16px !important;
-    }
-    :deep(.ant-form-item-control-input-content) {
-      .paddingL {
-        padding-left: var(--label-Width) !important;
-      }
-      .ant-input-affix-wrapper {
-        padding-left: 0px !important;
-        padding-right: 8px !important;
-      }
-      .form-item-comp > .ant-input,
-      // .ant-input-affix-wrapper,
-      .ant-select-selector>.ant-select-selection-search,
-      .ant-select-selector>.ant-select-selection-item,
-      .ant-select-selector>.ant-select-selection-placeholder,
-      .ant-select-auto-complete > span,
-      .ant-picker-range,
-      .ant-picker {
-        .paddingL();
-      }
-      .form-item-comp {
-        .ant-select-clear {
-          padding-right: 11px !important;
-        }
-        .ant-select-selection-search {
-          left: 0px !important;
-          right: 0px !important;
-        }
-      }
-      .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
-        padding: 0px !important;
-      }
-      // .ant-select-selection-search {
-      //   left: 0px !important;
-      //   right: 0px !important;
-      // }
-      // .ant-select-selector>.ant-select-selection-placeholder{
-      //   padding-left: calc();
-      // }
-      // :deep(.ant-input) {
-      //   .paddingL();
-      // }
-      // :deep(.ant-select-selection-placeholder) {
-      //   .paddingL();
-      // }
-      // :deep(.ant-picker) {
-      //   background-color: red;
-      //   padding-left: var(--label-Width) !important;
-      // }
-    }
-    .form-item-comp {
-      // padding-left: var(--label-Width);
-      // :deep(.ant-input) {
-      //   padding-left: var(--label-Width) !important;
-      // }
-      // :deep(.ant-select-selection-placeholder) {
-      //   padding-left: var(--label-Width) !important;
-      // }
-      // // .ant-select-selection-item {
-      // //   padding-left: var(--label-Width);
-      // // }
-      // & :deep(.ant-picker) {
-      //   background-color: red;
-      //   padding-left: var(--label-Width) !important;
-      // }
-    }
+    /* 显示适配，可视宽度小于1440 每行显示4个 */
     @media screen and(max-width: 1440px) {
       display: block;
       flex: 0 0 25%;
       max-width: 25%;
     }
+    /** 显示适配，可视宽度超过1440 每行显示5个 */
     @media screen and(min-width: 1440px) {
       display: block;
       flex: 0 0 20%;
       max-width: 20%;
+    }
+
+    /* 表单项间隔 */
+    .ant-form-item {
+      margin-right: 16px !important;
+    }
+    :deep(.ant-form-item-label:has(.inner-label)) {
+      & {
+        display: flex;
+        background-color: rgb(240, 235, 235);
+        position: absolute;
+        z-index: 2;
+        padding-left: 8px;
+        // pointer-events: none;
+        label::after {
+          content: ':';
+        }
+      }
+    }
+
+    :deep(.ant-form-item-control-input-content) {
+      .paddingL {
+        // padding-left: var(--label-Width) !important;
+        padding-left: var(--label-Width) !important;
+      }
+      // 组件设定偏移
+      .form-item-comp-AInput,
+      .form-item-comp-ADatePicker,
+      .form-item-comp-ASelect > .ant-select-selector,
+      .form-item-comp-ARangePicker,
+      .form-item-comp-ACascader {
+        .paddingL();
+      }
+      .form-item-comp-AInputNumber {
+        .paddingL();
+        // padding-left: calc(var(--label-Width) - 6px) !important;
+      }
+      .form-item-comp-ATreeSelect > .ant-select-selector {
+        .paddingL();
+        // padding-left: calc(var(--label-Width) + 56px) !important;
+      }
+      // .ant-input-affix-wrapper {
+      //   padding-left: 0px !important;
+      //   padding-right: 8px !important;
+      // }
+      // .form-item-comp > .ant-input,
+      // // .ant-input-affix-wrapper,
+      // .ant-select-selector>.ant-select-selection-search,
+      // .ant-select-selector>.ant-select-selection-item,
+      // .ant-select-selector>.ant-select-selection-placeholder,
+      // .ant-select-auto-complete > span,
+      // .ant-picker-range,
+      // .ant-picker {
+      //   .paddingL();
+      // }
+      // .form-item-comp {
+      //   .ant-select-clear {
+      //     padding-right: 11px !important;
+      //   }
+      //   .ant-select-selection-search {
+      //     left: 0px !important;
+      //     right: 0px !important;
+      //   }
+      // }
+      // .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+      //   padding: 0px !important;
+      // }
     }
   }
 </style>

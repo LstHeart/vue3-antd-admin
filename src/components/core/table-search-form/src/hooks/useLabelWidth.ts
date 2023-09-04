@@ -7,6 +7,7 @@ import { isNumber } from '@/utils/is';
 export function useItemLabelWidth(schemaRef: Ref<FormSchema>, formPropsRef: Ref<SchemaFormProps>) {
   return computed(() => {
     const schemaItem = unref(schemaRef);
+    console.log('🚀 ~ file: useLabelWidth.ts:10 ~ returncomputed ~ schemaItem:', schemaItem);
     const { labelCol = {}, wrapperCol = {} } = schemaItem.formItemProps || {};
     const { labelWidth = 64, disabledLabelWidth } = schemaItem;
 
@@ -22,6 +23,8 @@ export function useItemLabelWidth(schemaRef: Ref<FormSchema>, formPropsRef: Ref<
       labelCol: globalLabelCol,
       wrapperCol: globWrapperCol,
     } = unref(formPropsRef);
+    console.log('🚀 ~ file: useLabelWidth.ts:26 ~ returncomputed ~ formPropsRef:', formPropsRef);
+    // console.log('🚀 ~ file: useLabelWidth.ts:26 ~ returncomputed ~ labelWidth:', labelWidth);
 
     // 如果labelWidth是全局设置的，则会设置所有项
     if ((!globalLabelWidth && !labelWidth && !globalLabelCol) || disabledLabelWidth) {
@@ -31,7 +34,6 @@ export function useItemLabelWidth(schemaRef: Ref<FormSchema>, formPropsRef: Ref<
       return { innerLabelWidth, showInnerLabel, labelCol, wrapperCol };
     }
     let width = labelWidth || globalLabelWidth;
-    console.log('label-Width', width);
 
     const col = { ...globalLabelCol, ...labelCol };
     const wrapCol = { ...globWrapperCol, ...wrapperCol };
@@ -39,8 +41,6 @@ export function useItemLabelWidth(schemaRef: Ref<FormSchema>, formPropsRef: Ref<
     if (width) {
       width = isNumber(width) ? `${width}px` : width;
     }
-
-    console.log('innerLabelWidth', innerLabelWidth);
 
     return {
       innerLabelWidth,

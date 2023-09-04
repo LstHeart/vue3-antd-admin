@@ -13,6 +13,10 @@ type ButtonOptions = Partial<ButtonProps> & { text: string };
 export const schemaFormProps = {
   /** antd 原生form props */
   ...formProps(),
+  name: {
+    type: String,
+    default: 'table_search_form',
+  },
   layout: {
     type: String as PropType<FormProps['layout']>,
     default: 'horizontal',
