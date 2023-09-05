@@ -88,7 +88,7 @@ export interface FormSchema<T = string> {
   helpComponentProps?: Partial<HelpComponentProps>;
   // Label width, if it is passed, the labelCol and WrapperCol configured by itemProps will be invalid
   labelWidth?: string | number;
-  realLabelWidth?: string | number;
+  realLabelWidth?: string;
   // 禁用掉LabelWidth, and manually set labelCol and wrapperCol by yourself
   disabledLabelWidth?: boolean;
   /* 搜索表单限定组件，禁用自定义组件 */

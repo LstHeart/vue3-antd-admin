@@ -8,7 +8,6 @@ import type { TableActionType } from '@/components/core/dynamic-table';
 import { isObject } from '@/utils/is';
 
 export const aFormPropKeys = Object.keys(formProps());
-type ButtonOptions = Partial<ButtonProps> & { text: string };
 
 /* 表单配置 FORM */
 export const tableSearchFormProps = {
@@ -86,21 +85,11 @@ export const tableSearchFormProps = {
   /** 显示重置按钮 */
   showResetButton: { type: Boolean as PropType<boolean>, default: true },
   /** 查询按钮配置项 */
-  submitButtonOptions: {
-    type: Object as PropType<ButtonOptions>,
-    default: () => ({
-      text: '查询',
-    }),
-  },
+  submitButtonOptions: Object as PropType<Partial<ButtonProps>>,
   /** 自定义查询函数 */
   submitFunc: Function as PropType<() => Promise<void>>,
   /** 重置按钮配置项 */
-  resetButtonOptions: {
-    type: Object as PropType<ButtonOptions>,
-    default: () => ({
-      text: '重置',
-    }),
-  },
+  resetButtonOptions: Object as PropType<Partial<ButtonProps>>,
   /** 自定义重置函数 */
   resetFunc: Function as PropType<() => Promise<void>>,
   /** 超过2行自动折叠 */

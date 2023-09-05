@@ -70,13 +70,7 @@
       <span>{getLabel.value}</span>
     );
   });
-  // 标签宽度
-  // const realLabelWidth = computed(() => {
-  //   // console.log('label width e', e);
-  //   const { label } = unref(schema);
-  //   console.log('label width', label, label?.length);
-  //   return schema.value.realLabelWidth || 0;
-  // });
+
   // @ts-ignore
   // const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);
 

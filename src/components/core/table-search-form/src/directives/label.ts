@@ -1,7 +1,7 @@
 import { ObjectDirective } from 'vue';
 
 export const vLabel: ObjectDirective = {
-  mounted(el: HTMLDivElement, binding) {
+  updated(el: HTMLDivElement, binding) {
     /**
      * el：指令绑定到的元素
      * binding：一个对象 { value,oldValue,arg,modifiers,instance,dir }
@@ -11,16 +11,17 @@ export const vLabel: ObjectDirective = {
 
     /* 标签元素 */
     const labelEl = el.querySelector('.ant-form-item-label') as Element;
-    let realLabelWidth = '0px';
-    if (labelEl) {
+
+    if (labelEl && !binding.value.realLabelWidth) {
       /* 创建新元素用来获取标签宽度 */
       const tempEl = document.createElement('div');
       tempEl.appendChild(labelEl.cloneNode(true));
       document.body.appendChild(tempEl);
       /* 标签文字实际占用宽度 */
-      realLabelWidth = window.getComputedStyle(tempEl.firstElementChild as HTMLDivElement).width;
+      const width = window.getComputedStyle(tempEl.firstElementChild as HTMLDivElement).width;
       tempEl.remove();
+      binding.value.realLabelWidth = width || '0px';
+      console.log('🚀 ~ file: label.ts:25 ~ mounted ~ realLabelWidth:', width);
     }
-    binding.value.realLabelWidth = realLabelWidth;
   },
 };
