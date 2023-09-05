@@ -1,6 +1,6 @@
 <template>
   <div class="xc-content xc-table">
-    <XCSchemaForm
+    <!-- <XCSchemaForm
       v-if="search"
       ref="queryFormRef"
       class="bg-white dark:bg-black mb-16px pt-24px pr-24px"
@@ -13,7 +13,21 @@
       <template v-for="item in getFormSlotKeys" #[replaceFormSlotKey(item)]="data">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
-    </XCSchemaForm>
+    </XCSchemaForm> -->
+    <TableSearchForm
+      v-if="search"
+      ref="queryFormRef"
+      class="bg-white dark:bg-black mb-16px pt-24px pr-24px"
+      submit-on-reset
+      v-bind="getFormProps"
+      :table-instance="tableAction"
+      @toggle-advanced="(e) => $emit('toggle-advanced', e)"
+      @submit="handleSubmit"
+    >
+      <!-- <template v-for="item in getFormSlotKeys" #[replaceFormSlotKey(item)]="data">
+        <slot :name="item" v-bind="data || {}"></slot>
+      </template> -->
+    </TableSearchForm>
     <div class="bg-white dark:bg-black dy-table">
       <ToolBar
         v-if="showToolBar"
@@ -97,7 +111,8 @@
   import { TableAction, ToolBar } from './components';
   import { dynamicTableProps, defaultSlots, dynamicTableEmits } from './dynamic-table';
   import { TableActionType } from './types';
-  import { XCSchemaForm } from '@/components/xc/xc-schema-form';
+  // import { XCSchemaForm } from '@/components/xc/xc-schema-form';
+  import { TableSearchForm } from '@/components/core/table-search-form';
   import xcTableNoData from '@/components/xc/xc-table/xc-table-noData/index.vue';
   // require('@/assets/images/login/resource_login_bg.png')
 
@@ -140,7 +155,12 @@
   } = tableMethods;
 
   // 搜索表单
-  const { getFormProps, replaceFormSlotKey, getFormSlotKeys } = useTableForm({
+  // const { getFormProps, replaceFormSlotKey, getFormSlotKeys } = useTableForm({
+  //   tableState,
+  //   tableMethods,
+  //   slots,
+  // });
+  const { getFormProps } = useTableForm({
     tableState,
     tableMethods,
     slots,

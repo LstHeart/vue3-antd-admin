@@ -3,9 +3,10 @@ import { isBoolean, omit } from 'lodash-es';
 import { Table } from 'ant-design-vue';
 import type { Slots } from 'vue';
 import type { DynamicTableProps } from '../dynamic-table';
-import type { SchemaFormInstance } from './../../../../../components/core/schema-form';
+// import type { SchemaFormInstance } from './../../../../../components/core/schema-form';
 import type { TableProps } from 'ant-design-vue';
 import type { TableColumn } from '../types/column';
+import type { TableSearchFormInstance } from '@/components/core/table-search-form';
 
 export type Pagination = TableProps['pagination'];
 export type TableState = ReturnType<typeof useTableState>;
@@ -20,7 +21,7 @@ export const useTableState = ({ props, slots }: UseTableStateParams) => {
   // 表格加载
   const loadingRef = ref<boolean>(!!props.loading);
   const tableData = ref<any[]>([]);
-  const queryFormRef = ref<SchemaFormInstance>();
+  const queryFormRef = ref<TableSearchFormInstance>();
 
   const innerPropsRef = ref<Partial<DynamicTableProps>>();
 

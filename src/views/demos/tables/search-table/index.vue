@@ -2,6 +2,7 @@
   <div>
     <Card title="查询表单基本使用示例" style="margin-top: 20px">
       <DynamicTable
+        search
         size="small"
         bordered
         :data-request="loadData"

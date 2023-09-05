@@ -2,7 +2,8 @@ import { unref, computed, watchEffect } from 'vue';
 import type { TableMethods } from './useTableMethods';
 import type { TableState } from './useTableState';
 import type { ComputedRef, Slots } from 'vue';
-import type { FormSchema, SchemaFormProps } from './../../../../../components/core/schema-form';
+// import type { FormSchema, SchemaFormProps } from './../../../../../components/core/schema-form';
+import type { FormSchema, TableSearchFormProps } from '@/components/core/table-search-form';
 
 export type UseTableFormContext = {
   tableState: TableState;
@@ -14,7 +15,7 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
   const { getProps, loadingRef } = tableState;
   const { getColumnKey, getQueryFormRef } = tableMethods;
 
-  const getFormProps = computed((): SchemaFormProps => {
+  const getFormProps = computed((): TableSearchFormProps => {
     const { formProps } = unref(getProps);
     const { submitButtonOptions } = formProps || {};
     return {
@@ -48,7 +49,7 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
   });
 
   // 同步外部对props的修改
-  watchEffect(() => getQueryFormRef()?.setSchemaFormProps(unref(getFormProps)), {
+  watchEffect(() => getQueryFormRef()?.setTableSearchFormProps(unref(getFormProps)), {
     flush: 'post',
   });
 

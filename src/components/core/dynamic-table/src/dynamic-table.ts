@@ -4,7 +4,8 @@ import { isBoolean } from './../../../../utils/is';
 import type { PropType, ExtractPropTypes } from 'vue';
 import type { BookType } from 'xlsx';
 import type { LoadDataParams, TableColumn, OnChangeCallbackParams } from './types/';
-import type { SchemaFormProps } from './../../../../components/core/schema-form';
+// import type { SchemaFormProps } from './../../../../components/core/schema-form';
+import type { TableSearchFormProps } from '@/components/core/table-search-form';
 
 export const dynamicTableProps = {
   ...tableProps(),
@@ -15,7 +16,7 @@ export const dynamicTableProps = {
   },
   /** 表单属性配置 */
   formProps: {
-    type: Object as PropType<SchemaFormProps>,
+    type: Object as PropType<TableSearchFormProps>,
     default: () => ({}),
   },
   /** 表格列配置 */
