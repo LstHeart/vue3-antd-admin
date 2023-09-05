@@ -1,42 +1,26 @@
-import type { ObjectDirective } from 'vue';
+import { ObjectDirective } from 'vue';
 
 export const vLabel: ObjectDirective = {
-  // mounted(el: HTMLDivElement, binding) {
-  //   /**
-  //    * el：指令绑定到的元素
-  //    * binding：一个对象 { value,oldValue,arg,modifiers,instance,dir }
-  //    *
-  //    * 自定义指令参数可参考：https://cn.vuejs.org/guide/reusability/custom-directives.html#hook-arguments
-  //    */
-  //   const labelEl = el.querySelector('.ant-form-item-label');
-  //   // const labelEl = el.firstElementChild as HTMLElement;
-  //   let realLabelWidth = '0px';
-  //   if (labelEl) {
-  //     realLabelWidth = window.getComputedStyle(labelEl).width;
-  //   }
-  //   // console.log('🚀 ~ file: label.ts:12 ~ mounted ~ labelEl:', labelEl);
+  mounted(el: HTMLDivElement, binding) {
+    /**
+     * el：指令绑定到的元素
+     * binding：一个对象 { value,oldValue,arg,modifiers,instance,dir }
+     *
+     * 自定义指令参数可参考：https://cn.vuejs.org/guide/reusability/custom-directives.html#hook-arguments
+     */
 
-  //   console.log('🚀 ~ file: label.ts:12 ~ mounted ~ realLabelWidth:', realLabelWidth);
-  //   binding.value.realLabelWidth = realLabelWidth;
-  //   // console.log('🚀 ~ file: label.ts:12 ~ mounted ~ realLabelWidth:', realLabelWidth);
-  //   // console.log(
-  //   //   '🚀 ~ file: label.ts:14 ~ updated ~ el: HTMLDivElement, binding, vnode:',
-  //   //   el,
-  //   //   binding,
-  //   // );
-  //   // el.setAttribute('--label-Width', realLabelWidth);
-  //   // el.setAttribute('data-label', binding.value); // 设定自定义属性，用来显示设定的label属性值
-  // },
-  beforeUpdate(el: HTMLDivElement, binding) {
-    const labelEl = el.querySelector('.ant-form-item-label');
-    // const labelEl = el.firstElementChild as HTMLElement;
+    /* 标签元素 */
+    const labelEl = el.querySelector('.ant-form-item-label') as Element;
     let realLabelWidth = '0px';
     if (labelEl) {
-      realLabelWidth = window.getComputedStyle(labelEl).width;
+      /* 创建新元素用来获取标签宽度 */
+      const tempEl = document.createElement('div');
+      tempEl.appendChild(labelEl.cloneNode(true));
+      document.body.appendChild(tempEl);
+      /* 标签文字实际占用宽度 */
+      realLabelWidth = window.getComputedStyle(tempEl.firstElementChild as HTMLDivElement).width;
+      tempEl.remove();
     }
-    // console.log('🚀 ~ file: label.ts:12 ~ mounted ~ labelEl:', labelEl);
-
-    console.log('🚀 ~ file: label.ts:12 ~ mounted ~ realLabelWidth:', realLabelWidth);
     binding.value.realLabelWidth = realLabelWidth;
   },
 };

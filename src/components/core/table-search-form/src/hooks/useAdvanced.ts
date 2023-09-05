@@ -4,6 +4,7 @@ import type { SchemaFormEmitFn } from '../schema-form';
 import type { SchemaFormType } from './';
 import { isBoolean, isFunction, isNumber, isObject } from '@/utils/is';
 import { useBreakpoint } from '@/hooks/event/useBreakpoint';
+// import { FormSchema } from '../types/form';
 
 // const BASIC_COL_LEN = 24;
 const BASIC_COL_LEN = 100; // 一行为100,100%
@@ -57,6 +58,63 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
     { immediate: true },
   );
 
+  // const setRealWidth = (schema: FormSchema<string>, index: number) => {
+  //   const realLabelWidth =
+  //     document.querySelectorAll('.ant-form-item-label')[index]?.clientWidth || 0;
+  //   schema.realLabelWidth = `${realLabelWidth}px`;
+  // };
+  /**
+   * 更新advance状态
+   */
+  function updateAdvanced() {
+    let itemColSum = 0;
+    let realItemColSum = 0;
+    // const { baseColProps = {} } = unref(getFormProps);
+
+    for (const schema of unref(formSchemasRef)) {
+      // const { vShow } = unref(formSchemasRef as FormSchema);
+      // console.log('vShow', schema.vShow);
+      // schema.vShow = false;
+      // setRealWidth(schema, index);
+      const { vShow } = schema;
+      let isShow = true;
+
+      if (isBoolean(vShow)) {
+        isShow = vShow;
+      }
+
+      if (isFunction(vShow)) {
+        isShow = vShow({
+          schema,
+          formModel,
+          field: schema.field,
+          formInstance: instance,
+          values: {
+            ...unref(defaultFormValues),
+            ...formModel,
+          },
+        });
+      }
+
+      if (isShow) {
+        const { itemColSum: sum, isAdvanced } = getAdvanced(itemColSum);
+
+        itemColSum = sum || 0;
+        if (isAdvanced) {
+          realItemColSum = itemColSum;
+        }
+        schema.isAdvanced = isAdvanced;
+      }
+      // debugger;
+    }
+    advanceState.actionSpan = (realItemColSum % BASIC_COL_LEN) + unref(getEmptySpan);
+
+    // getAdvanced(unref(getFormProps).actionColOptions || { span: BASIC_COL_LEN }, itemColSum, true);
+    getAdvanced(itemColSum, true);
+    // debugger;
+    emit('advanced-change');
+  }
+
   // 计算span
   function getAdvanced(itemColSum = 0, isLastAction = false) {
     const width = unref(realWidthRef);
@@ -87,56 +145,6 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
       // The first line is always displayed
       return { isAdvanced: true, itemColSum };
     }
-  }
-
-  /**
-   * 更新advance状态
-   */
-  function updateAdvanced() {
-    let itemColSum = 0;
-    let realItemColSum = 0;
-    // const { baseColProps = {} } = unref(getFormProps);
-
-    for (const schema of unref(formSchemasRef)) {
-      const { vShow } = schema;
-      let isShow = true;
-
-      if (isBoolean(vShow)) {
-        isShow = vShow;
-      }
-
-      if (isFunction(vShow)) {
-        isShow = vShow({
-          schema,
-          formModel,
-          field: schema.field,
-          formInstance: instance,
-          values: {
-            ...unref(defaultFormValues),
-            ...formModel,
-          },
-        });
-      }
-
-      if (isShow) {
-        const { itemColSum: sum, isAdvanced } = getAdvanced(itemColSum);
-
-        itemColSum = sum || 0;
-        if (isAdvanced) {
-          realItemColSum = itemColSum;
-        }
-
-        schema.isAdvanced = isAdvanced;
-      }
-      // debugger;
-    }
-    advanceState.actionSpan = (realItemColSum % BASIC_COL_LEN) + unref(getEmptySpan);
-
-    // getAdvanced(unref(getFormProps).actionColOptions || { span: BASIC_COL_LEN }, itemColSum, true);
-    getAdvanced(itemColSum, true);
-    // debugger;
-
-    emit('advanced-change');
   }
 
   function handleToggleAdvanced() {

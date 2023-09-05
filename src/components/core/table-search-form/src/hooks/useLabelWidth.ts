@@ -11,7 +11,7 @@ export function useItemLabelWidth(schemaRef: Ref<FormSchema>, formPropsRef: Ref<
     const { labelCol = {}, wrapperCol = {} } = schemaItem.formItemProps || {};
     const { labelWidth = 64, disabledLabelWidth } = schemaItem;
 
-    debugger;
+    // debugger;
     // 内部标签宽度
     const innerLabelWidth = isNumber(labelWidth) ? `${labelWidth}px` : labelWidth;
     // 内部标签是否显示

@@ -27,6 +27,7 @@ export const useFormState = ({ props, attrs }: useFormStateParams) => {
   const cacheFormModel = { ...props.initialValues };
   // 将所有的表单组件实例保存起来
   const compRefMap = new Map<string, DefineComponent<any>>();
+  const compItemRefMap = new Map<string, any>();
   // 初始时的componentProps，用于updateSchema更新时不覆盖componentProps为函数时的值
   const originComponentPropsFnMap = new Map<
     string,
@@ -82,6 +83,7 @@ export const useFormState = ({ props, attrs }: useFormStateParams) => {
     formPropsRef,
     cacheFormModel,
     compRefMap,
+    compItemRefMap,
     getFormProps,
     advanceState,
     getRowConfig,

@@ -10,6 +10,7 @@ import { isObject } from '@/utils/is';
 export const aFormPropKeys = Object.keys(formProps());
 type ButtonOptions = Partial<ButtonProps> & { text: string };
 
+/* 表单配置 FORM */
 export const schemaFormProps = {
   /** antd 原生form props */
   ...formProps(),
@@ -36,7 +37,7 @@ export const schemaFormProps = {
     default: () => [],
   },
   compact: { type: Boolean as PropType<boolean> },
-  /** 表单配置规则 */
+  /** 表单项配置规则 FORM-ITEM */
   schemas: {
     type: [Array] as PropType<FormSchema[]>,
     default: () => [],

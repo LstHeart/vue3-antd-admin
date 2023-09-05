@@ -13,6 +13,7 @@ export type FormMethods = ReturnType<typeof useFormMethods>;
 export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
   const {
     compRefMap,
+    compItemRefMap,
     formModel,
     formPropsRef,
     cacheFormModel,
@@ -21,6 +22,14 @@ export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
     getFormProps,
   } = formMethodsContext;
 
+  // 将所有的表单项实例保存起来, 方便外面通过表单项实例操作
+  const setFormItemRef = (field: string) => {
+    return (el) => {
+      if (el) {
+        compItemRefMap.set(field, el);
+      }
+    };
+  };
   // 将所有的表单组件实例保存起来, 方便外面通过表单组件实例操作
   const setItemRef = (field: string) => {
     return (el) => {
@@ -117,6 +126,7 @@ export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
 
   return {
     setItemRef,
+    setFormItemRef,
     initFormValues,
     setFormModel,
     delFormModel,

@@ -1,7 +1,7 @@
 import type { FormSchema } from '@/components/core/table-search-form';
 // import { Radio } from 'ant-design-vue';
 // import type { FormSchema } from '@/components/core/schema-form';
-// import { optionsListApi } from '@/api/demos/select';
+import { optionsListApi } from '@/api/demos/select';
 
 const provincesOptions = [
   {
@@ -54,13 +54,13 @@ const citiesOptionsData = {
   ],
 };
 
-// const fetchOptionList = async () => {
-//   const data = await optionsListApi();
-//   return data.list.map((item) => ({
-//     label: item.name,
-//     value: item.id,
-//   }));
-// };
+const fetchOptionList = async () => {
+  const data = await optionsListApi();
+  return data.list.map((item) => ({
+    label: item.name,
+    value: item.id,
+  }));
+};
 
 export const schemas: FormSchema[] = [
   {
@@ -88,7 +88,7 @@ export const schemas: FormSchema[] = [
     field: 'field2',
     component: 'InputNumber',
     label: '带后缀',
-    defaultValue: '111',
+    defaultValue: '',
 
     componentProps: {
       // onChange: (e: any) => {
@@ -321,10 +321,10 @@ export const schemas: FormSchema[] = [
     required: true,
     componentProps: {
       optionType: 'button',
-      // request: async () => {
-      //   const data = await fetchOptionList();
-      //   return data.slice(0, 2);
-      // },
+      request: async () => {
+        const data = await fetchOptionList();
+        return data.slice(0, 2);
+      },
     },
     defaultValue: '1',
   },

@@ -64,8 +64,6 @@
     getFormActionBindProps,
     formSchemasRef,
   } = formState;
-  console.log('🚀 ~ file: schema-form.vue:100 ~ formSchemasRef:', formSchemasRef);
-
   // 表单内部方法
   const formMethods = useFormMethods({ ...formState });
   const { initFormValues, handleFormValues } = formMethods;
@@ -96,15 +94,4 @@
   defineExpose(instance);
 </script>
 
-<style lang="less" scoped>
-  // .ant-col-4-8 {
-  //   display: block;
-  //   flex: 0 0 20%;
-  //   max-width: 20%;
-  // }
-  // .ant-col-6 {
-  //   display: block;
-  //   flex: 0 0 20%;
-  //   max-width: 20%;
-  // }
-</style>
+<style lang="less" scoped></style>

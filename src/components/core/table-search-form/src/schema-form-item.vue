@@ -3,11 +3,9 @@
     <Form.Item
       v-bind="{ ...schema.formItemProps }"
       :name="namePath"
-      :label="renderLabelHelpMessage"
+      :label="renderLabel"
       v-label="schema"
     >
-      <!-- <div class="test">6666</div> -->
-      <!-- <div :class="{ 'component-prefix': itemLabelWidthProp.showInnerLabel }" v-label="getLabel"> -->
       <component
         :class="getComponentClass"
         :is="getComponent"
@@ -25,18 +23,7 @@
         <template v-if="Object.is(schema.loading, true)" #notFoundContent>
           <Spin size="small" />
         </template>
-        <!-- <template
-          v-for="(slotFn, slotName) in getComponentSlots"
-          #[slotName]="slotData"
-          :key="slotName"
-        >
-          <component
-            :is="slotFn?.({ ...getValues, slotData }) ?? slotFn"
-            :key="slotName"
-          ></component>
-        </template> -->
       </component>
-      <!-- </div> -->
     </Form.Item>
   </Col>
 </template>
@@ -46,7 +33,7 @@
   import { debounce } from 'lodash-es';
   import { Form, Col, Spin } from 'ant-design-vue';
   // import { useItemLabelWidth } from './hooks/useLabelWidth';
-  import { componentMap, innerLabelMap } from './componentMap';
+  import { componentMap, innerLabelMap, disablePointMap } from './componentMap';
   import { createPlaceholderMessage } from './helper';
   import { useFormContext } from './hooks/useFormContext';
   import { schemaFormItemProps } from './schema-form-item';
@@ -54,7 +41,7 @@
   import type { RenderCallbackParams, ComponentProps } from './types/';
   // import type { RuleObject } from 'ant-design-vue/es/form/';
   import { isBoolean, isString, isFunction, isArray } from '@/utils/is';
-  import BasicHelp from '@/components/basic/basic-help/index.vue';
+  // import BasicHelp from '@/components/basic/basic-help/index.vue';
   import { vLabel } from './directives/label';
 
   defineOptions({
@@ -71,34 +58,53 @@
 
   const { schema } = toRefs(props);
 
-  // @ts-ignore
-  // const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);
-
-  const renderLabelHelpMessage = computed(() => {
-    const { helpMessage, helpComponentProps, subLabel } = props.schema;
-    console.log('isInnerLabel', isInnerLabel());
-    const renderLabel = subLabel ? (
-      <span>
-        {getLabel.value} <span class="text-secondary">{subLabel}</span>
-      </span>
-    ) : isInnerLabel() ? (
-      // vnodeFactory(getLabel.value)
-      <span class="inner-label">{getLabel.value}</span>
+  // 标签
+  const renderLabel = computed(() => {
+    return isInnerLabel.value ? (
+      disablePoint.value ? (
+        <span class="inner-label disable-point">{getLabel.value}</span>
+      ) : (
+        <span class="inner-label">{getLabel.value}</span>
+      )
     ) : (
       <span>{getLabel.value}</span>
     );
-    const getHelpMessage = isFunction(helpMessage) ? helpMessage(unref(getValues)) : helpMessage;
-    if (!getHelpMessage || (Array.isArray(getHelpMessage) && getHelpMessage.length === 0)) {
-      return renderLabel;
-    }
-    console.log('render help');
-    return (
-      <span>
-        {renderLabel}
-        <BasicHelp placement="top" class="mx-1" text={getHelpMessage} {...helpComponentProps} />
-      </span>
-    );
   });
+  // 标签宽度
+  // const realLabelWidth = computed(() => {
+  //   // console.log('label width e', e);
+  //   const { label } = unref(schema);
+  //   console.log('label width', label, label?.length);
+  //   return schema.value.realLabelWidth || 0;
+  // });
+  // @ts-ignore
+  // const itemLabelWidthProp = useItemLabelWidth(schema, formPropsRef);
+
+  // const renderLabelHelpMessage = computed(() => {
+  //   const { helpMessage, helpComponentProps, subLabel } = props.schema;
+  //   console.log('isInnerLabel', isInnerLabel());
+  //   const renderLabel = subLabel ? (
+  //     <span>
+  //       {getLabel.value} <span class="text-secondary">{subLabel}</span>
+  //     </span>
+  //   ) : isInnerLabel() ? (
+  //     // vnodeFactory(getLabel.value)
+  //     <span class="inner-label">{getLabel.value}</span>
+  //   ) : (
+  //     <span>{getLabel.value}</span>
+  //   );
+  //   const getHelpMessage = isFunction(helpMessage) ? helpMessage(unref(getValues)) : helpMessage;
+  //   if (!getHelpMessage || (Array.isArray(getHelpMessage) && getHelpMessage.length === 0)) {
+  //     return renderLabel;
+  //   }
+  //   console.log('render help');
+  //   return (
+  //     <span>
+  //       {renderLabel}
+  //       <BasicHelp placement="top" class="mx-1" text={getHelpMessage} {...helpComponentProps} />
+  //     </span>
+  //   );
+  // });
 
   const namePath = computed<string[]>(() => {
     const namePath = isArray(schema.value.field)
@@ -226,17 +232,22 @@
     //   : vnodeFactory(component);
   });
 
-  const isInnerLabel = () => {
+  /* 是否为内部标签 */
+  const isInnerLabel = computed(() => {
     const component = props.schema.component;
     return innerLabelMap[component] == getComponent.value;
     // const innerLabelCompList = ['AInput', 'AInputNumber', 'ASelect', 'ADatePicker', 'ARangePicker'];
     // return innerLabelCompList.includes(getComponent.value.name);
-  };
+  });
+
+  const disablePoint = computed(() => {
+    const component = props.schema.component;
+    return disablePointMap[component] == getComponent.value;
+  });
 
   const getComponentClass = computed(() => {
     const component = props.schema.component as string;
     const compName = componentMap[component].name;
-    console.log('compName', compName);
 
     return `form-item-comp-${compName}`;
   });
@@ -380,11 +391,6 @@
 </script>
 
 <style lang="less" scoped>
-  // .component-prefix::before {
-  //   color: red;
-  //   width: var(--label-Width);
-  //   content: attr(data-label);
-  // }
   .form-item-col {
     /* 显示适配，可视宽度小于1440 每行显示4个 */
     @media screen and(max-width: 1440px) {
@@ -404,66 +410,44 @@
       margin-right: 16px !important;
     }
     :deep(.ant-form-item-label:has(.inner-label)) {
-      & {
-        display: flex;
-        background-color: rgb(240, 235, 235);
-        position: absolute;
-        z-index: 2;
-        padding-left: 8px;
-        // pointer-events: none;
-        label::after {
-          content: ':';
-        }
+      // & {
+      display: flex;
+      background-color: rgb(240, 235, 235);
+      position: absolute;
+      z-index: 2;
+      padding-left: 8px;
+      // pointer-events: none;
+      /* 添加标签后缀 */
+      label::after {
+        content: ':';
       }
+    }
+
+    :deep(.ant-form-item-label:has(.inner-label):has(.disable-point)) {
+      pointer-events: none;
+      background-color: red !important;
     }
 
     :deep(.ant-form-item-control-input-content) {
       .paddingL {
-        // padding-left: var(--label-Width) !important;
-        padding-left: var(--label-Width) !important;
+        padding-left: calc(var(--label-Width) + 16px) !important;
       }
-      // 组件设定偏移
+
+      /* 组件左内边距 */
       .form-item-comp-AInput,
       .form-item-comp-ADatePicker,
-      .form-item-comp-ASelect > .ant-select-selector,
       .form-item-comp-ARangePicker,
-      .form-item-comp-ACascader {
+      .form-item-comp-ASelect > .ant-select-selector,
+      .form-item-comp-ATreeSelect > .ant-select-selector,
+      .form-item-comp-ACascader > .ant-select-selector {
         .paddingL();
       }
       .form-item-comp-AInputNumber {
         .paddingL();
-        // padding-left: calc(var(--label-Width) - 6px) !important;
+        .ant-input-number-input {
+          padding-left: 0px !important;
+        }
       }
-      .form-item-comp-ATreeSelect > .ant-select-selector {
-        .paddingL();
-        // padding-left: calc(var(--label-Width) + 56px) !important;
-      }
-      // .ant-input-affix-wrapper {
-      //   padding-left: 0px !important;
-      //   padding-right: 8px !important;
-      // }
-      // .form-item-comp > .ant-input,
-      // // .ant-input-affix-wrapper,
-      // .ant-select-selector>.ant-select-selection-search,
-      // .ant-select-selector>.ant-select-selection-item,
-      // .ant-select-selector>.ant-select-selection-placeholder,
-      // .ant-select-auto-complete > span,
-      // .ant-picker-range,
-      // .ant-picker {
-      //   .paddingL();
-      // }
-      // .form-item-comp {
-      //   .ant-select-clear {
-      //     padding-right: 11px !important;
-      //   }
-      //   .ant-select-selection-search {
-      //     left: 0px !important;
-      //     right: 0px !important;
-      //   }
-      // }
-      // .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
-      //   padding: 0px !important;
-      // }
     }
   }
 </style>
