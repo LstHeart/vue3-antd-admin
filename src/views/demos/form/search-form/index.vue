@@ -1,13 +1,13 @@
 <template>
   <div>
     <a-card>
-      <schema-form
+      <TableSearchForm
         ref="dynamicForm"
         v-bind="formProps"
         @submit="confirm"
         @toggle-advanced="(e) => $emit('toggle-advanced', e)"
       >
-      </schema-form>
+      </TableSearchForm>
     </a-card>
   </div>
 </template>
@@ -16,8 +16,11 @@
   import { ref } from 'vue';
   import { message } from 'ant-design-vue';
   import { schemas } from './form-schema';
-  import type { SchemaFormProps, SchemaFormInstance } from '@/components/core/table-search-form';
-  import { SchemaForm } from '@/components/core/table-search-form';
+  import type {
+    TableSearchFormProps,
+    TableSearchFormInstance,
+  } from '@/components/core/table-search-form';
+  import { TableSearchForm } from '@/components/core/table-search-form';
 
   defineOptions({
     name: 'DemosFormDynamicSearchForm',
@@ -26,10 +29,11 @@
   /**
    * @description 基础表单
    */
-  const dynamicForm = ref<SchemaFormInstance>();
+  const dynamicForm = ref<TableSearchFormInstance>();
 
-  const formProps: SchemaFormProps = {
+  const formProps: TableSearchFormProps = {
     schemas,
+    fieldMapToTime: [['field5', ['startTime', 'endTime'], 'YYYY-MM']],
     // labelWidth: 120,
     // actionColOptions: { span: 24 },
   };

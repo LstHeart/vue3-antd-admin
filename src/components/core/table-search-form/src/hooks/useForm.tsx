@@ -1,11 +1,11 @@
 import { nextTick, ref, unref, watch } from 'vue';
 import { isEmpty } from 'lodash-es';
-import SchemaForm from '../../index';
+import TableSearchForm from '../../index';
 import type { Ref, SetupContext } from 'vue';
-import type { SchemaFormInstance, SchemaFormProps } from '../schema-form';
+import type { TableSearchFormInstance, TableSearchFormProps } from '../table-search-form';
 
-export function useForm(props?: Partial<SchemaFormProps>) {
-  const formRef = ref<SchemaFormInstance>({} as SchemaFormInstance);
+export function useForm(props?: Partial<TableSearchFormProps>) {
+  const formRef = ref<TableSearchFormInstance>({} as TableSearchFormInstance);
 
   async function getFormInstance() {
     await nextTick();
@@ -21,8 +21,7 @@ export function useForm(props?: Partial<SchemaFormProps>) {
       if (props) {
         await nextTick();
         const formInstance = await getFormInstance();
-        // console.log('form onMounted');
-        formInstance.setSchemaFormProps?.(props);
+        formInstance.setTableSearchFormProps?.(props);
       }
     },
     {
@@ -32,7 +31,7 @@ export function useForm(props?: Partial<SchemaFormProps>) {
     },
   );
 
-  const methods = new Proxy<Ref<SchemaFormInstance>>(formRef, {
+  const methods = new Proxy<Ref<TableSearchFormInstance>>(formRef, {
     get(target, key) {
       if (Reflect.has(target, key)) {
         return unref(target);
@@ -47,18 +46,18 @@ export function useForm(props?: Partial<SchemaFormProps>) {
     },
   });
 
-  const SchemaFormRender = (
-    compProps: Partial<SchemaFormProps>,
+  const TableSearchFormRender = (
+    compProps: Partial<TableSearchFormProps>,
     { attrs, slots }: SetupContext,
   ) => {
     return (
-      <SchemaForm
+      <TableSearchForm
         ref={formRef}
         {...{ ...attrs, ...props, ...compProps }}
         v-slots={slots}
-      ></SchemaForm>
+      ></TableSearchForm>
     );
   };
 
-  return [SchemaFormRender, unref(methods)] as const;
+  return [TableSearchFormRender, unref(methods)] as const;
 }

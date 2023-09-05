@@ -1,11 +1,12 @@
 import type { TableActionType } from '@/components/core/dynamic-table';
 import type { FormSchema } from './types';
 
-export const schemaFormItemProps = {
+export const tableSearchFormItemProps = {
   formModel: {
     type: Object as PropType<Record<string, any>>,
     default: () => ({}),
   },
+  /* 表单项配置，继承form上的schema */
   schema: {
     type: Object as PropType<FormSchema>,
     default: () => ({}),
@@ -20,4 +21,4 @@ export const schemaFormItemProps = {
   },
 };
 
-export type SchemaFormItemProps = typeof schemaFormItemProps;
+export type TableSearchFormItemProps = typeof tableSearchFormItemProps;

@@ -1,7 +1,7 @@
 import { unref } from 'vue';
 import { set } from 'lodash-es';
 import type { FormState } from './useFormState';
-import type { SchemaFormProps } from '../schema-form';
+import type { TableSearchFormProps } from '../table-search-form';
 import { deepMerge } from '@/utils/';
 import { isFunction, isNullOrUnDef, isObject, isArray, isString } from '@/utils/is';
 import { dateUtil } from '@/utils/dateUtil';
@@ -18,7 +18,7 @@ export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
     formPropsRef,
     cacheFormModel,
     defaultFormValues,
-    schemaFormRef,
+    tableSearchFormRef,
     getFormProps,
   } = formMethodsContext;
 
@@ -45,7 +45,7 @@ export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
     cacheFormModel[key] = value;
     const { validateTrigger } = unref(getFormProps);
     if (!validateTrigger || validateTrigger === 'change') {
-      schemaFormRef.value?.validateFields([key]);
+      tableSearchFormRef.value?.validateFields([key]);
     }
   };
 
@@ -54,7 +54,7 @@ export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
     return Reflect.deleteProperty(formModel, key);
   };
 
-  const setSchemaFormProps = (formProps: Partial<SchemaFormProps>) => {
+  const setTableSearchFormProps = (formProps: Partial<TableSearchFormProps>) => {
     formPropsRef.value = deepMerge(unref(formPropsRef) || {}, formProps);
   };
 
@@ -130,7 +130,7 @@ export const useFormMethods = (formMethodsContext: UseFormMethodsContext) => {
     initFormValues,
     setFormModel,
     delFormModel,
-    setSchemaFormProps,
+    setTableSearchFormProps,
     handleFormValues,
   };
 };

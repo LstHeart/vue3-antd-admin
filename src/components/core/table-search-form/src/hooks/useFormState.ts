@@ -2,7 +2,7 @@ import { computed, reactive, ref, unref, watchEffect } from 'vue';
 import { cloneDeep } from 'lodash-es';
 import type { SetupContext, DefineComponent } from 'vue';
 import type { AdvanceState } from '../types/hooks';
-import type { SchemaFormProps } from '../schema-form';
+import type { TableSearchFormProps } from '../table-search-form';
 import type { FormInstance } from 'ant-design-vue';
 import type { ComponentProps, RenderCallbackParams } from '../types';
 import { isFunction } from '@/utils/is';
@@ -10,19 +10,19 @@ import { isFunction } from '@/utils/is';
 export type FormState = ReturnType<typeof useFormState>;
 
 export type useFormStateParams = {
-  props: SchemaFormProps;
+  props: TableSearchFormProps;
   attrs: SetupContext['attrs'];
 };
 
 export const useFormState = ({ props, attrs }: useFormStateParams) => {
   // TODO 将formSchema克隆一份，避免修改原有的formSchema
-  const formPropsRef = ref<SchemaFormProps>(cloneDeep(props));
+  const formPropsRef = ref<TableSearchFormProps>(cloneDeep(props));
   /** 表单项数据 */
   const formModel = reactive({ ...props.initialValues });
   // 表单默认数据
   const defaultFormValues = reactive({ ...props.initialValues });
   // 表单实例
-  const schemaFormRef = ref<FormInstance>();
+  const tableSearchFormRef = ref<FormInstance>();
   // 缓存的表单值，用于恢复form-item v-if为true后的值
   const cacheFormModel = { ...props.initialValues };
   // 将所有的表单组件实例保存起来
@@ -48,7 +48,7 @@ export const useFormState = ({ props, attrs }: useFormStateParams) => {
     return {
       ...attrs,
       ...formPropsRef.value,
-    } as SchemaFormProps;
+    } as TableSearchFormProps;
   });
 
   // 获取栅栏Row配置
@@ -79,7 +79,7 @@ export const useFormState = ({ props, attrs }: useFormStateParams) => {
   return {
     formModel,
     defaultFormValues,
-    schemaFormRef,
+    tableSearchFormRef,
     formPropsRef,
     cacheFormModel,
     compRefMap,

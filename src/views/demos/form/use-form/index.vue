@@ -43,8 +43,6 @@
 
   // 点击提交
   function confirm() {
-    console.log('dynamicFormRef', dynamicFormRef);
-
     dynamicFormRef.validate().then(() => message.success('验证通过！'));
   }
 

@@ -5,12 +5,12 @@ import { dateItemType, handleInputNumberValue } from '../helper';
 import type { FormSchema } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
 import type { FormState, FormMethods } from './index';
-import type { SchemaFormEmitFn } from '../schema-form';
+import type { TableSearchFormEmitFn } from '../table-search-form';
 import { isArray, isFunction, isObject, isString } from '@/utils/is';
 import { deepMerge } from '@/utils';
 
 type UseFormActionContext = FormState & {
-  emit: SchemaFormEmitFn;
+  emit: TableSearchFormEmitFn;
   handleFormValues: FormMethods['handleFormValues'];
 };
 
@@ -24,14 +24,14 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     formModel,
     cacheFormModel,
     getFormProps,
-    schemaFormRef,
+    tableSearchFormRef,
     defaultFormValues,
     originComponentPropsFnMap,
     handleFormValues,
   } = formActionContext;
 
   function getFieldsValue(): Recordable {
-    const formEl = unref(schemaFormRef);
+    const formEl = unref(tableSearchFormRef);
     if (!formEl) return {};
     return handleFormValues(toRaw(unref(formModel)));
   }
@@ -220,19 +220,19 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
   }
 
   async function validateFields(nameList?: NamePath[] | undefined) {
-    return schemaFormRef.value?.validateFields(nameList);
+    return tableSearchFormRef.value?.validateFields(nameList);
   }
 
   async function validate(nameList?: NamePath[] | undefined) {
-    return await schemaFormRef.value?.validate(nameList)!;
+    return await tableSearchFormRef.value?.validate(nameList)!;
   }
 
   async function clearValidate(name?: string | string[]) {
-    await schemaFormRef.value?.clearValidate(name);
+    await tableSearchFormRef.value?.clearValidate(name);
   }
 
   async function scrollToField(name: NamePath, options?: ScrollOptions | undefined) {
-    await schemaFormRef.value?.scrollToField(name, options);
+    await tableSearchFormRef.value?.scrollToField(name, options);
   }
 
   async function handleSubmit(e?: Event) {
@@ -242,11 +242,13 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
       await submitFunc();
       return;
     }
-    const formEl = unref(schemaFormRef);
+    const formEl = unref(tableSearchFormRef);
     if (!formEl) return;
     try {
       const values = await validate();
       const res = handleFormValues(values);
+      console.log('submit res', res);
+
       emit('submit', res);
       return res;
     } catch (error: any) {

@@ -1,10 +1,13 @@
 import { computed, unref } from 'vue';
 import type { Ref } from 'vue';
 import type { FormSchema } from '../types/form';
-import type { SchemaFormProps } from '../schema-form';
+import type { TableSearchFormProps } from '../table-search-form';
 import { isNumber } from '@/utils/is';
 
-export function useItemLabelWidth(schemaRef: Ref<FormSchema>, formPropsRef: Ref<SchemaFormProps>) {
+export function useItemLabelWidth(
+  schemaRef: Ref<FormSchema>,
+  formPropsRef: Ref<TableSearchFormProps>,
+) {
   return computed(() => {
     const schemaItem = unref(schemaRef);
     console.log('🚀 ~ file: useLabelWidth.ts:10 ~ returncomputed ~ schemaItem:', schemaItem);

@@ -10,4 +10,4 @@ export * from './useFormMethods';
 export * from './useLabelWidth';
 export * from './useAdvanced';
 
-export type SchemaFormType = FormState & FormEvents & FormMethods;
+export type TableSearchFormType = FormState & FormEvents & FormMethods;

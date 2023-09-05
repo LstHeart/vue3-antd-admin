@@ -32,7 +32,6 @@ export function createBreakpointListen(fn?: (opt: CreateCallbackParams) => void)
 
   function getWindowWidth() {
     const width = document.body.clientWidth;
-    console.log('🚀 ~ file: useBreakpoint.ts:34 ~ getWindowWidth ~ width:', width);
     const xs = screenMap.get(sizeEnum.XS)!;
     const sm = screenMap.get(sizeEnum.SM)!;
     const md = screenMap.get(sizeEnum.MD)!;
@@ -51,7 +50,6 @@ export function createBreakpointListen(fn?: (opt: CreateCallbackParams) => void)
     } else {
       screenRef.value = sizeEnum.XXL;
     }
-    console.log('🚀 ~ file: useBreakpoint.ts:59 ~ getWindowWidth ~ screenRef:', screenRef);
     realWidthRef.value = width;
   }
 

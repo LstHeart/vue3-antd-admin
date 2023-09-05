@@ -36,7 +36,7 @@
   import { componentMap, innerLabelMap, disablePointMap } from './componentMap';
   import { createPlaceholderMessage } from './helper';
   import { useFormContext } from './hooks/useFormContext';
-  import { schemaFormItemProps } from './schema-form-item';
+  import { tableSearchFormItemProps } from './table-search-form-item';
   // import type { ComponentMapType } from './componentMap';
   import type { RenderCallbackParams, ComponentProps } from './types/';
   // import type { RuleObject } from 'ant-design-vue/es/form/';
@@ -45,13 +45,13 @@
   import { vLabel } from './directives/label';
 
   defineOptions({
-    name: 'SchemaFormItem',
+    name: 'TableSearchFormItem',
   });
 
-  const props = defineProps(schemaFormItemProps);
+  const props = defineProps(tableSearchFormItemProps);
   const emit = defineEmits(['update:formModel']);
 
-  // schemaForm组件实例
+  // tableSearchForm组件实例
   const formContext = useFormContext();
   const { formPropsRef, setItemRef, updateSchema, getSchemaByFiled, appendSchemaByField } =
     formContext;
@@ -143,7 +143,7 @@
   const getValues = computed<RenderCallbackParams>(() => {
     const { formModel, schema, tableInstance } = props;
 
-    const { mergeDynamicData } = unref(formPropsRef);
+    // const { mergeDynamicData } = unref(formPropsRef);
     return {
       field: schema.field,
       formInstance: formContext,
@@ -151,7 +151,7 @@
       tableRowKey: props.tableRowKey,
       formModel: props.tableRowKey ? formModel[props.tableRowKey] : formModel,
       values: {
-        ...mergeDynamicData,
+        // ...mergeDynamicData,
         ...formModel,
       } as Recordable,
       schema,

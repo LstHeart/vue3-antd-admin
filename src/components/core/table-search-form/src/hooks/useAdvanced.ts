@@ -1,7 +1,7 @@
 import { computed, unref, watch } from 'vue';
-import type { SchemaFormEmitFn } from '../schema-form';
+import type { TableSearchFormEmitFn } from '../table-search-form';
 // import type { ColEx } from '../types/component';
-import type { SchemaFormType } from './';
+import type { TableSearchFormType } from './';
 import { isBoolean, isFunction, isNumber, isObject } from '@/utils/is';
 import { useBreakpoint } from '@/hooks/event/useBreakpoint';
 // import { FormSchema } from '../types/form';
@@ -10,8 +10,8 @@ import { useBreakpoint } from '@/hooks/event/useBreakpoint';
 const BASIC_COL_LEN = 100; // 一行为100,100%
 
 type UseAdvancedContext = {
-  instance: SchemaFormType;
-  emit: SchemaFormEmitFn;
+  instance: TableSearchFormType;
+  emit: TableSearchFormEmitFn;
 };
 
 export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {

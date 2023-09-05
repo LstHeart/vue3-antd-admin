@@ -1,6 +1,6 @@
 <template>
   <Form
-    ref="schemaFormRef"
+    ref="tableSearchFormRef"
     autocomplete="off"
     v-bind="pick(getFormProps, aFormPropKeys)"
     :model="formModel"
@@ -8,7 +8,7 @@
     <Row v-bind="getRowConfig" style="width: 100%">
       <!-- 表单项 -->
       <template v-for="schemaItem in formSchemasRef" :key="schemaItem.field">
-        <SchemaFormItem
+        <TableSearchFormItem
           v-model:form-model="formModel"
           :schema="schemaItem"
           :table-instance="tableInstance"
@@ -16,7 +16,7 @@
           <template v-for="item in Object.keys($slots)" #[item]="data" :key="item">
             <slot :name="item" v-bind="data || {}"></slot>
           </template>
-        </SchemaFormItem>
+        </TableSearchFormItem>
       </template>
 
       <!-- 展开、收起、查询、重置按钮 -->
@@ -34,24 +34,24 @@
   import { useAttrs } from 'vue';
   import { pick } from 'lodash-es';
   import { Form, Row } from 'ant-design-vue';
-  import SchemaFormItem from './schema-form-item.vue';
+  import TableSearchFormItem from './table-search-form-item.vue';
   import {
     createFormContext,
     useFormState,
     useFormEvents,
     useFormMethods,
     useAdvanced,
-    type SchemaFormType,
+    type TableSearchFormType,
   } from './hooks/';
-  import { schemaFormProps, schemaFormEmits, aFormPropKeys } from './schema-form';
+  import { tableSearchFormProps, tableSearchFormEmits, aFormPropKeys } from './table-search-form';
   import FormAction from './components/form-action.vue';
 
   defineOptions({
-    name: 'SchemaForm',
+    name: 'TableSearchForm',
   });
 
-  const props = defineProps(schemaFormProps);
-  const emit = defineEmits(schemaFormEmits);
+  const props = defineProps(tableSearchFormProps);
+  const emit = defineEmits(tableSearchFormEmits);
   const attrs = useAttrs();
 
   // 表单内部状态
@@ -59,7 +59,7 @@
   const {
     formModel,
     getRowConfig,
-    schemaFormRef,
+    tableSearchFormRef,
     getFormProps,
     getFormActionBindProps,
     formSchemasRef,
@@ -79,7 +79,7 @@
     ...formState,
     ...formEvents,
     ...formMethods,
-  } as SchemaFormType;
+  } as TableSearchFormType;
 
   // 搜索表单 展开/收起 表单项hooks
   const { handleToggleAdvanced } = useAdvanced({

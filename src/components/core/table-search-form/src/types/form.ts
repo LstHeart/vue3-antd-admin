@@ -5,8 +5,8 @@ import type { VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '@/components/basic/button';
 import type { ComponentMapType, ComponentProps } from './component';
 // import type { TableActionType } from '/@/components/Table/src/types/table'
-import type { SchemaFormInstance } from '../schema-form';
-import type { SchemaFormType } from '../hooks';
+import type { TableSearchFormInstance } from '../table-search-form';
+import type { TableSearchFormType } from '../hooks';
 import type { TableActionType } from '@/components/core/dynamic-table';
 
 export type { RowProps };
@@ -26,7 +26,7 @@ export interface RenderCallbackParams<T = string> {
   field: T extends string ? string : GetFieldKeys<T>;
   values: any;
   /** 动态表单实例 */
-  formInstance: SchemaFormType;
+  formInstance: TableSearchFormType;
   /** 动态表格实例 */
   tableInstance?: TableActionType;
   /** 动态表格rowKey */
@@ -43,6 +43,7 @@ export interface ButtonProps extends AntdButtonProps {
   text?: string;
 }
 
+/* 表单操作类型接口 */
 export interface FormActionType {
   formModel?: Recordable;
   submit: () => Promise<void>;
@@ -52,7 +53,7 @@ export interface FormActionType {
   clearValidate: (name?: string | string[]) => Promise<void>;
   updateSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => Promise<void>;
   resetSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => Promise<void>;
-  setSchemaFormProps: (formProps: Partial<FormSchema>) => Promise<void>;
+  setTableSearchFormProps: (formProps: Partial<FormSchema>) => Promise<void>;
   removeSchemaByFiled: (field: string | string[]) => Promise<void>;
   appendSchemaByField: (
     schema: FormSchema,
@@ -64,7 +65,7 @@ export interface FormActionType {
   scrollToField: (name: NamePath, options?: ScrollOptions) => Promise<void>;
 }
 
-export type RegisterFn = (formInstance: SchemaFormInstance) => void;
+export type RegisterFn = (formInstance: TableSearchFormInstance) => void;
 
 /** 表单项 */
 export interface FormSchema<T = string> {
@@ -158,7 +159,7 @@ export interface HelpComponentProps {
   showIndex: boolean;
   // Text list
   text: any;
-  // colour
+  // color
   color: string;
   // font size
   fontSize: string;

@@ -25,8 +25,8 @@
   import { LoadingOutlined } from '@ant-design/icons-vue';
   import { selectProps } from 'ant-design-vue/es/select';
   import { Select } from 'ant-design-vue';
-  import { isFunction } from './../../../../../utils/is';
-  import { propTypes } from './../../../../../utils/propTypes';
+  import { isFunction } from '@/utils/is';
+  import { propTypes } from '@/utils/propTypes';
 
   type OptionsItem = { label: string; value: string; disabled?: boolean };
 
