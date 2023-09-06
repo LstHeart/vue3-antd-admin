@@ -138,7 +138,7 @@ export interface FormItemSchema<T = string> {
   /** 作用同v-show */
   vShow?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
   /** 作用同v-if */
-  // vIf?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
+  vIf?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
   // 渲染col内容需要外层包装form-item
   renderColContent?: CustomRenderFn<T>;

@@ -406,7 +406,7 @@
     :deep(.ant-form-item-label:has(.inner-label)) {
       // & {
       display: flex;
-      background-color: rgb(240, 235, 235);
+      // background-color: rgb(240, 235, 235);
       position: absolute;
       z-index: 2;
       padding-left: 8px;
@@ -419,7 +419,6 @@
 
     :deep(.ant-form-item-label:has(.inner-label):has(.disable-point)) {
       pointer-events: none;
-      background-color: red !important;
     }
 
     :deep(.ant-form-item-control-input-content) {
