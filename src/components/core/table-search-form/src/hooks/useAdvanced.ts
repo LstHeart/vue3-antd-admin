@@ -4,7 +4,7 @@ import type { TableSearchFormEmitFn } from '../table-search-form';
 import type { TableSearchFormType } from './';
 import { isBoolean, isFunction, isNumber, isObject } from '@/utils/is';
 import { useBreakpoint } from '@/hooks/event/useBreakpoint';
-// import { FormSchema } from '../types/form';
+// import { FormItemSchema } from '../types/form';
 
 // const BASIC_COL_LEN = 24;
 const BASIC_COL_LEN = 100; // 一行为100,100%
@@ -58,7 +58,7 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
     { immediate: true },
   );
 
-  // const setRealWidth = (schema: FormSchema<string>, index: number) => {
+  // const setRealWidth = (schema: FormItemSchema<string>, index: number) => {
   //   const realLabelWidth =
   //     document.querySelectorAll('.ant-form-item-label')[index]?.clientWidth || 0;
   //   schema.realLabelWidth = `${realLabelWidth}px`;
@@ -72,7 +72,7 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
     // const { baseColProps = {} } = unref(getFormProps);
 
     for (const schema of unref(formSchemasRef)) {
-      // const { vShow } = unref(formSchemasRef as FormSchema);
+      // const { vShow } = unref(formSchemasRef as FormItemSchema);
       // console.log('vShow', schema.vShow);
       // schema.vShow = false;
       // setRealWidth(schema, index);
@@ -115,7 +115,7 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
     emit('advanced-change');
   }
 
-  // 计算span
+  /* 设定表单项折叠显示 */
   function getAdvanced(itemColSum = 0, isLastAction = false) {
     const width = unref(realWidthRef);
     // debugger;
@@ -139,10 +139,10 @@ export const useAdvanced = ({ instance, emit }: UseAdvancedContext) => {
       return { isAdvanced: advanceState.isAdvanced, itemColSum };
     }
 
-    if (itemColSum > BASIC_COL_LEN * (unref(getFormProps).alwaysShowLines || 1)) {
+    if (itemColSum > BASIC_COL_LEN * ((unref(getFormProps).alwaysShowLines || 1) + 1) - baseSpan) {
       return { isAdvanced: advanceState.isAdvanced, itemColSum };
     } else {
-      // The first line is always displayed
+      // 第一行永远显示，若设定了alwaysShowLines的值，优先取alwaysShowLines
       return { isAdvanced: true, itemColSum };
     }
   }

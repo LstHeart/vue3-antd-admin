@@ -1,5 +1,5 @@
 import type { TableActionType } from '@/components/core/dynamic-table';
-import type { FormSchema } from './types';
+import type { FormItemSchema } from './types';
 
 export const tableSearchFormItemProps = {
   formModel: {
@@ -8,7 +8,7 @@ export const tableSearchFormItemProps = {
   },
   /* 表单项配置，继承form上的schema */
   schema: {
-    type: Object as PropType<FormSchema>,
+    type: Object as PropType<FormItemSchema>,
     default: () => ({}),
   },
   // 动态表格实例

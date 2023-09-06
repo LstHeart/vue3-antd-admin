@@ -2,7 +2,7 @@ import { formProps, type FormProps } from 'ant-design-vue/es/form';
 import type TableSearchForm from './table-search-form.vue';
 // import type { ColEx } from './types/component';
 import type { ExtractPropTypes, ComponentInternalInstance, CSSProperties } from 'vue';
-import type { FieldMapToTime, FormSchema, RowProps } from './types/form';
+import type { FieldMapToTime, FormItemSchema, RowProps } from './types/form';
 import type { ButtonProps } from '@/components/basic/button';
 import type { TableActionType } from '@/components/core/dynamic-table';
 import { isObject } from '@/utils/is';
@@ -43,7 +43,7 @@ export const tableSearchFormProps = {
   compact: { type: Boolean as PropType<boolean> },
   /** 表单项配置规则 FORM-ITEM */
   schemas: {
-    type: [Array] as PropType<FormSchema[]>,
+    type: [Array] as PropType<FormItemSchema[]>,
     default: () => [],
   },
   /* 自动设定 placeHolder */
@@ -138,7 +138,7 @@ export type TableSearchFormEmitFn = EmitFn<TableSearchFormEmits>;
 
 export type TableSearchFormProps<T = any> = Partial<
   ExtractPropTypes<typeof tableSearchFormProps> & {
-    schemas: FormSchema<T>[];
+    schemas: FormItemSchema<T>[];
   }
 >;
 

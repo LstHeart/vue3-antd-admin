@@ -3,7 +3,7 @@ import type { TableMethods } from './useTableMethods';
 import type { TableState } from './useTableState';
 import type { ComputedRef, Slots } from 'vue';
 // import type { FormSchema, SchemaFormProps } from './../../../../../components/core/schema-form';
-import type { FormSchema, TableSearchFormProps } from '@/components/core/table-search-form';
+import type { FormItemSchema, TableSearchFormProps } from '@/components/core/table-search-form';
 
 export type UseTableFormContext = {
   tableState: TableState;
@@ -29,7 +29,7 @@ export function useTableForm({ tableState, slots, tableMethods }: UseTableFormCo
     };
   });
 
-  const formSchemas = computed<FormSchema[]>(() => {
+  const formSchemas = computed<FormItemSchema[]>(() => {
     return unref(getProps)
       .columns.filter((n: any) => {
         const field = getColumnKey(n);

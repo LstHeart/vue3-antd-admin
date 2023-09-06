@@ -1,4 +1,4 @@
-import type { FormSchema } from '@/components/core/table-search-form';
+import type { FormItemSchema } from '@/components/core/table-search-form';
 // import { Radio } from 'ant-design-vue';
 // import type { FormSchema } from '@/components/core/schema-form';
 import { optionsListApi } from '@/api/demos/select';
@@ -62,7 +62,7 @@ const fetchOptionList = async () => {
   }));
 };
 
-export const schemas: FormSchema[] = [
+export const schemas: FormItemSchema[] = [
   {
     field: 'field1',
     component: 'Input',

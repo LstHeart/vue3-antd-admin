@@ -192,7 +192,7 @@
   });
 
   // const vnodeFactory = (
-  //   // component: FormSchema['componentSlots'] | FormSchema['component'],
+  //   // component: FormItemSchema['componentSlots'] | FormItemSchema['component'],
   //   values = unref(getValues),
   // ) => {
   //   if (isString(component)) {

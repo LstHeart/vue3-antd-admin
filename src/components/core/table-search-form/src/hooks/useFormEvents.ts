@@ -2,7 +2,7 @@ import { unref, toRaw } from 'vue';
 import { cloneDeep, uniqBy } from 'lodash-es';
 import dayjs from 'dayjs';
 import { dateItemType, handleInputNumberValue } from '../helper';
-import type { FormSchema } from '../types/form';
+import type { FormItemSchema } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
 import type { FormState, FormMethods } from './index';
 import type { TableSearchFormEmitFn } from '../table-search-form';
@@ -92,22 +92,22 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
     validateFields(validKeys);
   }
 
-  async function resetSchema(data: Partial<FormSchema> | Partial<FormSchema>[]) {
-    let updateData: Partial<FormSchema>[] = [];
+  async function resetSchema(data: Partial<FormItemSchema> | Partial<FormItemSchema>[]) {
+    let updateData: Partial<FormItemSchema>[] = [];
     if (isObject(data)) {
-      updateData.push(data as FormSchema);
+      updateData.push(data as FormItemSchema);
     }
     if (isArray(data)) {
       updateData = [...data];
     }
     // @ts-ignore
-    unref(formPropsRef).schemas = updateData as FormSchema[];
+    unref(formPropsRef).schemas = updateData as FormItemSchema[];
   }
 
   /**
    * @description: 插入到指定 filed 后面，如果没传指定 field，则插入到最后,当 first = true 时插入到第一个位置
    */
-  async function appendSchemaByField(schemaItem: FormSchema, prefixField?: string, first = false) {
+  async function appendSchemaByField(schemaItem: FormItemSchema, prefixField?: string, first = false) {
     const schemaList = cloneDeep(unref(formSchemasRef));
 
     const index = schemaList.findIndex((schema) => schema.field === prefixField);
@@ -154,7 +154,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
   /**
    * @description: 根据 field 查找 Schema
    */
-  function getSchemaByFiled(fields: string | string[]): FormSchema | undefined {
+  function getSchemaByFiled(fields: string | string[]): FormItemSchema | undefined {
     const schemaList = unref(formSchemasRef);
     const fieldList = ([] as string[]).concat(fields);
     return schemaList.find((schema) => fieldList.includes(schema.field));
@@ -163,10 +163,10 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
   /**
    * @description  更新formItemSchema
    */
-  const updateSchema = (data: Partial<FormSchema> | Partial<FormSchema>[]) => {
-    let updateData: Partial<FormSchema>[] = [];
+  const updateSchema = (data: Partial<FormItemSchema> | Partial<FormItemSchema>[]) => {
+    let updateData: Partial<FormItemSchema>[] = [];
     if (isObject(data)) {
-      updateData.push(data as FormSchema);
+      updateData.push(data as FormItemSchema);
     }
     if (isArray(data)) {
       updateData = [...data];
@@ -180,7 +180,7 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
       );
       return;
     }
-    const schemas: FormSchema[] = [];
+    const schemas: FormItemSchema[] = [];
     updateData.forEach((item) => {
       unref(formSchemasRef).forEach((val) => {
         if (val.field === item.field) {

@@ -21,7 +21,7 @@ export type Rule = RuleObject & {
 export type GetFieldKeys<T> = Exclude<keyof T, symbol | number>;
 
 export interface RenderCallbackParams<T = string> {
-  schema: FormSchema<T>;
+  schema: FormItemSchema<T>;
   formModel: T extends string ? Recordable : Record<GetFieldKeys<T>, any>;
   field: T extends string ? string : GetFieldKeys<T>;
   values: any;
@@ -51,12 +51,12 @@ export interface FormActionType {
   resetFields: () => Promise<void>;
   getFieldsValue: () => any;
   clearValidate: (name?: string | string[]) => Promise<void>;
-  updateSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => Promise<void>;
-  resetSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => Promise<void>;
-  setTableSearchFormProps: (formProps: Partial<FormSchema>) => Promise<void>;
+  updateSchema: (data: Partial<FormItemSchema> | Partial<FormItemSchema>[]) => Promise<void>;
+  resetSchema: (data: Partial<FormItemSchema> | Partial<FormItemSchema>[]) => Promise<void>;
+  setTableSearchFormProps: (formProps: Partial<FormItemSchema>) => Promise<void>;
   removeSchemaByFiled: (field: string | string[]) => Promise<void>;
   appendSchemaByField: (
-    schema: FormSchema,
+    schema: FormItemSchema,
     prefixField: string | undefined,
     first?: boolean | undefined,
   ) => Promise<void>;
@@ -68,7 +68,7 @@ export interface FormActionType {
 export type RegisterFn = (formInstance: TableSearchFormInstance) => void;
 
 /** 表单项 */
-export interface FormSchema<T = string> {
+export interface FormItemSchema<T = string> {
   /** 字段名 */
   field: T extends string ? string : GetFieldKeys<T>;
   // 内部值更改触发的事件名称, default change
@@ -138,7 +138,7 @@ export interface FormSchema<T = string> {
   /** 作用同v-show */
   vShow?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
   /** 作用同v-if */
-  vIf?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
+  // vIf?: boolean | ((renderCallbackParams: RenderCallbackParams<T>) => boolean);
 
   // 渲染col内容需要外层包装form-item
   renderColContent?: CustomRenderFn<T>;
