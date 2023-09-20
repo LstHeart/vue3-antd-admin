@@ -61,19 +61,6 @@ const routes: Array<RouteRecordRaw> = [
         component: RouterView,
         children: [
           {
-            path: 'inner',
-            name: `${moduleName}-form-inner`,
-            meta: {
-              title: '内部标签表单',
-              icon: 'icon-zhuomian',
-              keepAlive: true,
-            },
-            component: () =>
-              import(
-                /* webpackChunkName: "inner-form" */ '@/views/demos/form/inner-label-form/index.vue'
-              ),
-          },
-          {
             path: 'basic',
             name: `${moduleName}-form-basic`,
             meta: {

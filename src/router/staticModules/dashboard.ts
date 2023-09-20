@@ -35,6 +35,19 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import('@/views/demos/form/search-form/index.vue'),
       },
+      {
+        path: 'inner',
+        name: `${moduleName}-form-inner`,
+        meta: {
+          title: '内部标签表单',
+          icon: 'icon-zhuomian',
+          keepAlive: true,
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "inner-form" */ '@/views/demos/form/inner-label-form/index.vue'
+          ),
+      },
     ],
   },
 ];
