@@ -107,7 +107,11 @@ export function useFormEvents(formActionContext: UseFormActionContext) {
   /**
    * @description: 插入到指定 filed 后面，如果没传指定 field，则插入到最后,当 first = true 时插入到第一个位置
    */
-  async function appendSchemaByField(schemaItem: FormItemSchema, prefixField?: string, first = false) {
+  async function appendSchemaByField(
+    schemaItem: FormItemSchema,
+    prefixField?: string,
+    first = false,
+  ) {
     const schemaList = cloneDeep(unref(formSchemasRef));
 
     const index = schemaList.findIndex((schema) => schema.field === prefixField);
