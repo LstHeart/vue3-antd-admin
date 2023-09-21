@@ -23,25 +23,46 @@ export const vInnerLabel: ObjectDirective = {
       /* 内容元素 */
       const contentEl = formItemEl.querySelector('.ant-form-item-control') as Element;
 
-      /* 内容偏移元素 */
-      const normalEl = contentEl.querySelector('.ant-form-item-control-input-content')
+      /* 组件元素 */
+      const compEl = contentEl.querySelector('.ant-form-item-control-input-content')
         ?.firstElementChild as Element;
 
       let disablePointer = false;
-      const disableList = [
-        'ant-picker', // date-picker
-        'ant-select', // select
-      ];
-      for (let i = 0; i < disableList.length; i++) {
-        if (normalEl.classList.contains(disableList[i])) {
-          disablePointer = true;
-          break;
+      if (compEl) {
+        if (!compEl.classList.contains('ant-btn')) {
+          compEl.classList.add('_comp');
+          // compEl.setAttribute('style', 'width:100%;');
+          // compEl.setAttribute('style', 'width:100%;');
+        }
+
+        // 判断是否禁用鼠标事件
+        const disableList = [
+          'ant-picker', // date-picker
+          'ant-select', // select
+        ];
+        for (let i = 0; i < disableList.length; i++) {
+          if (compEl.classList.contains(disableList[i])) {
+            disablePointer = true;
+            break;
+          }
         }
       }
-      const selectEl = contentEl.querySelector('.ant-select-selector') as Element;
+
+      /* 下拉选择  */
+      // const isInput = compEl?.classList.contains('ant-input-affix-wrapper');
+      // const isInputNumber = compEl?.classList.contains('ant-input-number');
+      // const isInputNumber = compEl?.classList.contains('ant-input-number-group-wrapper');
+      // const isSelect = compEl?.classList.contains('ant-input-affix-wrapper');
+      const selectEl = contentEl.querySelector('.ant-select .ant-select-selector') as Element;
       /* 可搜索下拉元素 */
       const selectSearchEl = selectEl?.querySelector('.ant-select-selection-search') as HTMLElement;
+      /* 数字输入 */
+      const inputNumberEl = contentEl.querySelector(
+        '.ant-input-number .ant-input-number-input-wrap',
+      ) as HTMLElement;
+      /* 禁用 */
       const inputDisableEl = contentEl.querySelector('ant-input-disabled') as Element;
+
       /* 处理按钮组 */
       if (contentEl) {
         const btnEls = contentEl.querySelectorAll('.ant-btn') as NodeListOf<Element>;
@@ -54,7 +75,7 @@ export const vInnerLabel: ObjectDirective = {
       }
 
       /* 处理内部标签 */
-      if (labelEl && normalEl) {
+      if (labelEl && compEl) {
         /* 内部标签class */
         labelEl.classList.add('_inner-label');
 
@@ -68,7 +89,7 @@ export const vInnerLabel: ObjectDirective = {
         tempEl.remove();
 
         /* 处理内容元素偏移 */
-        const element = selectEl || normalEl || inputDisableEl;
+        const element = selectEl || compEl || inputDisableEl;
         if (element) {
           element.setAttribute(
             'style',
@@ -77,17 +98,26 @@ export const vInnerLabel: ObjectDirective = {
             padding-left: calc(${width} + 16px) !important;
           `,
           );
-          if (element === normalEl && !disablePointer) {
+          if (disablePointer) {
             labelEl.setAttribute(
               'style',
               `
-              pointer-events: auto;
+              pointer-events: none;
             `,
             );
           }
           /* 可搜索下拉 */
           if (element === selectEl && selectSearchEl) {
             selectSearchEl.setAttribute('style', ` padding-left: calc(${width} + 4px) !important;`);
+          }
+          /* 数字输入框 */
+          console.log('element', element === compEl);
+          console.log('element', element);
+          console.log('compEl', compEl);
+          console.log('inputNumberEl', inputNumberEl);
+          if (element === compEl && inputNumberEl) {
+            // inputNumberEl.setAttribute('style', ` padding-left: calc(${width} + 4px) !important;`);
+            inputNumberEl.firstElementChild?.setAttribute('style', ` padding-left: 0 !important;`);
           }
         }
       }

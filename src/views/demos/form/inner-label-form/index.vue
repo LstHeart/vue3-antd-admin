@@ -3,36 +3,129 @@
     <a-form :model="state.search" class="xc-header" autocomplete="off" v-innerLabel>
       <a-row>
         <a-col :span="6">
-          <a-form-item label="客户名称" name="provName">
-            <a-input v-model:value="state.search.provName" allow-clear placeholder="客户名称" />
+          <a-form-item label="文本输入框" name="Input">
+            <a-input v-model:value="state.search.input" allow-clear placeholder="请输入" />
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-form-item label="客户类型" name="clientType">
+          <a-form-item label="数字输入框" name="inputNumber">
+            <a-input-number
+              id="form_item_inputNumber"
+              v-model:value="state.search.inputNumber"
+              :min="1"
+              :max="10"
+              placeholder="请输入"
+            />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item label="数字输入框带后缀" name="inputNumber2">
+            <a-input-number v-model:value="state.search.inputNumber2" id="form_item_inputNumber2">
+              <template #addonAfter>
+                <a-select v-model:value="state.search.inputNumberSelect" style="width: 60px">
+                  <a-select-option value="USD">$</a-select-option>
+                  <a-select-option value="EUR">€</a-select-option>
+                  <a-select-option value="GBP">£</a-select-option>
+                  <a-select-option value="CNY">¥</a-select-option>
+                </a-select>
+              </template>
+            </a-input-number>
+          </a-form-item>
+        </a-col>
+
+        <a-col :span="6">
+          <a-form-item label="下拉单选选择框" name="select">
             <a-select
-              v-model:value="state.search.clientType"
-              class="form-selsect"
-              :options="state.clientTypeList"
+              v-model:value="state.search.select"
+              :options="state.selectList"
+              placeholder="请选择"
             ></a-select>
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-form-item label="状态" name="tbStatus">
+          <a-form-item label="下拉多选选择框" name="select">
             <a-select
-              v-model:value="state.search.tbStatus"
-              class="form-selsect"
-              :options="state.statusList"
+              allow-clear
+              v-model:value="state.search.select2"
+              mode="multiple"
+              style="width: 100%"
+              placeholder="请选择"
+              :options="[...Array(25)].map((_, i) => ({ value: (i + 10).toString(36) + (i + 1) }))"
             ></a-select>
           </a-form-item>
         </a-col>
         <a-col :span="6">
-          <a-form-item label="采购日期" name="dateValue">
+          <a-form-item label="下拉可搜索框" name="selectSearch">
+            <a-select
+              v-model:value="state.search.selectSearch"
+              :options="state.selectSearchList"
+              placeholder="请选择"
+            ></a-select>
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item label="级联选择" name="cascader">
+            <a-cascader
+              v-model:value="state.search.cascader"
+              :options="state.cascaderOptions"
+              placeholder="请选择"
+            />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item label="日期选择框" name="dateValue">
+            <a-date-picker v-model:value="state.search.dateValue" />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item label="时间范围选择框" name="dateRangeValue">
             <a-range-picker
-              v-model:value="state.search.dateValue"
+              v-model:value="state.search.dateRangeValue"
               :getPopupContainer="(triggerNode) => triggerNode.parentNode"
               :format="['YYYY-MM-DD', 'YYYY-MM-DD']"
               :placeholder="['开始时间', '截止时间']"
             />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item label="树选择" name="tree">
+            <a-tree-select
+              v-model:value="state.search.tree"
+              show-search
+              style="width: 100%"
+              :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+              placeholder="请选择"
+              allow-clear
+              tree-default-expand-all
+              :tree-data="state.treeData"
+              tree-node-filter-prop="label"
+            >
+              <template #title="{ value: val, label }">
+                <b v-if="val === 'parent 1-1'" style="color: #08c">sss</b>
+                <template v-else>{{ label }}</template>
+              </template>
+            </a-tree-select>
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item label="树选择多选" name="tree2">
+            <a-tree-select
+              v-model:value="state.search.tree2"
+              show-search
+              style="width: 100%"
+              :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+              placeholder="请选择"
+              allow-clear
+              multiple
+              tree-default-expand-all
+              :tree-data="state.treeData"
+              tree-node-filter-prop="label"
+            >
+              <template #title="{ value: val, label }">
+                <b v-if="val === 'parent 1-1'" style="color: #08c">{{ val }}</b>
+                <template v-else>{{ label }}</template>
+              </template>
+            </a-tree-select>
           </a-form-item>
         </a-col>
         <a-col :span="6">
@@ -46,62 +139,97 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { reactive, watch } from 'vue';
+  import { reactive } from 'vue';
   import { vInnerLabel } from '@/directives/innerLabel';
 
   const state = reactive({
     list: [],
     // 搜索
     search: {
-      provName: '',
-      clientType: '',
-      tbStatus: '',
-      dateValue: [] as any[],
+      input: '',
+      inputNumber: 0,
+      inputNumber2: 0,
+      inputNumberSelect: '',
+      select: '',
+      select2: '',
+      selectSearch: '',
+      cascader: [] as any[],
+      dateValue: '',
+      dateRangeValue: [] as any[],
+      tree: '',
+      tree2: [] as any[],
     },
-    // 状态
-    statusList: [
+    selectList: [
+      { value: '', label: '全部' },
+      { value: '1', label: '医院' },
+      { value: '2', label: '厂商' },
+    ],
+    selectSearchList: [
       { value: '', label: '全部' },
       { value: 10, label: '待审核' },
       { value: 20, label: '已通过' },
       { value: 30, label: '未通过' },
     ],
-    // 客户类型
-    clientTypeList: [
-      { value: '', label: '全部' },
-      { value: '1', label: '医院' },
-      { value: '2', label: '厂商' },
-    ],
-    supplyRelEditFlag: false,
-    timeout: {} as any, //客户名称远程搜索定时器
-    // 医院名称
-    hosNameList: [] as any[],
-    // 医院查询分页器
-    hosQuery: {
-      initHosList: [] as any[],
-      pagination: {
-        current: 1,
-        pageSize: 10,
-        total: 0,
+    cascaderOptions: [
+      {
+        value: 'zhejiang',
+        label: 'Zhejiang',
+        children: [
+          {
+            value: 'hangzhou',
+            label: 'Hangzhou',
+            children: [
+              {
+                value: 'xihu',
+                label: 'West Lake',
+              },
+            ],
+          },
+        ],
       },
-      inputHosName: '',
-    },
-    //客户名称
-    provNameList: [],
-
-    formCustomer: {
-      // 新增编辑数据
-      id: '',
-      provName: '',
-      hosName: '',
-      invitationCode: '',
-      hosId: '',
-      clientType: '1',
-      provId: '',
-      contactUser: '',
-      contactWay: '',
-      version: '',
-    },
-    provNameShow: false, //是否显示客户名称
+      {
+        value: 'jiangsu',
+        label: 'Jiangsu',
+        children: [
+          {
+            value: 'nanjing',
+            label: 'Nanjing',
+            children: [
+              {
+                value: 'zhonghuamen',
+                label: 'Zhong Hua Men',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    treeData: [
+      {
+        label: 'parent 1',
+        value: 'parent 1',
+        children: [
+          {
+            label: 'parent 1-0',
+            value: 'parent 1-0',
+            children: [
+              {
+                label: 'my leaf',
+                value: 'leaf1',
+              },
+              {
+                label: 'your leaf',
+                value: 'leaf2',
+              },
+            ],
+          },
+          {
+            label: 'parent 1-1',
+            value: 'parent 1-1',
+          },
+        ],
+      },
+    ],
     pagination: {
       current: 1,
       pageSize: 10,
@@ -120,27 +248,9 @@
     getList();
   };
   // 重置查询
-  const restList = () => {
-    state.pagination.current = 1;
-    state.search.provName = '';
-    state.search.clientType = '';
-    state.search.tbStatus = '';
-    getList();
-  };
+  const restList = () => {};
 
-  // 分页查询系统列表
+  // 分页查询列表
   async function getList() {}
-
-  watch(
-    () => state.formCustomer.clientType,
-    (value) => {
-      if (value == '1') {
-        //客户类型医院时不显示客户名称
-        state.provNameShow = false;
-      } else {
-        state.provNameShow = true;
-      }
-    },
-  );
 </script>
 <style lang="less" scoped></style>
