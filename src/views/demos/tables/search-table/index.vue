@@ -33,6 +33,7 @@
           ...params,
         });
         // 手动设置搜索表单的搜索项
+        // const ref = dynamicTableInstance?.getQueryFormRef();
         dynamicTableInstance?.getQueryFormRef()?.updateSchema?.([
           {
             field: 'price',
